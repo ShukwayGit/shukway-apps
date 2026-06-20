@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ShukWAY · השקת האפליקציה — תצוגת מצבים</title>
+<link rel="icon" type="image/png" href="/logo-mark.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  /* Ploni — real ShukWAY brand font, same-origin from /public/fonts/ */
+  @font-face{font-family:"Ploni";src:url("/fonts/ploni-light-aaa.woff") format("woff");font-weight:300;font-display:swap}
+  @font-face{font-family:"Ploni";src:url("/fonts/ploni-regular.woff2") format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Ploni";src:url("/fonts/ploni-medium-aaa.woff") format("woff");font-weight:500;font-display:swap}
+  @font-face{font-family:"Ploni";src:url("/fonts/ploni-demibold-aaa.woff") format("woff");font-weight:600;font-display:swap}
+  @font-face{font-family:"Ploni";src:url("/fonts/ploni-bold-aaa.woff") format("woff");font-weight:700;font-display:swap}
+  @font-face{font-family:"Ploni";src:url("/fonts/ploni-ultrabold-aaa.woff") format("woff");font-weight:800;font-display:swap}
+  :root{
+    --orange:#E56E13; --teal:#038A82; --sage:#E8EDE2; --sage-deep:#CBD6BD;
+    --ink:#2B2B26; --muted:#6B6456; --paper:#FFFFFF; --rose:#C7325A; --indigo:#4B45A8;
+    --shadow:0 8px 30px rgba(20,40,35,.10);
+    --font:"Ploni",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--font); color:var(--ink);
+    background:linear-gradient(160deg,#EEF4ED 0%,#E3EADF 100%);
+    min-height:100vh;
+  }
+  /* ── header ── */
+  .head{display:flex;align-items:center;gap:14px;padding:18px 26px 6px}
+  .head img{height:34px;width:auto;filter:drop-shadow(0 1px 2px rgba(0,0,0,.12))}
+  .head .sub{font-weight:600;color:var(--teal);font-size:15px}
+  .head .sub b{color:var(--orange)}
+  /* ── tabs ── */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;padding:8px 26px 18px;position:sticky;top:0;z-index:30;
+    background:linear-gradient(180deg,#EEF4EDF2 70%,#EEF4ED00)}
+  .tab{font-family:var(--font);font-weight:700;font-size:15px;cursor:pointer;
+    padding:10px 20px;border-radius:999px;border:1.5px solid var(--sage-deep);
+    background:var(--paper);color:var(--teal);box-shadow:0 1px 4px rgba(0,0,0,.05);transition:.18s}
+  .tab:hover{transform:translateY(-1px)}
+  .tab.active{background:var(--teal);color:#fff;border-color:var(--teal)}
+  .tab.faivel.active{background:#7A5A1E;border-color:#7A5A1E}
+  /* ── panels ── */
+  .panel{display:none;padding:6px 26px 60px;animation:fade .35s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .lead{font-size:18px;color:var(--muted);max-width:760px;line-height:1.7;margin:0 0 22px}
+  .lead b{color:var(--ink)}
+  /* ── phone frame ── */
+  .stage{display:flex;gap:36px;flex-wrap:wrap;align-items:flex-start}
+  .phone{width:330px;height:680px;border-radius:42px;background:#1c1c22;padding:12px;
+    box-shadow:var(--shadow);flex:0 0 auto}
+  .phone .screen{width:100%;height:100%;border-radius:32px;overflow:hidden;background:var(--sage);position:relative}
+  .phone iframe{width:100%;height:100%;border:0;display:block}
+  /* ── problem list ── */
+  .probs{flex:1;min-width:300px;max-width:520px}
+  .prob{background:var(--paper);border-radius:16px;padding:16px 18px;margin-bottom:14px;
+    box-shadow:var(--shadow);border-inline-start:5px solid var(--rose)}
+  .prob h4{margin:0 0 4px;font-size:17px}
+  .prob p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.6}
+  .prob .num{font-variant-numeric:tabular-nums;font-weight:800;color:var(--rose)}
+  .win{border-inline-start-color:var(--teal)}
+  .win h4 .num{color:var(--teal)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .chip{background:#fff;border:1px solid var(--sage-deep);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600;color:var(--teal)}
+  .chip b{color:var(--orange)}
+  /* ── fake production nav (state 1) ── */
+  .prodmap{position:absolute;inset:0;background:
+    repeating-linear-gradient(48deg,#EDE7DD 0 38px,#fff 38px 41px,#EDE7DD 41px 80px),
+    linear-gradient(0deg,#EFE9DF,#F3EEE4)}
+  .prodlabel{position:absolute;font-size:12px;color:#9a9384;transform:rotate(-42deg)}
+  .navcard{position:absolute;left:14px;right:14px;bottom:16px;background:#fff;border-radius:16px;
+    padding:14px 16px;box-shadow:0 6px 20px rgba(0,0,0,.18);display:flex;align-items:center;gap:12px;direction:rtl}
+  .navcard .x{width:40px;height:40px;border-radius:50%;background:#fbe3e3;color:#c0392b;display:grid;place-items:center;font-size:18px;flex:0 0 auto}
+  .navcard .info{flex:1}
+  .navcard .info .dest{font-weight:800;font-size:16px}
+  .navcard .info .meta{color:var(--teal);font-weight:700;font-size:13px;margin-top:3px}
+  .navcard .info .meta .bad{color:var(--rose)}
+  .dot-me{position:absolute;width:18px;height:18px;border-radius:50%;background:#2a7de1;border:3px solid #fff;box-shadow:0 0 0 6px rgba(42,125,225,.25)}
+  /* ── widgets dashboard (state 3) ── */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;max-width:1080px}
+  .w{background:var(--paper);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+  .w h5{margin:0 0 10px;font-size:14px;color:var(--muted);font-weight:700;letter-spacing:.2px}
+  .kpi{font-size:46px;font-weight:900;line-height:1;color:var(--teal)}
+  .kpi.o{color:var(--orange)}
+  .kpi small{font-size:16px;font-weight:700;color:var(--muted)}
+  .bars{display:flex;flex-direction:column;gap:9px}
+  .bar{display:flex;align-items:center;gap:8px;font-size:13px}
+  .bar .lab{width:110px;text-align:start;color:var(--ink);font-weight:600}
+  .bar .track{flex:1;height:14px;background:var(--sage);border-radius:8px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:8px}
+  .bar .n{width:34px;text-align:start;font-variant-numeric:tabular-nums;color:var(--muted);font-weight:700}
+  .span2{grid-column:span 2}
+  .clock{font-size:40px;font-weight:900;color:var(--ink);font-variant-numeric:tabular-nums}
+  .donut{width:120px;height:120px;border-radius:50%;margin:4px auto;display:grid;place-items:center}
+  .donut .hole{width:78px;height:78px;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center;line-height:1.1}
+  .donut .hole b{font-size:22px;color:var(--teal)}
+  .donut .hole span{font-size:11px;color:var(--muted)}
+  .vendor{display:flex;align-items:center;gap:12px}
+  .vendor .vdot{width:14px;height:14px;border-radius:50%;flex:0 0 auto}
+  .badge{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px}
+  .badge.open{background:#dff3ec;color:var(--teal)}
+  .badge.closed{background:#fbe3e9;color:var(--rose)}
+  .demo-tag{font-size:11px;color:#b9b1a0;font-weight:700}
+  /* ── psak / faivel (state 4) ── */
+  .psak{max-width:760px;margin:0 auto;background:
+    radial-gradient(120% 120% at 50% 0%,#FBF4DF 0%,#F3E9CC 100%);
+    border:2px solid #C9A24A;border-radius:14px;padding:34px 40px;box-shadow:var(--shadow);
+    font-family:"Frank Ruhl Libre",serif;color:#3a2f12;position:relative}
+  .psak::before{content:"";position:absolute;inset:8px;border:1px solid #C9A24A88;border-radius:9px;pointer-events:none}
+  .psak .bsd{text-align:center;font-size:14px;letter-spacing:3px;color:#9a7b2e}
+  .psak h2{text-align:center;font-weight:900;font-size:26px;margin:6px 0 2px}
+  .psak .stitle{text-align:center;color:#7A5A1E;font-size:15px;margin-bottom:20px;font-weight:700}
+  .psak .ruling{font-size:18px;line-height:1.9;text-align:justify}
+  .psak .ruling b{color:#7A2E12}
+  .voices{margin:22px 0;border-top:1px dashed #C9A24A;border-bottom:1px dashed #C9A24A;padding:16px 0}
+  .voice{margin:9px 0;font-size:15.5px;line-height:1.6}
+  .voice .who{font-weight:900;color:#7A5A1E}
+  .sign{text-align:left;margin-top:18px;font-size:17px}
+  .sign .name{font-weight:900;font-size:20px;color:#7A2E12}
+  .foot{padding:0 26px 40px;color:#9a9384;font-size:12.5px;max-width:900px}
+  /* ── unification hub (state 5) ── */
+  .hubgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;max-width:1100px}
+  .prod{background:var(--paper);border-radius:18px;padding:20px;box-shadow:var(--shadow);
+    border-top:4px solid var(--teal);display:flex;flex-direction:column;gap:8px;position:relative}
+  .prod__ico{font-size:30px;line-height:1}
+  .prod h4{margin:0;font-size:18px;color:var(--ink)}
+  .prod p{margin:0;color:var(--muted);font-size:14px;line-height:1.6;flex:1}
+  .st{align-self:flex-start;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px}
+  .st--live{background:#dff3ec;color:var(--teal)}
+  .st--dev{background:#fef0e3;color:var(--orange)}
+  .st--todo{background:#ececf0;color:#717182}
+  .prod__go{margin-top:6px;text-align:center;background:var(--teal);color:#fff;font-weight:700;
+    text-decoration:none;padding:10px;border-radius:10px;transition:.15s}
+  .prod__go:hover{filter:brightness(1.06)}
+  .prod__go--off{background:#ececf0;color:#9a9384;cursor:not-allowed}
+</style>
+</head>
+<body>
+  <div class="head">
+    <img src="/logo.png" alt="שוקway · ShukWAY" />
+    <div class="sub">השקת האפליקציה · <b>תצוגת מצבים</b></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-p="now">המצב היום</button>
+    <button class="tab" data-p="living">השוק החי</button>
+    <button class="tab" data-p="board">לוח חי</button>
+    <button class="tab" data-p="hub">הכל מחובר</button>
+    <button class="tab faivel" data-p="faivel">פסק המועצה</button>
+  </div>
+
+  <!-- STATE 1 — production today + problems -->
+  <section class="panel active" id="p-now">
+    <p class="lead">כך נראה הניווט ב-<b>production היום</b> (Mapbox). עובד — אבל עם שלושה כשלים אמיתיים שתועדו בשטח.</p>
+    <div class="stage">
+      <div class="phone"><div class="screen">
+        <div class="prodmap">
+          <div class="prodlabel" style="top:28%;right:18%">Holzer Books</div>
+          <div class="prodlabel" style="top:55%;right:55%">HADAVIDKA</div>
+          <div class="prodlabel" style="top:70%;right:20%">Alliance Gate</div>
+          <div class="dot-me" style="top:46%;left:44%"></div>
+        </div>
+        <div class="navcard">
+          <div class="x">✕</div>
+          <div class="info">
+            <div class="dest">האחים נחמיה משקאות</div>
+            <div class="meta"><span class="bad">208 מ' ↑</span> · ~4 דק' הליכה</div>
+          </div>
+          <div>🦶</div>
+        </div>
+      </div></div>
+      <div class="probs">
+        <div class="prob">
+          <h4>1 · <span class="num">GPS</span> לא יציב מתחת לגג השוק</h4>
+          <p>בסרטון: המרחק ליעד <b>טיפס 200→208 מ'</b> בזמן שהנקודה כמעט לא זזה, וה-ETA קפץ <span class="num">12→8→4</span> דק'. זה ה-GPS שמשקר 30–50 מ' מתחת למקורה.</p>
+        </div>
+        <div class="prob">
+          <h4>2 · תוויות מפה <span class="num">באנגלית</span></h4>
+          <p>"Holzer Books", "Alliance Gate", "HADAVIDKA" — תעתיק, לא עברית. לקהל ירושלמי זו זרות.</p>
+        </div>
+        <div class="prob">
+          <h4>3 · Mapbox <span class="num">מדוד</span></h4>
+          <p>חינמי היום — אבל ברגע שהטראפיק עולה, map-loads הופכים להוצאה חוזרת לא-צפויה.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATE 2 — living shuk (live iframe) -->
+  <section class="panel" id="p-living">
+    <p class="lead"><b>השוק החי</b> — מנוע וקטור אמיתי, חי מתוך <code>localhost:5173</code>. אותו אזור, אותם 527 דוכנים — תחושה אחרת לגמרי.</p>
+    <div class="stage">
+      <div class="phone"><div class="screen">
+        <iframe id="liveframe" title="Living Shuk" loading="lazy"></iframe>
+      </div></div>
+      <div class="probs">
+        <div class="prob win"><h4>✓ וקטור + רקע מרווה</h4><p>שליטת צבע מלאה, סמטאות לבנות, תחושת מותג — לא "עוד מפה".</p></div>
+        <div class="prob win"><h4>✓ תוויות עברית אמיתיות</h4><p>נחלאות · דוד ילין · רש"י · פרי חדש — מהמפה עצמה.</p></div>
+        <div class="prob win"><h4>✓ עוגן "📍 אני ליד…" — בלי GPS</h4><p>ה-moat: מיקום מבוסס-דוכן שעובד מתחת לגג, איפה ש-GPS נכשל.</p></div>
+        <div class="prob win"><h4>✓ ₪0 / חודש</h4><p>PMTiles self-hosted (1.4MB) + MapLibre BSD-3. בלי seat, בלי ספק בתשלום.</p></div>
+        <div class="chips"><span class="chip">MapLibre <b>5.8</b></span><span class="chip">PMTiles</span><span class="chip">Protomaps</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATE 3 — live widgets board -->
+  <section class="panel" id="p-board">
+    <p class="lead"><b>לוח חי</b> — כל המספרים נשלפים מ-<code>stalls.real.json</code> בזמן אמת. "פתוח עכשיו" מחושב לפי שעון <b>אסיה/ירושלים</b>, לא שעון המכשיר.</p>
+    <div class="grid" id="board"></div>
+  </section>
+
+  <!-- STATE 4 — psak / faivel -->
+  <section class="panel" id="p-faivel">
+    <div class="psak">
+      <div class="bsd">ב ס ״ ד</div>
+      <h2>פְּסַק מוֹעֶצֶת גְּדוֹלֵי הַחֲכָמִים</h2>
+      <div class="stitle">בעניין מנוע המפה של ShukWAY · בראשות ר' פייבל שליט״א</div>
+      <div class="ruling">
+        בָּאנוּ לִכְלַל הֲסכָּמָה: יֵשׁ לְהַעֲבִיר אֶת מַנּוֹעַ הַמַּפָּה מִ-<b>Mapbox הַמָּדוּד</b>
+        אֶל <b>MapLibre + PMTiles וֶקְטוֹר</b>, עַל רֶקַע מַרְוֶה וְתָוִיּוֹת עִבְרִית,
+        עִם עוֹגֵן <b>"אֲנִי לְיַד…" בְּלִי GPS</b> כְּעִיקַּר הַ-moat. הַטַּעַם: גַּם ₪0 לַחֹדֶשׁ,
+        גַּם שְׁלִיטַת צֶבַע, וְגַם אֱמֶת מְקוֹמִית שֶׁהַ-GPS אֵינוֹ נוֹתֵן מִתַּחַת לַגַּג.
+      </div>
+      <div class="voices">
+        <div class="voice"><span class="who">ר' חשבון:</span> ₪0 מוּבְנֶה — אֵין seat וְאֵין ספָק בְּתַשְׁלוּם. תְּנַאי-הַסַּף נֶעֱנֶה.</div>
+        <div class="voice"><span class="who">ר' צדוק התימני:</span> תָּוִיּוֹת בְּעִבְרִית — וּמָחָר גַּם בַּעֲרָבִית. אוֹתֶנְטִיּוּת יְרוּשַׁלְמִית אֲמִתִּית.</div>
+        <div class="voice"><span class="who">פוילר השמש:</span> אַל תְּהַנְדֵּס יֶתֶר — הַסְּפַּייק כְּבָר עוֹבֵד. לֹא לְהַחְלִיף הַכֹּל בְּיוֹם אֶחָד עַל פְּרוֹדַקְשַׁן.</div>
+        <div class="voice"><span class="who">ר' זהיר:</span> QA אֱנוֹשִׁי עַל הַ-glyphs וְעַל ה-RTL לִפְנֵי הָעֲלָאָה. "אַל תַּאֲמִין לְ-verified".</div>
+      </div>
+      <div class="sign">
+        עַל הֶחָתוּם,<br>
+        <span class="name">ר' פייבל שליט״א</span> · יו״ר הַמּוֹעָצָה
+      </div>
+    </div>
+  </section>
+
+  <!-- STATE 5 — unification hub -->
+  <section class="panel" id="p-hub">
+    <p class="lead"><b>הכל מחובר</b> — חמשת המוצרים של ShukWAY במקום אחד. היום הם לא מקושרים; זו תצוגת ההיכל המאוחד. אפליקציות עם התחברות (OAuth) נפתחות בלשונית חדשה — אי-אפשר להטמיע אותן ב-IFRAME.</p>
+    <div class="hubgrid">
+      <div class="prod">
+        <div class="prod__ico">🗺️</div>
+        <h4>השוק החי</h4>
+        <p>מפת וקטור MapLibre · 527 דוכנים · ניווט הליכה · עוגן "אני ליד" בלי GPS.</p>
+        <span class="st st--dev">חי אחרי deploy</span>
+        <a class="prod__go" href="https://news.shukway.com/living-shuk/index.html" target="_blank" rel="noopener">פתח ↗</a>
+      </div>
+      <div class="prod">
+        <div class="prod__ico">📊</div>
+        <h4>מוניטורינג · CRM</h4>
+        <p>GA4 · Search Console · Semrush · שיחות צוות · "שאל את Claude". OAuth.</p>
+        <span class="st st--live">חי</span>
+        <a class="prod__go" href="https://shuk-monitoring.onrender.com/#overview" target="_blank" rel="noopener">פתח ↗</a>
+      </div>
+      <div class="prod">
+        <div class="prod__ico">🏪</div>
+        <h4>דשבורד בעלי עסקים</h4>
+        <p>קריאה-בלבד על עסקים (שלומי מנהל), UI מלא לאנליטיקס/קופונים/דוחות לבעל העסק.</p>
+        <span class="st st--dev">חי אחרי deploy</span>
+        <a class="prod__go" href="https://news.shukway.com/owner-dashboard/index.html" target="_blank" rel="noopener">פתח ↗</a>
+      </div>
+      <div class="prod">
+        <div class="prod__ico">🎟️</div>
+        <h4>קופונים</h4>
+        <p>מודל הקופונים · מימוש QR · "סוד הנחה" · הסכמי סוחרים. V1.</p>
+        <span class="st st--dev">חי אחרי deploy</span>
+        <a class="prod__go" href="https://news.shukway.com/owner-dashboard/index.html#coupons" target="_blank" rel="noopener">פתח ↗</a>
+      </div>
+      <div class="prod">
+        <div class="prod__ico">📰</div>
+        <h4>פורטל חדשות</h4>
+        <p>פורטל חדשות AI בסגנון NewsPro · כתבת השקה עם הווידג'ט הזה ב-IFRAME.</p>
+        <span class="st st--live">חי</span>
+        <a class="prod__go" href="https://news.shukway.com" target="_blank" rel="noopener">פתח ↗</a>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:22px;font-size:15px">דשבורד וקופונים הועלו לפורטל בשם הנכון (<code>news.shukway.com/owner-dashboard</code>) — חיים ברגע שהפורטל יעבור deploy. מוניטורינג ופורטל כבר חיים.</p>
+  </section>
+
+  <div class="foot">
+    הערת אמת על פונטים: ה-UI כאן ב-<b>Ploni</b> האמיתי (woff2/woff, self-hosted). תוויות המפה החיה
+    עדיין מרונדרות מ-Noto Sans דרך Protomaps — מפת-GL צריכה גליפי-SDF, לא web-font. ראו הסבר בצ'אט.
+  </div>
+
+<script>
+  // ── tab switching ──
+  const tabs=[...document.querySelectorAll('.tab')];
+  function show(p){
+    tabs.forEach(t=>t.classList.toggle('active',t.dataset.p===p));
+    document.querySelectorAll('.panel').forEach(s=>s.classList.toggle('active',s.id==='p-'+p));
+    if(p==='living'){const f=document.getElementById('liveframe'); if(!f.src) f.src='/';}
+    if(p==='board') buildBoard();
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.p)));
+
+  // ── open/closed in Asia/Jerusalem (ported 1:1 from openstate.ts) ──
+  function marketNow(){
+    const fmt=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Jerusalem",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false});
+    const p=fmt.formatToParts(new Date());
+    const wd=(p.find(x=>x.type==="weekday")||{}).value||"Sun";
+    let hh=parseInt((p.find(x=>x.type==="hour")||{}).value||"0",10);
+    const mm=parseInt((p.find(x=>x.type==="minute")||{}).value||"0",10);
+    if(hh===24)hh=0;
+    const d={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};
+    return {day:d[wd]||0,mins:hh*60+mm};
+  }
+  function toMins(t){const m=/^(\d{1,2}):(\d{2})$/.exec((t||"").trim());return m?(+m[1]*60+ +m[2]):null;}
+  function isOpenNow(hours){
+    if(!hours||hours.length!==7)return null;
+    const {day,mins}=marketNow(); const t=hours[day]; if(!t)return null;
+    const o=toMins(t.open),c=toMins(t.close); if(o==null||c==null)return null;
+    if(o===0&&c===0)return false;
+    if(c<=o)return mins>=o||mins<c;
+    return mins>=o&&mins<c;
+  }
+
+  const CAT={
+    produce:{he:"שוק וקניות",c:"#C9531C"}, food:{he:"אוכל ושתייה",c:"#E56E13"},
+    services:{he:"שירותים ותחבורה",c:"#038A82"}, judaica:{he:"מתנות ויודאיקה",c:"#8A5A22"},
+    fashion:{he:"אופנה והנעלה",c:"#4B45A8"}, home:{he:"בית ומלאכה",c:"#0E6E78"},
+    health:{he:"בריאות וטיפוח",c:"#C7325A"}, essential:{he:"שירותים חיוניים",c:"#566070"}
+  };
+
+  let _stalls=null, _built=false;
+  async function buildBoard(){
+    if(_built) return;
+    const board=document.getElementById('board');
+    if(!_stalls){
+      if(window.__STALLS){ _stalls=window.__STALLS; }
+      else {
+        try{ _stalls=await (await fetch('/data/stalls.real.json')).json(); }
+        catch(e){ board.innerHTML='<div class="w">לא נטען (פתח דרך localhost:5173/showcase.html)</div>'; return; }
+      }
+    }
+    _built=true;
+    const total=_stalls.length;
+    let open=0, known=0;
+    const byCat={};
+    _stalls.forEach(s=>{
+      byCat[s.category]=(byCat[s.category]||0)+1;
+      const st=isOpenNow(s.hours||[]);
+      if(st!==null){known++; if(st)open++;}
+    });
+    const cats=Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+    const max=cats[0][1];
+    const pct=known?Math.round(open/known*100):0;
+    const t=marketNow();
+    const clock=String(Math.floor(t.mins/60)).padStart(2,'0')+":"+String(t.mins%60).padStart(2,'0');
+    // a representative open vendor
+    const openVendor=_stalls.find(s=>isOpenNow(s.hours||[])===true)||_stalls[0];
+    const cv=CAT[openVendor.category]||{he:openVendor.category,c:'#038A82'};
+
+    board.innerHTML=`
+      <div class="w"><h5>סה״כ דוכנים</h5><div class="kpi">${total}</div></div>
+      <div class="w"><h5>פתוחים עכשיו</h5><div class="kpi o">${open}<small> / ${known}</small></div></div>
+      <div class="w"><h5>שעון שוק · ירושלים</h5><div class="clock">${clock}</div></div>
+      <div class="w"><h5>פתיחות</h5>
+        <div class="donut" style="background:conic-gradient(var(--teal) ${pct}%, var(--sage-deep) 0)">
+          <div class="hole"><div><b>${pct}%</b><br><span>פתוח</span></div></div>
+        </div></div>
+      <div class="w span2"><h5>פילוח קטגוריות (אמיתי)</h5><div class="bars">
+        ${cats.map(([k,n])=>{const c=CAT[k]||{he:k,c:'#888'};return `
+          <div class="bar"><div class="lab">${c.he}</div>
+            <div class="track"><div class="fill" style="width:${Math.round(n/max*100)}%;background:${c.c}"></div></div>
+            <div class="n">${n}</div></div>`;}).join('')}
+      </div></div>
+      <div class="w"><h5>דוכן פתוח עכשיו</h5>
+        <div class="vendor"><span class="vdot" style="background:${cv.c}"></span>
+          <div><div style="font-weight:800">${openVendor.name}</div>
+          <div style="color:var(--muted);font-size:13px">${cv.he}</div>
+          <span class="badge open">פתוח</span></div></div></div>
+      <div class="w"><h5>קופונים <span class="demo-tag">· דמה</span></h5>
+        <div class="kpi o">🎟️</div>
+        <div style="color:var(--muted);font-size:13px;margin-top:6px">מודל הקופונים בפיתוח — placeholder עד ל-coupon API.</div></div>
+    `;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# Render Blueprint — two prebuilt static sites (map + dashboard).
+# Prebuilt: no build step; Render just serves the folders.
+# NOTE: verify field names against current Render docs if a deploy errors —
+# the UI path (New → Static Site → pick repo → Root Dir → Publish ".") is the foolproof fallback.
+services:
+  - type: web
+    runtime: static
+    name: shukway-map
+    rootDir: map
+    buildCommand: "echo prebuilt - no build"
+    staticPublishPath: .
+
+  - type: web
+    runtime: static
+    name: shukway-dashboard
+    rootDir: dashboard
+    buildCommand: "echo prebuilt - no build"
+    staticPublishPath: .

@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ShukWAY · לוח בעל העסק</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* Ploni — the real brand font (woff2 + woff), bundled in ./fonts/ */
+@font-face{font-family:'Ploni';src:url('fonts/ploni-regular.woff2') format('woff2');font-weight:400;font-display:swap;}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-medium-aaa.woff') format('woff');font-weight:500;font-display:swap;}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-demibold-aaa.woff') format('woff');font-weight:600;font-display:swap;}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-bold-aaa.woff') format('woff');font-weight:700;font-display:swap;}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-ultrabold-aaa.woff') format('woff');font-weight:800;font-display:swap;}
+
+:root{
+  /* verified shuk-frontend tokens (Brief 1) */
+  --teal:#038A82; --teal-light:#4ECDC4; --teal-dark:#026B65; --teal-darker:#013E3A; --teal-tint:#DCEFED;
+  --orange:#E56E13; --orange-dark:#C75A08; --orange-soft:#FBE6D2;
+  --bg:#EFF8F7; --cream:#FAF9F5; --paper:#FFFFFF;
+  --ink:#15302D; --ink-2:#3A4D4B; --muted:#768987; --line:#E3EBE9;
+  --green:#1c7a2e; --green-soft:#e3f6e8; --red:#C0392B; --red-soft:#FBE3E3;
+  --radius-card:16px; --radius-btn:12px;
+  --shadow:0 8px 24px rgba(1,75,71,.10); --shadow-sm:0 2px 8px rgba(1,75,71,.06);
+  --font:'Ploni','Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  /* 8 category colors */
+  --c-food:#E56E13; --c-produce:#2F9E44; --c-fashion:#5B5BD6; --c-judaica:#8A6D3B;
+  --c-home:#1C8FA8; --c-health:#E5556E; --c-services:#038A82; --c-essential:#717182;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+.num{font-family:'Roboto','Ploni',sans-serif;font-variant-numeric:tabular-nums;}
+html,body{height:100%;}
+body{
+  font-family:var(--font); color:var(--ink); direction:rtl;
+  background:radial-gradient(circle at 12% -5%,var(--teal-tint),transparent 42%),
+    radial-gradient(circle at 100% 105%,rgba(229,110,19,.06),transparent 40%),var(--cream);
+  min-height:100vh; -webkit-font-smoothing:antialiased;
+}
+/* ── top bar ── */
+.topbar{background:linear-gradient(110deg,var(--teal-darker),var(--teal-dark));color:#fff;padding:12px 24px;display:flex;align-items:center;gap:14px;}
+.topbar img{height:26px;width:auto;}
+.topbar .div{width:1px;height:24px;background:rgba(255,255,255,.2);}
+.topbar .sub{font-size:13px;font-weight:500;color:rgba(255,255,255,.85);}
+.topbar .acct{margin-inline-start:auto;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;}
+.topbar .avatar{width:34px;height:34px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-weight:800;}
+/* ── nav ── */
+.nav{position:sticky;top:0;z-index:30;background:rgba(250,249,245,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 24px;display:flex;gap:8px;flex-wrap:wrap;}
+.nav button{font-family:var(--font);font-weight:700;font-size:14px;color:var(--teal);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:9px 18px;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:7px;}
+.nav button:hover{border-color:var(--teal);}
+.nav button.active{background:var(--teal);color:#fff;border-color:var(--teal);}
+.nav .pend{background:var(--orange);color:#fff;font-size:11px;font-weight:800;border-radius:999px;padding:1px 7px;}
+.nav button.active .pend{background:#fff;color:var(--orange);}
+/* ── layout ── */
+.wrap{max-width:1120px;margin:0 auto;padding:22px 24px 60px;}
+.page-h{display:flex;align-items:flex-end;gap:12px;margin:4px 2px 18px;}
+.page-h h1{font-size:25px;font-weight:800;color:var(--teal-darker);letter-spacing:-.02em;}
+.page-h p{font-size:14px;color:var(--muted);font-weight:500;margin-bottom:3px;}
+.section{display:none;} .section.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;align-items:start;}
+.col{display:flex;flex-direction:column;gap:18px;}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-card);box-shadow:var(--shadow-sm);padding:18px 20px;}
+.card__h{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.card__h h2{font-size:16px;font-weight:800;color:var(--ink);}
+.card__h .ico{width:30px;height:30px;border-radius:9px;background:var(--bg);color:var(--teal);display:flex;align-items:center;justify-content:center;}
+.card__h .edit,.linkbtn{margin-inline-start:auto;font-family:var(--font);font-size:12.5px;font-weight:700;color:var(--teal);background:var(--bg);border:0;border-radius:999px;padding:6px 13px;cursor:pointer;}
+/* ── KPI row ── */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-card);box-shadow:var(--shadow-sm);padding:16px 18px;}
+.kpi .v{font-size:30px;font-weight:800;color:var(--teal-dark);line-height:1;}
+.kpi .v small{font-size:18px;}
+.kpi .l{font-size:12.5px;font-weight:600;color:var(--muted);margin-top:7px;}
+.kpi.accent .v{color:var(--orange);}
+/* ── pending banner ── */
+.alert{display:flex;align-items:center;gap:14px;background:linear-gradient(100deg,#fff,var(--orange-soft));border:1px solid #f3d3b6;border-radius:var(--radius-card);padding:16px 20px;margin-bottom:18px;}
+.alert .big{font-size:28px;}
+.alert .t b{font-size:16px;font-weight:800;} .alert .t p{font-size:13px;color:var(--ink-2);margin-top:2px;}
+.alert .go{margin-inline-start:auto;font-family:var(--font);font-weight:800;font-size:14px;color:#fff;background:var(--orange);border:0;border-radius:var(--radius-btn);padding:11px 20px;cursor:pointer;box-shadow:0 6px 16px rgba(229,110,19,.25);}
+/* ── chart ── */
+.chart{display:flex;align-items:flex-end;gap:10px;height:140px;padding:6px 2px 0;}
+.bar{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;}
+.bar .b{width:100%;max-width:34px;background:linear-gradient(180deg,var(--teal-light),var(--teal));border-radius:7px 7px 0 0;transition:height .4s;}
+.bar .b.today{background:linear-gradient(180deg,#f59b4e,var(--orange));}
+.bar .d{font-size:11px;color:var(--muted);font-weight:600;} .bar .n{font-size:11px;font-weight:800;color:var(--ink-2);}
+/* ── business / hours / contact (Brief 1) ── */
+.biz{display:flex;gap:16px;align-items:center;}
+.biz__img{width:72px;height:72px;border-radius:16px;flex-shrink:0;background:linear-gradient(135deg,var(--teal),var(--teal-light));display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;box-shadow:var(--shadow);}
+.biz__name{font-size:21px;font-weight:800;letter-spacing:-.01em;}
+.biz__row{margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.cat-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;padding:4px 11px;border-radius:999px;color:#fff;}
+.cat-badge .sw{width:9px;height:9px;border-radius:50%;background:#fff;}
+.status{font-size:12.5px;font-weight:700;padding:4px 11px;border-radius:999px;}
+.status--open{color:var(--green);background:var(--green-soft);} .status--closed{color:var(--orange-dark);background:var(--orange-soft);}
+.hours{display:flex;flex-direction:column;gap:2px;}
+.hrow{display:flex;align-items:center;gap:12px;padding:9px 4px;border-bottom:1px solid #f1f5f4;}
+.hrow:last-child{border-bottom:0;} .hrow.today{background:var(--bg);border-radius:10px;padding-inline:10px;}
+.hrow .day{width:64px;font-size:14px;font-weight:700;color:var(--ink-2);}
+.hrow .day .t{display:block;font-size:10px;font-weight:700;color:var(--teal);}
+.hrow .times{margin-inline-start:auto;display:flex;align-items:center;gap:7px;}
+.hrow .times .num{font-size:14px;font-weight:700;color:var(--ink);}
+.hrow input[type=time]{font-family:'Roboto';font-size:13px;border:1px solid var(--line);border-radius:8px;padding:4px 7px;color:var(--ink);}
+.hrow .closed-lbl{font-size:13px;font-weight:700;color:var(--muted);}
+.hrow .toggle{font-size:11px;font-weight:700;color:var(--orange);background:transparent;border:0;cursor:pointer;}
+body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .editable{display:none;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.stat{background:var(--bg);border-radius:12px;padding:14px 10px;text-align:center;}
+.stat .num{font-size:24px;font-weight:800;color:var(--teal-dark);line-height:1;} .stat .lbl{font-size:11.5px;font-weight:600;color:var(--muted);margin-top:6px;}
+.demo-tag{font-size:10.5px;font-weight:700;color:var(--orange-dark);background:var(--orange-soft);padding:3px 9px;border-radius:999px;}
+.contact{display:flex;flex-direction:column;gap:11px;}
+.crow{display:flex;align-items:center;gap:11px;font-size:14px;}
+.crow .ci{width:30px;height:30px;border-radius:9px;background:var(--bg);color:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.crow .cl{font-size:11.5px;color:var(--muted);font-weight:600;} .crow .cv{font-weight:700;color:var(--ink);}
+.note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px;}
+/* ── my coupons list ── */
+.clist{display:flex;flex-direction:column;gap:11px;}
+.crd{display:flex;align-items:center;gap:14px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-card);box-shadow:var(--shadow-sm);padding:14px 18px;}
+.crd .disc{flex-shrink:0;min-width:60px;text-align:center;background:var(--orange);color:#fff;font-weight:800;border-radius:12px;padding:11px 8px;line-height:1;}
+.crd .disc .num{font-size:19px;} .crd .disc small{display:block;font-size:9.5px;font-weight:700;opacity:.9;margin-top:3px;}
+.crd .main{min-width:0;flex:1;} .crd .main b{font-size:15.5px;font-weight:800;} .crd .main .ty{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px;}
+.crd .meta{font-size:12px;color:var(--ink-2);font-weight:600;text-align:center;min-width:78px;}
+.crd .meta b{display:block;font-size:17px;color:var(--teal-dark);}
+.pill{font-size:11px;font-weight:800;padding:4px 11px;border-radius:999px;}
+.pill--on{color:var(--green);background:var(--green-soft);} .pill--off{color:var(--muted);background:#ececf0;} .pill--exp{color:var(--red);background:var(--red-soft);}
+.crd .acts{display:flex;gap:6px;} .crd .acts button{font-family:var(--font);font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--paper);color:var(--ink-2);border-radius:9px;padding:7px 12px;cursor:pointer;}
+/* ── create coupon ── */
+.deals{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:18px;}
+.deal{border:2px solid var(--line);border-radius:14px;padding:16px;cursor:pointer;transition:.15s;background:var(--paper);}
+.deal:hover{border-color:var(--teal-light);}
+.deal.sel{border-color:var(--teal);background:var(--bg);box-shadow:var(--shadow-sm);}
+.deal .di{font-size:26px;} .deal h4{font-size:15px;font-weight:800;margin:8px 0 4px;} .deal p{font-size:12.5px;color:var(--muted);line-height:1.5;}
+.deal .tag{display:inline-block;font-size:11px;font-weight:800;color:var(--teal);background:var(--bg);border-radius:999px;padding:2px 9px;margin-bottom:4px;}
+.deal.sel .tag{background:var(--teal);color:#fff;}
+.field{margin-bottom:14px;} .field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px;}
+.field input,.field select,.field textarea{width:100%;font-family:var(--font);font-size:15px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;outline:0;background:var(--paper);}
+.field input:focus,.field select:focus{border-color:var(--teal);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+/* secret toggle — the moat */
+.secret{display:flex;align-items:center;gap:14px;background:linear-gradient(110deg,#fff,var(--teal-tint));border:1.5px solid var(--teal-light);border-radius:14px;padding:16px 18px;margin:6px 0 18px;}
+.secret .si{font-size:26px;} .secret .st b{font-size:15px;font-weight:800;color:var(--teal-darker);} .secret .st p{font-size:12.5px;color:var(--ink-2);margin-top:2px;}
+.sw-toggle{margin-inline-start:auto;width:52px;height:30px;border-radius:999px;background:var(--teal);position:relative;cursor:pointer;flex-shrink:0;transition:background .2s;}
+.sw-toggle::after{content:'';position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:right .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.sw-toggle.off{background:#cdd6d4;} .sw-toggle.off::after{right:25px;}
+.btn-primary{width:100%;font-family:var(--font);font-weight:800;font-size:15px;color:#fff;background:var(--teal);border:0;border-radius:var(--radius-btn);padding:14px;cursor:pointer;box-shadow:0 8px 18px rgba(3,138,130,.22);transition:.12s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary.orange{background:var(--orange);box-shadow:0 8px 18px rgba(229,110,19,.25);}
+.btn-primary:active{transform:scale(.99);}
+.btn-add{font-family:var(--font);font-weight:800;font-size:14px;color:#fff;background:var(--orange);border:0;border-radius:var(--radius-btn);padding:11px 20px;cursor:pointer;}
+/* preview chip */
+.preview{background:var(--bg);border-radius:14px;padding:16px;text-align:center;}
+.preview .ph{font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:10px;}
+.cpreview{display:inline-flex;align-items:center;gap:12px;background:#fff;border:1px dashed var(--orange);border-radius:14px;padding:12px 18px;box-shadow:var(--shadow-sm);}
+.cpreview .pd{background:var(--orange);color:#fff;font-weight:800;border-radius:10px;padding:8px 12px;}
+.cpreview .pd.hidden{background:var(--teal-darker);}
+.cpreview .pt b{font-size:14px;} .cpreview .pt p{font-size:11.5px;color:var(--muted);}
+/* daily report */
+.rrow{display:grid;grid-template-columns:64px 1fr auto auto;gap:14px;align-items:center;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:9px;}
+.rrow .time{font-weight:800;color:var(--teal-dark);} .rrow .cp b{font-size:14px;} .rrow .cp p{font-size:12px;color:var(--muted);}
+.rrow .amt{font-size:12.5px;color:var(--ink-2);text-align:center;} .rrow .amt b{display:block;font-size:15px;color:var(--ink);}
+.rrow .ra{display:flex;gap:7px;} .rrow .ra button{font-family:var(--font);font-weight:800;font-size:13px;border:0;border-radius:9px;padding:8px 14px;cursor:pointer;}
+.ra .ok{background:var(--green-soft);color:var(--green);} .ra .no{background:var(--red-soft);color:var(--red);}
+.rsum{display:flex;align-items:center;gap:18px;background:var(--teal-darker);color:#fff;border-radius:var(--radius-card);padding:16px 22px;margin-top:14px;font-weight:700;}
+.rsum b{font-size:20px;} .rsum .sp{margin-inline-start:auto;}
+@media (max-width:880px){.grid{grid-template-columns:1fr;}.kpis{grid-template-columns:repeat(2,1fr);}.deals{grid-template-columns:1fr;}.frow{grid-template-columns:1fr;}.wrap{padding:16px 14px 48px;}.topbar .sub{display:none;}.rrow{grid-template-columns:1fr auto;row-gap:6px;}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <img src="logo.png" alt="ShukWAY">
+    <div class="div"></div>
+    <div class="sub">לוח בעל העסק · ניהול הדוכן שלך</div>
+    <div class="acct"><span>שלום, מאפיית ברמן</span><div class="avatar num">ב</div></div>
+  </div>
+
+  <nav class="nav">
+    <button class="active" data-s="overview">📊 סקירה</button>
+    <button data-s="coupons">🎟️ הקופונים שלי</button>
+    <button data-s="create">＋ קופון חדש</button>
+    <button data-s="report">📋 דוח יומי <span class="pend">5</span></button>
+    <button data-s="settings">⚙️ הדוכן שלי</button>
+  </nav>
+
+  <div class="wrap">
+
+    <!-- ════ OVERVIEW ════ -->
+    <section class="section active" id="s-overview">
+      <div class="page-h"><h1>סקירה כללית</h1><p>תמונת מצב יומית של הדוכן והקופונים</p></div>
+      <div class="kpis">
+        <div class="kpi"><div class="v num">12</div><div class="l">מימושים היום</div></div>
+        <div class="kpi"><div class="v num">247</div><div class="l">מימושים החודש</div></div>
+        <div class="kpi"><div class="v num">3</div><div class="l">קופונים פעילים</div></div>
+        <div class="kpi accent"><div class="v num">₪340</div><div class="l">עמלה החודש</div></div>
+      </div>
+      <div class="alert">
+        <span class="big">🔔</span>
+        <div class="t"><b>5 מימושים ממתינים לאישור שלך</b><p>אשר תוך 24 שעות — אחרת יאושרו אוטומטית.</p></div>
+        <button class="go" onclick="go('report')">אשר עכשיו ←</button>
+      </div>
+      <div class="grid">
+        <div class="col">
+          <div class="card">
+            <div class="card__h"><span class="ico">📈</span><h2>מימושים · 7 ימים אחרונים</h2><span class="demo-tag" style="margin-inline-start:auto">נתוני דמה</span></div>
+            <div class="chart" id="chart"></div>
+          </div>
+          <div class="card">
+            <div class="biz">
+              <div class="biz__img">🥖</div>
+              <div class="biz__main">
+                <div class="biz__name">מאפיית ברמן</div>
+                <div class="biz__row">
+                  <span class="cat-badge" style="background:var(--c-food)"><span class="sw"></span>אוכל ושתייה</span>
+                  <span class="status" id="bizStatus">—</span>
+                </div>
+                <div class="biz__row" style="margin-top:8px"><span style="font-size:12.5px;color:var(--muted);font-weight:500">מק״ט דוכן · <span class="num">A‑14</span> · רחוב מחנה יהודה</span></div>
+              </div>
+              <button class="edit" style="align-self:flex-start" onclick="go('settings')">נהל</button>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card__h"><span class="ico">📊</span><h2>ביצועים (30 יום)</h2><span class="demo-tag" style="margin-inline-start:auto">דמה</span></div>
+            <div class="stats">
+              <div class="stat"><div class="num">1,284</div><div class="lbl">צפיות בדוכן</div></div>
+              <div class="stat"><div class="num">312</div><div class="lbl">״נווט לכאן״</div></div>
+              <div class="stat"><div class="num">47</div><div class="lbl">לחיצות טלפון</div></div>
+            </div>
+            <p class="note">placeholder להמחשה — יתחבר ל‑Analytics בהמשך.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ MY COUPONS ════ -->
+    <section class="section" id="s-coupons">
+      <div class="page-h"><h1>הקופונים שלי</h1><p>הקופונים הפעילים והקודמים שלך</p>
+        <button class="btn-add" style="margin-inline-start:auto" onclick="go('create')">＋ קופון חדש</button></div>
+      <div class="clist" id="clist"></div>
+    </section>
+
+    <!-- ════ CREATE COUPON ════ -->
+    <section class="section" id="s-create">
+      <div class="page-h"><h1>יצירת קופון חדש</h1><p>בחר את סוג ההטבה ומלא את הפרטים</p></div>
+      <div class="grid">
+        <div class="col">
+          <div class="card">
+            <div class="card__h"><span class="ico">🎯</span><h2>סוג ההטבה</h2></div>
+            <div class="deals" id="deals"></div>
+            <div id="dealFields"></div>
+            <div class="secret">
+              <span class="si">🤫</span>
+              <div class="st"><b>סוד ההנחה</b><p>הסתר את גובה ההנחה מהצרכן עד רגע הסריקה בדוכן.</p></div>
+              <div class="sw-toggle" id="secretSw" onclick="this.classList.toggle('off');renderPreview();"></div>
+            </div>
+            <button class="btn-primary orange" onclick="alert('צור קופון — UI להדגמה, ללא שמירה אמיתית')">✓ צור קופון</button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card__h"><span class="ico">👁️</span><h2>תצוגה מקדימה לצרכן</h2></div>
+            <div class="preview"><div class="ph">כך הצרכן יראה את הקופון באפליקציה</div><div id="cpreview"></div></div>
+            <p class="note">מתעדכן לפי הבחירות משמאל · קישור ויזואלי למסכי הצרכן A‑F.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ DAILY REPORT ════ -->
+    <section class="section" id="s-report">
+      <div class="page-h"><h1>דוח יומי · אישור מימושים</h1><p id="reportDate"></p></div>
+      <div id="report"></div>
+      <div class="rsum"><span>סה״כ מימושים היום: <b class="num">12</b></span><span class="sp">עמלה מצטברת: <b class="num">₪48</b></span></div>
+      <p class="note">מימושים שלא תאשר תוך 24 שעות יאושרו אוטומטית (מנגנון ההגנה לצרכן).</p>
+    </section>
+
+    <!-- ════ SETTINGS / MY STALL ════ -->
+    <section class="section" id="s-settings">
+      <div class="page-h"><h1>הדוכן שלי</h1><p>פרטי העסק, שעות פתיחה ויצירת קשר</p></div>
+      <div class="grid">
+        <div class="col">
+          <div class="card">
+            <div class="card__h"><span class="ico">🕐</span><h2>שעות פתיחה</h2><button class="edit" id="hoursEditBtn" onclick="toggleHoursEdit()">עריכה</button></div>
+            <div class="hours" id="hours"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card__h"><span class="ico">📞</span><h2>פרטי קשר</h2><button class="edit" onclick="alert('עריכת פרטי קשר — UI בלבד')">עריכה</button></div>
+            <div class="contact">
+              <div class="crow"><span class="ci">📱</span><div><div class="cl">טלפון</div><div class="cv num">02‑6231‑447</div></div></div>
+              <div class="crow"><span class="ci">📍</span><div><div class="cl">כתובת</div><div class="cv">דוכן A‑14, רחוב מחנה יהודה, ירושלים</div></div></div>
+              <div class="crow"><span class="ci">🌐</span><div><div class="cl">רשתות</div><div class="cv">@berman.bakery</div></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+<script>
+/* ───── demo data — UI/mockup only, no backend ───── */
+const DAYS=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+const BIZ={ hours:[{open:'06:30',close:'19:00'},{open:'06:30',close:'19:00'},{open:'06:30',close:'19:00'},{open:'06:30',close:'19:00'},{open:'06:30',close:'15:00'},{open:'06:00',close:'14:30'},null] };
+const COUPONS=[
+  {disc:'15%',sub:'הנחה',name:'הנחת פתיחה',type:'הנחה באחוזים · כל החנות',red:84,exp:'30.6.26',st:'on'},
+  {disc:'1+1',sub:'מתנה',name:'מאפה שני חינם',type:'קנה‑קבל · מאפים',red:53,exp:'15.7.26',st:'on'},
+  {disc:'₪10',sub:'הנחה',name:'מעל ₪50 קנייה',type:'מדרגות קנייה',red:31,exp:'1.8.26',st:'on'},
+  {disc:'20%',sub:'הנחה',name:'חלות שישי',type:'מוצר ספציפי · חלה',red:0,exp:'—',st:'off'},
+  {disc:'10%',sub:'הנחה',name:'קיץ 2025',type:'הנחה באחוזים',red:206,exp:'31.8.25',st:'exp'},
+];
+const CHART=[18,24,31,22,40,52,12]; // last 7 days (today last)
+const DEALS=[
+  {k:'pct',tag:'א׳',ico:'％',h:'הנחה באחוזים',p:'אחוז קבוע על כל הקנייה או על מוצר.'},
+  {k:'tier',tag:'ב׳',ico:'📊',h:'מדרגות קנייה',p:'ככל שקונים יותר — ההנחה גדלה.'},
+  {k:'item',tag:'ג׳',ico:'🏷️',h:'הנחה על מוצר',p:'הנחה על מוצר ספציפי שתבחר.'},
+  {k:'gift',tag:'ד׳',ico:'🎁',h:'קנה, קבל מתנה',p:'קנה מוצר — קבל פריט במתנה.'},
+];
+const REDEMPTIONS=[
+  {time:'09:14',name:'הנחת פתיחה',type:'15% · כל החנות',buy:62,disc:9.3},
+  {time:'10:02',name:'מאפה שני חינם',type:'קנה‑קבל',buy:28,disc:14},
+  {time:'11:37',name:'מעל ₪50 קנייה',type:'מדרגות',buy:73,disc:10},
+  {time:'12:20',name:'הנחת פתיחה',type:'15% · כל החנות',buy:45,disc:6.75},
+  {time:'13:05',name:'מאפה שני חינם',type:'קנה‑קבל',buy:33,disc:16},
+];
+
+/* ───── nav ───── */
+const SECTIONS=['overview','coupons','create','report','settings'];
+function go(s){
+  if(!SECTIONS.includes(s)) s='overview';
+  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.s===s));
+  document.querySelectorAll('.section').forEach(sec=>sec.classList.toggle('active',sec.id==='s-'+s));
+  if(location.hash.slice(1)!==s) history.replaceState(null,'','#'+s);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.s)));
+window.addEventListener('hashchange',()=>go(location.hash.slice(1)));
+// deep-link on load (e.g. /owner-dashboard/#coupons)
+if(location.hash.slice(1)) go(location.hash.slice(1));
+
+/* ───── overview chart ───── */
+(function(){
+  const max=Math.max(...CHART);
+  document.getElementById('chart').innerHTML=CHART.map((v,i)=>`
+    <div class="bar"><span class="n num">${v}</span>
+      <div class="b ${i===CHART.length-1?'today':''}" style="height:${Math.round(v/max*100)}%"></div>
+      <span class="d">${DAYS[(new Date().getDay()-6+i+7)%7].slice(0,1)}</span></div>`).join('');
+})();
+
+/* ───── open/closed (device time) ───── */
+function isOpen(){const n=new Date(),h=BIZ.hours[n.getDay()];if(!h)return false;const c=n.getHours()*60+n.getMinutes(),m=t=>(+t.split(':')[0])*60+(+t.split(':')[1]);return c>=m(h.open)&&c<m(h.close);}
+function renderStatus(){const s=document.getElementById('bizStatus');if(isOpen()){s.className='status status--open';s.textContent='פתוח עכשיו';}else{s.className='status status--closed';s.textContent='סגור';}}
+
+/* ───── hours editor ───── */
+function renderHours(){const today=new Date().getDay();document.getElementById('hours').innerHTML=BIZ.hours.map((h,i)=>{const closed=!h;const stat=closed?`<span class="closed-lbl">סגור</span>`:`<span class="num">${h.open}</span><span style="color:var(--muted)">–</span><span class="num">${h.close}</span>`;const edit=closed?`<button class="toggle" onclick="toggleDay(${i})">הוסף שעות</button>`:`<input type="time" value="${h.open}" onchange="setHour(${i},'open',this.value)"><span style="color:var(--muted)">–</span><input type="time" value="${h.close}" onchange="setHour(${i},'close',this.value)"><button class="toggle" onclick="toggleDay(${i})">סגור</button>`;return `<div class="hrow ${i===today?'today':''}"><span class="day">${DAYS[i]}${i===today?'<span class="t">היום</span>':''}</span><span class="times static">${stat}</span><span class="times editable">${edit}</span></div>`;}).join('');}
+function toggleHoursEdit(){document.body.classList.toggle('editing-hours');document.getElementById('hoursEditBtn').textContent=document.body.classList.contains('editing-hours')?'סיום':'עריכה';}
+function setHour(i,k,v){if(BIZ.hours[i])BIZ.hours[i][k]=v;}
+function toggleDay(i){BIZ.hours[i]=BIZ.hours[i]?null:{open:'08:00',close:'18:00'};renderHours();renderStatus();}
+
+/* ───── my coupons ───── */
+function renderCoupons(){document.getElementById('clist').innerHTML=COUPONS.map(c=>{const pill=c.st==='on'?'<span class="pill pill--on">פעיל</span>':c.st==='off'?'<span class="pill pill--off">מושהה</span>':'<span class="pill pill--exp">פג תוקף</span>';return `<div class="crd"><div class="disc"><span class="num">${c.disc}</span><small>${c.sub}</small></div><div class="main"><b>${c.name}</b><div class="ty">${c.type}</div></div><div class="meta"><b class="num">${c.red}</b>מימושים</div><div class="meta" style="min-width:62px">תוקף<br><span class="num" style="font-size:13px;color:var(--ink-2)">${c.exp}</span></div>${pill}<div class="acts"><button>ערוך</button><button>${c.st==='on'?'השהה':'הפעל'}</button></div></div>`;}).join('');}
+
+/* ───── create coupon ───── */
+let selDeal='pct';
+function renderDeals(){document.getElementById('deals').innerHTML=DEALS.map(d=>`<div class="deal ${d.k===selDeal?'sel':''}" onclick="selDeal='${d.k}';renderDeals();renderFields();renderPreview();"><span class="tag">${d.tag}</span><div class="di">${d.ico}</div><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');}
+function renderFields(){const common=`<div class="field"><label>שם הקופון</label><input type="text" value="הנחת פתיחה" oninput="renderPreview()" id="cName"></div><div class="field"><label>תיאור קצר</label><input type="text" value="בהצגת אפליקציית ShukWAY" id="cDesc"></div>`;const map={pct:`<div class="frow"><div class="field"><label>גובה ההנחה (%)</label><input type="number" value="15" id="cVal" oninput="renderPreview()"></div><div class="field"><label>מינימום רכישה (₪)</label><input type="number" value="0"></div></div>`,tier:`<div class="frow"><div class="field"><label>קנה מעל (₪)</label><input type="number" value="50"></div><div class="field"><label>קבל הנחה (₪)</label><input type="number" value="10" id="cVal" oninput="renderPreview()"></div></div>`,item:`<div class="frow"><div class="field"><label>שם המוצר</label><input type="text" value="חלה"></div><div class="field"><label>גובה ההנחה (%)</label><input type="number" value="20" id="cVal" oninput="renderPreview()"></div></div>`,gift:`<div class="frow"><div class="field"><label>קנה מוצר</label><input type="text" value="עוגת שבת"></div><div class="field"><label>קבל במתנה</label><input type="text" value="לחמנייה"></div></div>`};const valid=`<div class="field"><label>תקף עד</label><input type="date" value="2026-06-30"></div>`;document.getElementById('dealFields').innerHTML=common+(map[selDeal]||map.pct)+valid;}
+function renderPreview(){const name=(document.getElementById('cName')||{}).value||'הנחת פתיחה';const val=(document.getElementById('cVal')||{}).value;const d=DEALS.find(x=>x.k===selDeal);const secret=!document.getElementById('secretSw').classList.contains('off');let disc=selDeal==='gift'?'🎁':selDeal==='tier'?'₪'+(val||10):(val||15)+'%';document.getElementById('cpreview').innerHTML=`<div class="cpreview"><div class="pd ${secret?'hidden':''}">${secret?'🤫':disc}</div><div class="pt"><b>${name}</b><p>${secret?'ההנחה תיחשף בסריקה':d.h} · מאפיית ברמן</p></div></div>`;}
+
+/* ───── daily report ───── */
+function renderReport(){const dt=new Date().toLocaleDateString('he-IL',{day:'numeric',month:'long'});document.getElementById('reportDate').textContent='מימושים שממתינים לאישור — '+dt;document.getElementById('report').innerHTML=REDEMPTIONS.map((r,i)=>`<div class="rrow" id="rr${i}"><div class="time num">${r.time}</div><div class="cp"><b>${r.name}</b><p>${r.type}</p></div><div class="amt">רכישה<b class="num">₪${r.buy}</b></div><div class="amt">הנחה<b class="num" style="color:var(--orange-dark)">₪${r.disc}</b></div><div class="ra"><button class="ok" onclick="resolveR(${i},'אושר')">אשר</button><button class="no" onclick="resolveR(${i},'נדחה')">דחה</button></div></div>`).join('');}
+function resolveR(i,txt){const el=document.getElementById('rr'+i);el.style.opacity='.5';el.querySelector('.ra').innerHTML='<span class="pill '+(txt==='אושר'?'pill--on':'pill--exp')+'">'+txt+'</span>';}
+
+renderHours();renderStatus();renderCoupons();renderDeals();renderFields();renderPreview();renderReport();
+setInterval(renderStatus,60000);
+</script>
+</body>
+</html>
