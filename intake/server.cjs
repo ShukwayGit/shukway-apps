@@ -60,17 +60,30 @@ async function createMondayItem(c) {
   return data.create_item.id;
 }
 
-// upload the owner's signature (data URL) to the item's file column — non-fatal
+// upload the owner's signature (data URL) to the item's file column — non-fatal.
+// Tries the GraphQL-multipart spec (operations/map/0) first, then Monday's variables[file] shorthand.
 async function uploadSignature(itemId, dataUrl) {
   const m = /^data:(image\/\w+);base64,(.+)$/.exec(dataUrl || '');
   if (!m) return { ok: false, detail: 'bad-dataurl' };
-  const buf = Buffer.from(m[2], 'base64');
-  const fd = new FormData();
-  fd.append('query', `mutation ($file: File!) { add_file_to_column (item_id: ${itemId}, column_id: "${SIG_COL}", file: $file) { id } }`);
-  fd.append('variables[file]', new Blob([new Uint8Array(buf)], { type: m[1] }), 'signature.png');
-  const r = await fetch('https://api.monday.com/v2/file', { method: 'POST', headers: { Authorization: TOKEN, 'API-Version': '2024-01' }, body: fd });
-  const j = await r.json().catch(() => ({ errors: 'non-json:' + r.status }));
-  return { ok: !!(j.data && j.data.add_file_to_column), detail: j.errors ? JSON.stringify(j.errors).slice(0, 300) : 'ok' };
+  const bytes = new Uint8Array(Buffer.from(m[2], 'base64'));
+  const query = `mutation ($file: File!) { add_file_to_column (item_id: ${itemId}, column_id: "${SIG_COL}", file: $file) { id } }`;
+  const ok = (j) => !!(j && j.data && j.data.add_file_to_column && j.data.add_file_to_column.id);
+  async function post(build) {
+    const fd = new FormData(); build(fd);
+    const r = await fetch('https://api.monday.com/v2/file', { method: 'POST', headers: { Authorization: TOKEN }, body: fd });
+    return r.json().catch(() => ({ errors: 'non-json:' + r.status }));
+  }
+  let j = await post((fd) => {
+    fd.append('operations', JSON.stringify({ query, variables: { file: null } }));
+    fd.append('map', JSON.stringify({ '0': ['variables.file'] }));
+    fd.append('0', new Blob([bytes], { type: m[1] }), 'signature.png');
+  });
+  let via = 'spec';
+  if (!ok(j)) {
+    via = 'shorthand';
+    j = await post((fd) => { fd.append('query', query); fd.append('variables[file]', new Blob([bytes], { type: m[1] }), 'signature.png'); });
+  }
+  return { ok: ok(j), detail: ok(j) ? ('ok via ' + via) : (via + ':' + JSON.stringify(j).slice(0, 240)) };
 }
 
 async function readCoupons(business) {
