@@ -213,7 +213,7 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
                   <span class="cat-badge" style="background:var(--c-food)"><span class="sw"></span>אוכל ושתייה</span>
                   <span class="status" id="bizStatus">—</span>
                 </div>
-                <div class="biz__row" style="margin-top:8px"><span style="font-size:12.5px;color:var(--muted);font-weight:500">מק״ט דוכן · <span class="num">A‑14</span> · רחוב מחנה יהודה</span></div>
+                <div class="biz__row" style="margin-top:8px"><span id="stallLine" style="font-size:12.5px;color:var(--muted);font-weight:500">מחנה יהודה, ירושלים</span></div>
               </div>
               <button class="edit" style="align-self:flex-start" onclick="go('settings')">נהל</button>
             </div>
@@ -349,8 +349,9 @@ if(location.hash.slice(1)) go(location.hash.slice(1));
       <span class="d">${DAYS[(new Date().getDay()-6+i+7)%7].slice(0,1)}</span></div>`).join('');
 })();
 
-/* ───── open/closed (device time) ───── */
-function isOpen(){const n=new Date(),h=BIZ.hours[n.getDay()];if(!h)return false;const c=n.getHours()*60+n.getMinutes(),m=t=>(+t.split(':')[0])*60+(+t.split(':')[1]);return c>=m(h.open)&&c<m(h.close);}
+/* ───── open/closed — computed in Asia/Jerusalem (market time, not device) ───── */
+function marketNow(){const p=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Jerusalem',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const D={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};let h=+p.find(x=>x.type==='hour').value;if(h===24)h=0;return{day:D[p.find(x=>x.type==='weekday').value]??0,mins:h*60+(+p.find(x=>x.type==='minute').value)};}
+function isOpen(){const{day,mins}=marketNow();const h=BIZ.hours[day];if(!h)return false;const m=t=>(+t.split(':')[0])*60+(+t.split(':')[1]);const o=m(h.open),c=m(h.close);if(o===0&&c===0)return false;if(c<=o)return mins>=o||mins<c;return mins>=o&&mins<c;}
 function renderStatus(){const s=document.getElementById('bizStatus');if(isOpen()){s.className='status status--open';s.textContent='פתוח עכשיו';}else{s.className='status status--closed';s.textContent='סגור';}}
 
 /* ───── hours editor ───── */
@@ -366,13 +367,71 @@ function renderCoupons(){document.getElementById('clist').innerHTML=COUPONS.map(
 let selDeal='pct';
 function renderDeals(){document.getElementById('deals').innerHTML=DEALS.map(d=>`<div class="deal ${d.k===selDeal?'sel':''}" onclick="selDeal='${d.k}';renderDeals();renderFields();renderPreview();"><span class="tag">${d.tag}</span><div class="di">${d.ico}</div><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');}
 function renderFields(){const common=`<div class="field"><label>שם הקופון</label><input type="text" value="הנחת פתיחה" oninput="renderPreview()" id="cName"></div><div class="field"><label>תיאור קצר</label><input type="text" value="בהצגת אפליקציית ShukWAY" id="cDesc"></div>`;const map={pct:`<div class="frow"><div class="field"><label>גובה ההנחה (%)</label><input type="number" value="15" id="cVal" oninput="renderPreview()"></div><div class="field"><label>מינימום רכישה (₪)</label><input type="number" value="0"></div></div>`,tier:`<div class="frow"><div class="field"><label>קנה מעל (₪)</label><input type="number" value="50"></div><div class="field"><label>קבל הנחה (₪)</label><input type="number" value="10" id="cVal" oninput="renderPreview()"></div></div>`,item:`<div class="frow"><div class="field"><label>שם המוצר</label><input type="text" value="חלה"></div><div class="field"><label>גובה ההנחה (%)</label><input type="number" value="20" id="cVal" oninput="renderPreview()"></div></div>`,gift:`<div class="frow"><div class="field"><label>קנה מוצר</label><input type="text" value="עוגת שבת"></div><div class="field"><label>קבל במתנה</label><input type="text" value="לחמנייה"></div></div>`};const valid=`<div class="field"><label>תקף עד</label><input type="date" value="2026-06-30"></div>`;document.getElementById('dealFields').innerHTML=common+(map[selDeal]||map.pct)+valid;}
-function renderPreview(){const name=(document.getElementById('cName')||{}).value||'הנחת פתיחה';const val=(document.getElementById('cVal')||{}).value;const d=DEALS.find(x=>x.k===selDeal);const secret=!document.getElementById('secretSw').classList.contains('off');let disc=selDeal==='gift'?'🎁':selDeal==='tier'?'₪'+(val||10):(val||15)+'%';document.getElementById('cpreview').innerHTML=`<div class="cpreview"><div class="pd ${secret?'hidden':''}">${secret?'🤫':disc}</div><div class="pt"><b>${name}</b><p>${secret?'ההנחה תיחשף בסריקה':d.h} · מאפיית ברמן</p></div></div>`;}
+function renderPreview(){const name=(document.getElementById('cName')||{}).value||'הנחת פתיחה';const val=(document.getElementById('cVal')||{}).value;const d=DEALS.find(x=>x.k===selDeal);const secret=!document.getElementById('secretSw').classList.contains('off');let disc=selDeal==='gift'?'🎁':selDeal==='tier'?'₪'+(val||10):(val||15)+'%';document.getElementById('cpreview').innerHTML=`<div class="cpreview"><div class="pd ${secret?'hidden':''}">${secret?'🤫':disc}</div><div class="pt"><b>${name}</b><p>${secret?'ההנחה תיחשף בסריקה':d.h} · ${BIZNAME}</p></div></div>`;}
 
 /* ───── daily report ───── */
 function renderReport(){const dt=new Date().toLocaleDateString('he-IL',{day:'numeric',month:'long'});document.getElementById('reportDate').textContent='מימושים שממתינים לאישור — '+dt;document.getElementById('report').innerHTML=REDEMPTIONS.map((r,i)=>`<div class="rrow" id="rr${i}"><div class="time num">${r.time}</div><div class="cp"><b>${r.name}</b><p>${r.type}</p></div><div class="amt">רכישה<b class="num">₪${r.buy}</b></div><div class="amt">הנחה<b class="num" style="color:var(--orange-dark)">₪${r.disc}</b></div><div class="ra"><button class="ok" onclick="resolveR(${i},'אושר')">אשר</button><button class="no" onclick="resolveR(${i},'נדחה')">דחה</button></div></div>`).join('');}
 function resolveR(i,txt){const el=document.getElementById('rr'+i);el.style.opacity='.5';el.querySelector('.ra').innerHTML='<span class="pill '+(txt==='אושר'?'pill--on':'pill--exp')+'">'+txt+'</span>';}
 
+/* ═════ REAL DATA — load this owner's business from the live API by ?slug= ═════
+   Profile (name/photo/category/hours/contact/status) is REAL. Coupons, analytics
+   and redemptions stay demo (no backend yet). Example: dashboard.shukway.com?slug=bureks-ramla */
+const API='https://shuk-backend-7f02.onrender.com/api/v1';
+const IMG_CDN='https://d2jv4v5gyn2os8.cloudfront.net/';
+const imgUrl=(k,w)=>`https://wsrv.nl/?url=${encodeURIComponent(IMG_CDN+k)}&w=${w||400}&output=webp`;
+const SUPER={food_and_drinks:{he:'אוכל ושתייה',c:'food'},market_and_shopping:{he:'שוק וקניות',c:'produce'},fashion_and_footwear:{he:'אופנה והנעלה',c:'fashion'},gifts_and_judaica:{he:'מתנות ויודאיקה',c:'judaica'},home_and_craft:{he:'בית ומלאכה',c:'home'},health_and_beauty:{he:'בריאות וטיפוח',c:'health'},services_and_transport:{he:'שירותים ותחבורה',c:'services'},essential_services:{he:'שירותים חיוניים',c:'essential'}};
+let BIZNAME='מאפיית ברמן';   // used by the coupon preview; overwritten with real name
+const CATSUPER={};            // category id -> super slug, from /categories/tree
+
+async function loadBusiness(){
+  const slug=new URLSearchParams(location.search).get('slug')||'bureks-ramla';
+  let b;
+  try{ b=await fetch(`${API}/businesses/slug/1/${encodeURIComponent(slug)}`).then(r=>r.ok?r.json():Promise.reject(r.status)); }
+  catch(e){ console.warn('business load failed:',e); return; }
+
+  BIZNAME=b.name;
+  document.querySelectorAll('.biz__name').forEach(el=>el.textContent=b.name);
+  document.title='ShukWAY · '+b.name;
+
+  if(b.primary_image_url){
+    const im=document.querySelector('.biz__img');
+    if(im){ im.style.padding='0'; im.style.overflow='hidden';
+      im.innerHTML=`<img src="${imgUrl(b.primary_image_url,220)}" alt="${b.name}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.textContent='🏪'">`; }
+  }
+
+  const addr=[b.location_description,b.stall_number?('דוכן '+b.stall_number):''].filter(Boolean).join(' · ')||'מחנה יהודה, ירושלים';
+  const stallEl=document.getElementById('stallLine'); if(stallEl) stallEl.textContent=addr;
+  const cv=document.querySelectorAll('.contact .cv');
+  if(cv[0]) cv[0].textContent=b.phone||'—';
+  if(cv[1]) cv[1].textContent=addr;
+  if(cv[2]){ const soc=b.instagram_url||b.facebook_url||b.tiktok_url||b.website||'—'; cv[2].textContent=soc; }
+
+  // category badge — map first category id -> super (Hebrew + brand color) via the live tree
+  try{
+    const tree=await fetch(`${API}/categories/tree`).then(r=>r.json());
+    const walk=(n,ss)=>{const s=ss||n.slug;CATSUPER[n.id]=s;(n.children||[]).forEach(c=>walk(c,s));};
+    tree.forEach(n=>walk(n));
+    const ss=(b.categories||[]).map(id=>CATSUPER[id]).find(Boolean);
+    const sup=SUPER[ss];
+    if(sup){const badge=document.querySelector('.cat-badge');if(badge){badge.style.background=`var(--c-${sup.c})`;badge.innerHTML='<span class="sw"></span>'+sup.he;}}
+  }catch(e){ console.warn('tree load failed:',e); }
+
+  // real opening hours (Asia/Jerusalem open/closed handled by isOpen)
+  try{
+    const hs=await fetch(`${API}/businesses/opening-hours?business_ids=${b.id}`).then(r=>r.json());
+    const oh=(hs[0]&&hs[0].opening_hours)||[];
+    if(oh.length){
+      const days=[null,null,null,null,null,null,null];
+      oh.forEach(d=>{ days[d.day_of_week]=(d.is_closed||!d.open_time||!d.close_time)?null:{open:d.open_time.slice(0,5),close:d.close_time.slice(0,5)}; });
+      BIZ.hours=days; renderHours();
+    }
+  }catch(e){ console.warn('hours load failed:',e); }
+
+  renderStatus(); renderPreview();
+}
+
 renderHours();renderStatus();renderCoupons();renderDeals();renderFields();renderPreview();renderReport();
+loadBusiness();
 setInterval(renderStatus,60000);
 </script>
 </body>
