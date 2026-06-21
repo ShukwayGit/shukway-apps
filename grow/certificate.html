@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תעודת סוחר מייסד — ShukWAY</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Frank+Ruhl+Libre:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* canon orange is #E56E13 (NOT #FF6B35 — minority variant, banned by brief) */
+    --orange:#E56E13;
+    --orange-deep:#C75A08;
+    --teal:#038A82;
+    --teal-deep:#026B65;
+    --teal-ink:#013E3A;
+    --ink:#1A1A1A;
+    --muted:#6B6B6B;
+    --cream:#FDF9F1;
+    --paper:#FAF6ED;
+    --gold:#C9942E;
+    --line:rgba(3,138,130,0.16);
+    --serif:'Frank Ruhl Libre',serif;
+    --sans:'Heebo',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:#3a3f42;font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;}
+
+  /* ===== issuance toolbar (screen only) ===== */
+  .toolbar{
+    position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #e3ddcf;
+    display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;justify-content:center;
+    padding:14px 16px;box-shadow:0 2px 10px rgba(0,0,0,.08);
+  }
+  .toolbar .fld{display:flex;flex-direction:column;gap:4px;}
+  .toolbar label{font-size:12px;font-weight:700;color:var(--teal-ink);}
+  .toolbar input{font-family:var(--sans);font-size:15px;padding:9px 12px;border:1.5px solid #d8d0be;border-radius:10px;background:#faf7f0;min-width:180px;}
+  .toolbar input#fNum{min-width:90px;}
+  .toolbar input:focus{outline:none;border-color:var(--teal);background:#fff;}
+  .toolbar .btn{font-family:var(--sans);font-weight:800;font-size:15px;color:#fff;background:var(--orange);
+    border:none;padding:11px 22px;border-radius:11px;cursor:pointer;box-shadow:0 6px 16px rgba(229,110,19,.28);}
+  .toolbar .btn:hover{background:var(--orange-deep);}
+  .toolbar .hint{flex-basis:100%;text-align:center;font-size:12px;color:var(--muted);}
+
+  .stage{min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;}
+
+  @page{ size:A4 portrait; margin:0; }
+
+  .page{
+    width:210mm;height:297mm;
+    background:
+      radial-gradient(120% 80% at 50% 0%, #fffefb 0%, var(--cream) 55%, var(--paper) 100%);
+    position:relative;overflow:hidden;
+    box-shadow:0 12px 48px rgba(0,0,0,0.35);
+    padding:9mm;
+  }
+
+  /* ===== ornamental frame ===== */
+  .frame{
+    position:absolute;inset:9mm;
+    border:2.5px solid var(--teal-ink);
+    border-radius:4px;
+  }
+  .frame::after{
+    content:"";position:absolute;inset:4px;
+    border:1px solid var(--orange);
+    border-radius:2px;
+  }
+  .corner{
+    position:absolute;width:18mm;height:18mm;z-index:4;color:var(--orange);
+  }
+  .corner svg{width:100%;height:100%;display:block;}
+  .corner.tl{top:9mm;right:9mm;}
+  .corner.tr{top:9mm;left:9mm;transform:scaleX(-1);}
+  .corner.bl{bottom:9mm;right:9mm;transform:scaleY(-1);}
+  .corner.br{bottom:9mm;left:9mm;transform:scale(-1,-1);}
+
+  /* faint guilloche wash */
+  .page::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(229,110,19,0.05), transparent 45%);
+  }
+
+  /* ===== content ===== */
+  .doc{
+    position:absolute;inset:9mm;z-index:3;
+    padding:13mm 16mm 11mm;
+    display:flex;flex-direction:column;align-items:center;text-align:center;
+  }
+
+  .brand-row{display:flex;flex-direction:column;align-items:center;gap:5mm;}
+  .doc-logo{height:13mm;width:auto;}
+
+  .kicker{
+    font-family:var(--sans);
+    font-size:12px;font-weight:700;letter-spacing:5px;
+    color:var(--teal);text-transform:uppercase;
+  }
+
+  .ttl{
+    margin-top:4mm;
+    font-family:var(--serif);
+    font-weight:900;
+    font-size:52px;line-height:1.04;
+    color:var(--teal-ink);
+    letter-spacing:-0.5px;
+  }
+  .ttl .em{color:var(--orange);}
+
+  /* divider with center diamond */
+  .divider{
+    margin:5mm 0;
+    display:flex;align-items:center;gap:10px;width:72mm;
+  }
+  .divider .l{flex:1;height:1.5px;background:linear-gradient(90deg,transparent,var(--teal-ink));}
+  .divider .l:last-child{background:linear-gradient(90deg,var(--teal-ink),transparent);}
+  .divider .d{width:9px;height:9px;background:var(--orange);transform:rotate(45deg);}
+
+  .grant{
+    font-family:var(--serif);
+    font-size:18px;font-weight:400;color:var(--muted);
+    margin-bottom:4mm;
+  }
+
+  /* recipient line */
+  .recipient{width:115mm;margin-bottom:2.5mm;}
+  .recipient .name-line{
+    border-bottom:1.5px solid var(--teal-ink);
+    height:11mm;
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:2mm;
+  }
+  .recipient .name-line #recipName{
+    font-family:var(--serif);font-weight:700;font-size:26px;color:var(--teal-ink);line-height:1;
+  }
+  .recipient .cap{
+    margin-top:5px;font-size:12px;font-weight:600;color:var(--muted);letter-spacing:0.5px;
+  }
+  .founder-no{
+    font-family:var(--sans);font-size:13px;font-weight:700;color:var(--orange-deep);margin-bottom:3mm;
+  }
+  .founder-no b{font-family:var(--serif);font-size:16px;}
+
+  .body-text{
+    font-family:var(--serif);
+    font-size:17px;line-height:1.6;color:var(--ink);
+    max-width:140mm;font-weight:400;
+    margin-bottom:5mm;
+  }
+  .body-text b{color:var(--teal-ink);font-weight:700;}
+
+  /* ===== benefits grid ===== */
+  .benefits{
+    width:100%;
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:3mm 9mm;
+    text-align:right;
+    margin-bottom:5mm;
+  }
+  .benefit{display:flex;align-items:flex-start;gap:10px;}
+  .benefit .chk{
+    flex-shrink:0;width:24px;height:24px;border-radius:50%;
+    background:var(--teal-ink);color:#fff;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;
+  }
+  .benefit.star .chk{background:var(--orange);}
+  .benefit .chk svg{width:13px;height:13px;}
+  .benefit .t h3{font-family:var(--sans);font-size:14.5px;font-weight:700;color:var(--ink);letter-spacing:-0.2px;}
+  .benefit .t p{font-family:var(--sans);font-size:12px;font-weight:400;color:var(--muted);line-height:1.4;margin-top:1px;}
+  .benefit .t p strong{color:var(--teal);font-weight:700;}
+
+  /* ===== seal + price row ===== */
+  .seal-row{
+    display:flex;align-items:center;justify-content:center;gap:12mm;
+    margin-bottom:5mm;
+  }
+  .price-plate{text-align:center;}
+  .price-plate .lbl{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+  .price-plate .amt{
+    font-family:var(--serif);font-weight:900;color:var(--orange-deep);
+    font-size:48px;line-height:1;letter-spacing:-1px;margin-top:3px;
+    display:flex;align-items:baseline;gap:6px;justify-content:center;
+  }
+  .price-plate .amt span{font-size:24px;}
+  .price-plate .sub{font-size:12.5px;font-weight:600;color:var(--muted);margin-top:5px;}
+
+  /* the seal */
+  .seal{position:relative;width:38mm;height:38mm;flex-shrink:0;}
+  .seal .burst{
+    position:absolute;inset:0;border-radius:50%;
+    background:repeating-conic-gradient(var(--orange) 0deg 9deg, var(--orange-deep) 9deg 18deg);
+    -webkit-mask:radial-gradient(circle, #000 61%, transparent 61.5%);
+            mask:radial-gradient(circle, #000 61%, transparent 61.5%);
+  }
+  .seal .ring{
+    position:absolute;inset:14%;border-radius:50%;
+    background:var(--teal-ink);
+    border:2px solid #fff;
+    box-shadow:0 4px 12px rgba(10,74,71,0.3);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:#fff;
+  }
+  .seal .ring .top{font-family:var(--sans);font-size:9px;font-weight:700;letter-spacing:1px;}
+  .seal .ring .big{font-family:var(--serif);font-size:30px;font-weight:900;line-height:0.9;color:#fff;}
+  .seal .ring .bot{font-family:var(--sans);font-size:9.5px;font-weight:600;letter-spacing:0.5px;margin-top:1px;}
+
+  /* ===== stats caption ===== */
+  .stats-cap{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;color:var(--muted);
+    margin-bottom:auto;
+  }
+  .stats-cap b{color:var(--teal-ink);font-weight:800;}
+  .stats-cap .sep{color:var(--orange);margin:0 7px;font-weight:700;}
+
+  /* ===== signatures footer ===== */
+  .signatures{
+    width:100%;
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:14mm;margin-top:6mm;
+  }
+  .sig{flex:1;text-align:center;}
+  .sig .sline{border-bottom:1.5px solid var(--teal-ink);height:13mm;}
+  .sig .who{margin-top:6px;font-size:13.5px;font-weight:700;color:var(--ink);}
+  .sig .role{font-size:11.5px;font-weight:500;color:var(--muted);margin-top:1px;}
+  .sig .contact{font-size:11px;font-weight:600;color:var(--teal);margin-top:3px;}
+  .issued{font-family:var(--sans);font-size:11px;font-weight:500;color:var(--muted);margin-top:5mm;}
+  .issued b{color:var(--teal-ink);font-weight:700;}
+
+  @media print{
+    html,body{background:#fff;}
+    .no-print{display:none !important;}
+    .stage{padding:0;min-height:auto;display:block;}
+    .page{box-shadow:none;}
+    .seal .burst,.seal .ring,.benefit .chk,.price-plate .amt,.frame,.frame::after,.corner{
+      -webkit-print-color-adjust:exact;print-color-adjust:exact;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- ===== issuance controls (screen only) ===== -->
+  <div class="toolbar no-print">
+    <div class="fld">
+      <label for="fName">שם העסק / הסוחר</label>
+      <input id="fName" type="text" placeholder="לדוגמה: מאפיית ברמן" autocomplete="off">
+    </div>
+    <div class="fld">
+      <label for="fNum">מס׳ מייסד (1–20)</label>
+      <input id="fNum" type="number" min="1" max="20" placeholder="3">
+    </div>
+    <button class="btn" id="printBtn">הדפס / שמור כ-PDF ↧</button>
+    <div class="hint">אפשר גם לשלוח לינק מוכן: <code>certificate.html?name=שם העסק&amp;num=3</code></div>
+  </div>
+
+  <div class="stage">
+    <div class="page" data-screen-label="Certificate">
+      <div class="frame"></div>
+      <!-- corner flourishes -->
+      <div class="corner tl"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 96 V40 Q4 4 40 4 H96"/><path d="M16 96 V46 Q16 16 46 16 H96" opacity="0.5"/><circle cx="40" cy="40" r="4" fill="currentColor" stroke="none"/></svg></div>
+      <div class="corner tr"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 96 V40 Q4 4 40 4 H96"/><path d="M16 96 V46 Q16 16 46 16 H96" opacity="0.5"/><circle cx="40" cy="40" r="4" fill="currentColor" stroke="none"/></svg></div>
+      <div class="corner bl"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 96 V40 Q4 4 40 4 H96"/><path d="M16 96 V46 Q16 16 46 16 H96" opacity="0.5"/><circle cx="40" cy="40" r="4" fill="currentColor" stroke="none"/></svg></div>
+      <div class="corner br"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 96 V40 Q4 4 40 4 H96"/><path d="M16 96 V46 Q16 16 46 16 H96" opacity="0.5"/><circle cx="40" cy="40" r="4" fill="currentColor" stroke="none"/></svg></div>
+
+      <div class="doc">
+        <div class="brand-row">
+          <img class="doc-logo" src="assets/logo-horizontal.png" alt="ShukWAY">
+          <span class="kicker">שוק מחנה יהודה</span>
+        </div>
+
+        <h1 class="ttl">תעודת <span class="em">סוחר מייסד</span></h1>
+
+        <div class="divider"><span class="l"></span><span class="d"></span><span class="l"></span></div>
+
+        <div class="grant">מוענקת בזאת ל־</div>
+        <div class="recipient">
+          <div class="name-line"><span id="recipName"></span></div>
+          <div class="cap">שם העסק / הסוחר</div>
+        </div>
+        <div class="founder-no" id="founderNoWrap" style="display:none">סוחר מייסד מס׳ <b id="founderNo"></b> מתוך 20</div>
+
+        <p class="body-text">
+          כאחד מ־<b>20 הסוחרים המייסדים</b> הראשונים של ShukWAY בשוק מחנה יהודה — עם מלוא ההטבות, היוקרה והמעמד המועדף הנלווים לחברות מייסד.
+        </p>
+
+        <div class="benefits">
+          <div class="benefit star">
+            <span class="chk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.26L21.8 9l-5 4.87L18 21l-6-3.2L6 21l1.2-7.13-5-4.87 6.9-.74L12 2z"/></svg></span>
+            <div class="t"><h3>תג "סוחר מייסד"</h3><p>תג בלעדי על הפרופיל שלך באפליקציה — יוקרה ונראות.</p></div>
+          </div>
+          <div class="benefit">
+            <span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <div class="t"><h3>מיקום מועדף</h3><p>העסק שלך בולט במפה ובתוצאות החיפוש בקטגוריה.</p></div>
+          </div>
+          <div class="benefit">
+            <span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <div class="t"><h3>פרופיל מורחב</h3><p>תמונות, וידאו וסטוריז — הרבה מעבר לעסק רגיל.</p></div>
+          </div>
+          <div class="benefit">
+            <span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <div class="t"><h3>גישה ראשונה לקופונים</h3><p>נכנס ראשון, <strong>בתנאים המועדפים ביותר</strong>.</p></div>
+          </div>
+          <div class="benefit">
+            <span class="chk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <div class="t"><h3>פוסט ייעודי</h3><p>חשיפה ייעודית ברשתות החברתיות של ShukWAY.</p></div>
+          </div>
+        </div>
+
+        <div class="seal-row">
+          <div class="price-plate">
+            <div class="lbl">דמי מייסד</div>
+            <div class="amt">1,500 <span>₪</span></div>
+            <div class="sub">חד־פעמי · ללא תשלום חודשי</div>
+          </div>
+          <div class="seal">
+            <div class="burst"></div>
+            <div class="ring">
+              <span class="top">בלבד</span>
+              <span class="big">20</span>
+              <span class="bot">מקומות</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-cap">
+          מעל <b>3,000</b> משתמשים פעילים <span class="sep">•</span> <b>527</b> עסקים ממופים <span class="sep">•</span> <b>100%</b> כיסוי של מחנה יהודה
+        </div>
+
+        <div class="signatures">
+          <div class="sig">
+            <div class="sline"></div>
+            <div class="who">ידידיה לפידות</div>
+            <div class="role">מנכ"ל ShukWAY</div>
+            <div class="contact">053-3202627 · support@shukway.com</div>
+          </div>
+          <div class="sig">
+            <div class="sline"></div>
+            <div class="who">חתימת הסוחר</div>
+            <div class="role">שם מלא · תאריך</div>
+            <div class="contact">&nbsp;</div>
+          </div>
+        </div>
+
+        <div class="issued">הונפקה בתאריך <b id="issueDate"></b></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      var params = new URLSearchParams(location.search);
+      var nameEl = document.getElementById('recipName');
+      var noWrap = document.getElementById('founderNoWrap');
+      var noEl   = document.getElementById('founderNo');
+      var dateEl = document.getElementById('issueDate');
+      var fName  = document.getElementById('fName');
+      var fNum   = document.getElementById('fNum');
+
+      function render(){
+        var name = (fName.value || '').trim();
+        var num  = (fNum.value || '').trim();
+        nameEl.textContent = name;
+        if (num){ noEl.textContent = num; noWrap.style.display = 'block'; }
+        else { noWrap.style.display = 'none'; }
+      }
+
+      // issue date — Hebrew locale, day-month-year
+      try { dateEl.textContent = new Date().toLocaleDateString('he-IL'); }
+      catch(e){ var d=new Date(); dateEl.textContent = d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear(); }
+
+      // prefill from URL (?name=...&num=...)
+      if (params.get('name')) fName.value = params.get('name');
+      if (params.get('num'))  fNum.value  = params.get('num');
+
+      fName.addEventListener('input', render);
+      fNum.addEventListener('input', render);
+      document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+      render();
+    })();
+  </script>
+</body>
+</html>

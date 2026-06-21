@@ -204,6 +204,24 @@ section{padding:38px 0}
     </div>
   </section>
 
+  <!-- ===== CERTIFICATE TEASER ===== -->
+  <section style="padding-top:6px">
+    <div class="wrap">
+      <a href="certificate.html" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;gap:16px;text-decoration:none;
+                background:linear-gradient(120deg,#fff,var(--teal-tint));border:1.5px solid #bfe3df;
+                border-radius:20px;padding:20px 22px;box-shadow:var(--shadow-sm)">
+        <span style="flex:0 0 auto;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;
+                     justify-content:center;font-size:28px;background:var(--orange-soft);color:var(--orange-dark)">🏅</span>
+        <span style="flex:1">
+          <b style="display:block;font-size:17px;font-weight:900;color:var(--teal-darker)">כל סוחר מייסד מקבל תעודה רשמית</b>
+          <small style="font-size:13.5px;color:var(--ink2)">תעודת "סוחר מייסד" ממוספרת מתוך 20 — עם חתימת המנכ"ל.</small>
+        </span>
+        <span style="flex:0 0 auto;font-weight:800;color:var(--orange);font-size:14px">לדוגמה ↗</span>
+      </a>
+    </div>
+  </section>
+
   <!-- ===== PRICE + URGENCY ===== -->
   <section>
     <div class="wrap">
@@ -231,11 +249,12 @@ section{padding:38px 0}
           <span class="arr">←</span>
         </a>
 
-        <!-- 2. Cardcom immediate payment -->
-        <!-- TODO(דב): החלף את [CARDCOM_LINK_1419] ב-URL האמיתי של לינק התשלום #1419 בקארדקום (תשלום 1,500 ₪). -->
-        <a class="way pay" href="[CARDCOM_LINK_1419]" target="_blank" rel="noopener">
+        <!-- 2. Payment — INTERIM: routes to a WhatsApp payment-intent until online card payment is wired.
+             Real on-site Cardcom payment needs the Low Profile API (terminal 191986 / ApiName) via a small
+             serverless endpoint — a static page can't call it (CORS) — OR the hosted payment-page module enabled. -->
+        <a class="way pay" data-wa-pay href="https://wa.me/972533202627" target="_blank" rel="noopener">
           <span class="ic">💳</span>
-          <span class="tx"><b>תשלום מיידי — 1,500 ₪</b><small>סגירת מקום מאובטחת דרך קארדקום</small></span>
+          <span class="tx"><b>תשלום והצטרפות — 1,500 ₪</b><small>סגירה מהירה ומאובטחת — נשלים את התשלום יחד</small></span>
           <span class="arr">←</span>
         </a>
 
@@ -278,6 +297,10 @@ section{padding:38px 0}
     var WA_MSG = "היי, אני מעוניין בתוכנית סוחר מייסד של ShukWAY";
     document.querySelectorAll('[data-wa]').forEach(function(a){
       a.href = "https://wa.me/972533202627?text=" + encodeURIComponent(WA_MSG);
+    });
+    var WA_PAY = "היי, אני רוצה לשלם ולהצטרף לתוכנית סוחר מייסד של ShukWAY — 1,500 ₪";
+    document.querySelectorAll('[data-wa-pay]').forEach(function(a){
+      a.href = "https://wa.me/972533202627?text=" + encodeURIComponent(WA_PAY);
     });
   </script>
 </body>
