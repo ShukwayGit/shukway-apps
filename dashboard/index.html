@@ -141,6 +141,9 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
 .bizitem:hover{border-color:var(--teal);color:var(--teal)}
 .bizitem small{font-weight:400;color:var(--muted);font-size:11.5px;direction:ltr}
 .acct{cursor:pointer}
+.contact .cv{overflow-wrap:anywhere}
+.contact .cv a{color:var(--teal);text-decoration:none}
+.contact .cv a:hover{text-decoration:underline}
 .contact{display:flex;flex-direction:column;gap:11px;}
 .crow{display:flex;align-items:center;gap:11px;font-size:14px;}
 .crow .ci{width:30px;height:30px;border-radius:9px;background:var(--bg);color:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -458,7 +461,14 @@ async function loadBusiness(){
   const cv=document.querySelectorAll('.contact .cv');
   if(cv[0]) cv[0].textContent=b.phone||'—';
   if(cv[1]) cv[1].textContent=addr;
-  if(cv[2]){ const soc=b.instagram_url||b.facebook_url||b.tiktok_url||b.website||'—'; cv[2].textContent=soc; }
+  if(cv[2]){
+    const links=[];
+    if(b.instagram_url) links.push(`<a href="${b.instagram_url}" target="_blank" rel="noopener">אינסטגרם</a>`);
+    if(b.facebook_url)  links.push(`<a href="${b.facebook_url}" target="_blank" rel="noopener">פייסבוק</a>`);
+    if(b.tiktok_url)    links.push(`<a href="${b.tiktok_url}" target="_blank" rel="noopener">טיקטוק</a>`);
+    if(b.website){ let host=b.website; try{ host=new URL(b.website).hostname.replace(/^www\./,''); }catch(e){} links.push(`<a href="${b.website}" target="_blank" rel="noopener">${host}</a>`); }
+    cv[2].innerHTML = links.join(' · ') || '—';
+  }
 
   // category badge — map first category id -> super (Hebrew + brand color) via the live tree
   try{
