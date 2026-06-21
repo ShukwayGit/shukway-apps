@@ -249,12 +249,11 @@ section{padding:38px 0}
           <span class="arr">←</span>
         </a>
 
-        <!-- 2. Payment — INTERIM: routes to a WhatsApp payment-intent until online card payment is wired.
-             Real on-site Cardcom payment needs the Low Profile API (terminal 191986 / ApiName) via a small
-             serverless endpoint — a static page can't call it (CORS) — OR the hosted payment-page module enabled. -->
-        <a class="way pay" data-wa-pay href="https://wa.me/972533202627" target="_blank" rel="noopener">
+        <!-- 2. Cardcom payment — live: pay.shukway.com/pay creates a Cardcom Low Profile
+             page (terminal 191986) and redirects the customer to the hosted card form. -->
+        <a class="way pay" href="https://pay.shukway.com/pay">
           <span class="ic">💳</span>
-          <span class="tx"><b>תשלום והצטרפות — 1,500 ₪</b><small>סגירה מהירה ומאובטחת — נשלים את התשלום יחד</small></span>
+          <span class="tx"><b>תשלום מיידי — 1,500 ₪</b><small>סליקה מאובטחת בכרטיס אשראי דרך קארדקום</small></span>
           <span class="arr">←</span>
         </a>
 
@@ -297,10 +296,6 @@ section{padding:38px 0}
     var WA_MSG = "היי, אני מעוניין בתוכנית סוחר מייסד של ShukWAY";
     document.querySelectorAll('[data-wa]').forEach(function(a){
       a.href = "https://wa.me/972533202627?text=" + encodeURIComponent(WA_MSG);
-    });
-    var WA_PAY = "היי, אני רוצה לשלם ולהצטרף לתוכנית סוחר מייסד של ShukWAY — 1,500 ₪";
-    document.querySelectorAll('[data-wa-pay]').forEach(function(a){
-      a.href = "https://wa.me/972533202627?text=" + encodeURIComponent(WA_PAY);
     });
   </script>
 </body>
