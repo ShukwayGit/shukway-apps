@@ -16,3 +16,10 @@ services:
     rootDir: dashboard
     buildCommand: "echo prebuilt - no build"
     staticPublishPath: .
+
+  - type: web
+    runtime: static
+    name: shukway-view
+    rootDir: view
+    buildCommand: "echo prebuilt - no build"
+    staticPublishPath: .
