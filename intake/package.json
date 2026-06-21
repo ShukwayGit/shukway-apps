@@ -1,0 +1,11 @@
+{
+  "name": "shukway-coupon-intake",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Receives coupons from the owner dashboard and creates Monday items (board 5098280692). Token from env only.",
+  "scripts": {
+    "start": "node server.cjs",
+    "dev": "node --env-file=.env server.cjs"
+  },
+  "engines": { "node": ">=20" }
+}

@@ -1,6 +1,11 @@
 # WIP / temp working files — never deploy (underscore-prefixed convention)
 _*
 
+# secrets — NEVER commit (Monday token etc.)
+.env
+.env.*
+!.env.example
+
 # OS / editor junk
 .DS_Store
 Thumbs.db
