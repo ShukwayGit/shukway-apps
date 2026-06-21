@@ -124,6 +124,23 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
 .golive__links a{display:inline-block;margin-inline-end:8px;margin-bottom:6px;text-decoration:none;font-size:13px;font-weight:700;color:var(--teal);background:var(--teal-tint);padding:7px 11px;border-radius:9px}
 .golive__status{font-size:13px;font-weight:700;margin:6px 0}
 .golive__note{font-size:11.5px;color:var(--muted);margin:8px 0 16px}
+/* ── signature pad ── */
+.sigwrap{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.sig-state{margin-inline-start:auto;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--red-soft);color:var(--red)}
+.sig-state.signed{background:var(--green-soft);color:var(--green)}
+.sigpad{width:100%;height:160px;background:var(--cream);border:2px dashed #cdbfa0;border-radius:12px;touch-action:none;cursor:crosshair;display:block}
+.empty-state{padding:22px 16px;text-align:center;color:var(--muted);font-size:13.5px;background:var(--cream);border:1px dashed var(--line);border-radius:12px}
+/* ── business selector ── */
+.biz-ov{position:fixed;inset:0;background:rgba(21,48,45,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:18px;backdrop-filter:blur(2px)}
+.bizpick{background:var(--paper);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);max-width:440px;width:100%;padding:26px 22px;text-align:center;position:relative;max-height:88vh;display:flex;flex-direction:column}
+.bizpick h2{font-size:21px;font-weight:800;margin:6px 0 2px}
+.bizpick__sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.bizsearch{width:100%;font-family:var(--font);font-size:15px;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:var(--cream);margin-bottom:12px}
+.bizlist{overflow-y:auto;text-align:start;display:flex;flex-direction:column;gap:6px}
+.bizitem{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;text-align:start;font-family:var(--font);background:var(--cream);border:1px solid var(--line);border-radius:11px;padding:10px 13px;cursor:pointer;font-size:14.5px;font-weight:600;color:var(--ink)}
+.bizitem:hover{border-color:var(--teal);color:var(--teal)}
+.bizitem small{font-weight:400;color:var(--muted);font-size:11.5px;direction:ltr}
+.acct{cursor:pointer}
 .contact{display:flex;flex-direction:column;gap:11px;}
 .crow{display:flex;align-items:center;gap:11px;font-size:14px;}
 .crow .ci{width:30px;height:30px;border-radius:9px;background:var(--bg);color:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -187,14 +204,14 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
     <img src="logo.png" alt="ShukWAY">
     <div class="div"></div>
     <div class="sub">לוח בעל העסק · ניהול הדוכן שלך</div>
-    <div class="acct"><span>שלום, מאפיית ברמן</span><div class="avatar num">ב</div></div>
+    <div class="acct"><span id="greetBiz">שלום</span><div class="avatar num" id="greetAvatar">·</div></div>
   </div>
 
   <nav class="nav">
     <button class="active" data-s="overview">📊 סקירה</button>
     <button data-s="coupons">🎟️ הקופונים שלי</button>
     <button data-s="create">＋ קופון חדש</button>
-    <button data-s="report">📋 דוח יומי <span class="pend">5</span></button>
+    <button data-s="report">📋 דוח יומי</button>
     <button data-s="settings">⚙️ הדוכן שלי</button>
   </nav>
 
@@ -204,20 +221,15 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
     <section class="section active" id="s-overview">
       <div class="page-h"><h1>סקירה כללית</h1><p>תמונת מצב יומית של הדוכן והקופונים</p></div>
       <div class="kpis">
-        <div class="kpi"><div class="v num">12</div><div class="l">מימושים היום</div></div>
-        <div class="kpi"><div class="v num">247</div><div class="l">מימושים החודש</div></div>
-        <div class="kpi"><div class="v num">3</div><div class="l">קופונים פעילים</div></div>
-        <div class="kpi accent"><div class="v num">₪340</div><div class="l">עמלה החודש</div></div>
-      </div>
-      <div class="alert">
-        <span class="big">🔔</span>
-        <div class="t"><b>5 מימושים ממתינים לאישור שלך</b><p>אשר תוך 24 שעות — אחרת יאושרו אוטומטית.</p></div>
-        <button class="go" onclick="go('report')">אשר עכשיו ←</button>
+        <div class="kpi"><div class="v num">—</div><div class="l">מימושים היום</div></div>
+        <div class="kpi"><div class="v num">—</div><div class="l">מימושים החודש</div></div>
+        <div class="kpi"><div class="v num" id="kpiCoupons">—</div><div class="l">קופונים פעילים</div></div>
+        <div class="kpi accent"><div class="v num">—</div><div class="l">עמלה החודש</div></div>
       </div>
       <div class="grid">
         <div class="col">
           <div class="card">
-            <div class="card__h"><span class="ico">📈</span><h2>מימושים · 7 ימים אחרונים</h2><span class="demo-tag" style="margin-inline-start:auto">נתוני דמה</span></div>
+            <div class="card__h"><span class="ico">📈</span><h2>מימושים · 7 ימים אחרונים</h2></div>
             <div class="chart" id="chart"></div>
           </div>
           <div class="card">
@@ -237,13 +249,8 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
         </div>
         <div class="col">
           <div class="card">
-            <div class="card__h"><span class="ico">📊</span><h2>ביצועים (30 יום)</h2><span class="demo-tag" style="margin-inline-start:auto">דמה</span></div>
-            <div class="stats">
-              <div class="stat"><div class="num">1,284</div><div class="lbl">צפיות בדוכן</div></div>
-              <div class="stat"><div class="num">312</div><div class="lbl">״נווט לכאן״</div></div>
-              <div class="stat"><div class="num">47</div><div class="lbl">לחיצות טלפון</div></div>
-            </div>
-            <p class="note">placeholder להמחשה — יתחבר ל‑Analytics בהמשך.</p>
+            <div class="card__h"><span class="ico">📊</span><h2>ביצועים (30 יום)</h2></div>
+            <div class="empty-state">אין נתוני אנליטיקס עדיין — יתחבר בהמשך.</div>
           </div>
         </div>
       </div>
@@ -270,6 +277,12 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
               <div class="st"><b>סוד ההנחה</b><p>הסתר את גובה ההנחה מהצרכן עד רגע הסריקה בדוכן.</p></div>
               <div class="sw-toggle" id="secretSw" onclick="this.classList.toggle('off');renderPreview();"></div>
             </div>
+            <div class="sigwrap">
+              <div class="card__h" style="margin-top:4px"><span class="ico">✍️</span><h2>חתימת בעל העסק</h2><span class="sig-state" id="sigState">נדרשת חתימה</span></div>
+              <p class="note" style="margin:0 0 8px">חובה לחתום — קופון לא יתפרסם בלי חתימת הבעלים.</p>
+              <canvas id="sigPad" class="sigpad" width="600" height="180"></canvas>
+              <button class="edit" type="button" onclick="clearSig()" style="margin-top:6px">נקה חתימה</button>
+            </div>
             <button class="btn-primary orange" onclick="submitCoupon()">✓ צור קופון · העלה לאוויר</button>
           </div>
         </div>
@@ -287,7 +300,6 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
     <section class="section" id="s-report">
       <div class="page-h"><h1>דוח יומי · אישור מימושים</h1><p id="reportDate"></p></div>
       <div id="report"></div>
-      <div class="rsum"><span>סה״כ מימושים היום: <b class="num">12</b></span><span class="sp">עמלה מצטברת: <b class="num">₪48</b></span></div>
       <p class="note">מימושים שלא תאשר תוך 24 שעות יאושרו אוטומטית (מנגנון ההגנה לצרכן).</p>
     </section>
 
@@ -314,6 +326,18 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
       </div>
     </section>
 
+  </div>
+
+  <!-- business selector (entry / switch) -->
+  <div class="biz-ov" id="bizOv" style="display:none">
+    <div class="bizpick">
+      <button class="golive__x" onclick="closeBizPicker()">✕</button>
+      <div class="golive__burst">🏪</div>
+      <h2>בחר עסק</h2>
+      <p class="bizpick__sub">נתוני אמת מתוך מאגר ShukWAY החי</p>
+      <input id="bizSearch" class="bizsearch" placeholder="חפש עסק לפי שם…" oninput="renderBizList(this.value.trim())">
+      <div class="bizlist" id="bizList"></div>
+    </div>
   </div>
 
 <script>
@@ -356,14 +380,8 @@ window.addEventListener('hashchange',()=>go(location.hash.slice(1)));
 // deep-link on load (e.g. /owner-dashboard/#coupons)
 if(location.hash.slice(1)) go(location.hash.slice(1));
 
-/* ───── overview chart ───── */
-(function(){
-  const max=Math.max(...CHART);
-  document.getElementById('chart').innerHTML=CHART.map((v,i)=>`
-    <div class="bar"><span class="n num">${v}</span>
-      <div class="b ${i===CHART.length-1?'today':''}" style="height:${Math.round(v/max*100)}%"></div>
-      <span class="d">${DAYS[(new Date().getDay()-6+i+7)%7].slice(0,1)}</span></div>`).join('');
-})();
+/* ───── overview chart — real data only (empty until analytics backend) ───── */
+(function(){ const el=document.getElementById('chart'); if(el) el.innerHTML='<div class="empty-state">אין נתוני מימוש עדיין</div>'; })();
 
 /* ───── open/closed — computed in Asia/Jerusalem (market time, not device) ───── */
 function marketNow(){const p=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Jerusalem',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const D={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6};let h=+p.find(x=>x.type==='hour').value;if(h===24)h=0;return{day:D[p.find(x=>x.type==='weekday').value]??0,mins:h*60+(+p.find(x=>x.type==='minute').value)};}
@@ -377,7 +395,19 @@ function setHour(i,k,v){if(BIZ.hours[i])BIZ.hours[i][k]=v;}
 function toggleDay(i){BIZ.hours[i]=BIZ.hours[i]?null:{open:'08:00',close:'18:00'};renderHours();renderStatus();}
 
 /* ───── my coupons ───── */
-function renderCoupons(){document.getElementById('clist').innerHTML=COUPONS.map(c=>{const pill=c.st==='on'?'<span class="pill pill--on">פעיל</span>':c.st==='off'?'<span class="pill pill--off">מושהה</span>':'<span class="pill pill--exp">פג תוקף</span>';return `<div class="crd"><div class="disc"><span class="num">${c.disc}</span><small>${c.sub}</small></div><div class="main"><b>${c.name}</b><div class="ty">${c.type}</div></div><div class="meta"><b class="num">${c.red}</b>מימושים</div><div class="meta" style="min-width:62px">תוקף<br><span class="num" style="font-size:13px;color:var(--ink-2)">${c.exp}</span></div>${pill}<div class="acts"><button>ערוך</button><button>${c.st==='on'?'השהה':'הפעל'}</button></div></div>`;}).join('');}
+async function renderCoupons(){
+  const el=document.getElementById('clist'); if(!el) return;
+  const base=COUPON_INTAKE_URL.replace('/api/coupon-intake','');
+  if(!base||!BIZINFO.name){ el.innerHTML='<div class="empty-state">אין עדיין קופונים.</div>'; return; }
+  el.innerHTML='<div class="empty-state">טוען קופונים…</div>';
+  try{
+    const j=await fetch(base+'/api/coupons?business='+encodeURIComponent(BIZINFO.name)).then(r=>r.json());
+    const list=(j&&j.coupons)||[];
+    const kc=document.getElementById('kpiCoupons'); if(kc) kc.textContent=list.length;
+    if(!list.length){ el.innerHTML='<div class="empty-state">אין עדיין קופונים — צור את הראשון ←</div>'; return; }
+    el.innerHTML=list.map(c=>`<div class="crd"><div class="disc"><span class="num" style="font-size:12.5px">${c.deal_type||'הטבה'}</span></div><div class="main"><b>${c.coupon_name||''}</b><div class="ty">${c.terms||''}</div></div><div class="meta" style="min-width:130px">תוקף<br><span class="num" style="font-size:12px;color:var(--ink-2)">${c.valid||'—'}</span></div><span class="pill pill--on">פעיל</span></div>`).join('');
+  }catch(e){ el.innerHTML='<div class="empty-state">לא ניתן לטעון קופונים כרגע.</div>'; }
+}
 
 /* ───── create coupon ───── */
 let selDeal='pct';
@@ -386,7 +416,7 @@ function renderFields(){const common=`<div class="field"><label>שם הקופו�
 function renderPreview(){const name=(document.getElementById('cName')||{}).value||'הנחת פתיחה';const val=(document.getElementById('cVal')||{}).value;const d=DEALS.find(x=>x.k===selDeal);const secret=!document.getElementById('secretSw').classList.contains('off');let disc=selDeal==='gift'?'🎁':selDeal==='tier'?'₪'+(val||10):(val||15)+'%';document.getElementById('cpreview').innerHTML=`<div class="cpreview"><div class="pd ${secret?'hidden':''}">${secret?'🤫':disc}</div><div class="pt"><b>${name}</b><p>${secret?'ההנחה תיחשף בסריקה':d.h} · ${BIZNAME}</p></div></div>`;}
 
 /* ───── daily report ───── */
-function renderReport(){const dt=new Date().toLocaleDateString('he-IL',{day:'numeric',month:'long'});document.getElementById('reportDate').textContent='מימושים שממתינים לאישור — '+dt;document.getElementById('report').innerHTML=REDEMPTIONS.map((r,i)=>`<div class="rrow" id="rr${i}"><div class="time num">${r.time}</div><div class="cp"><b>${r.name}</b><p>${r.type}</p></div><div class="amt">רכישה<b class="num">₪${r.buy}</b></div><div class="amt">הנחה<b class="num" style="color:var(--orange-dark)">₪${r.disc}</b></div><div class="ra"><button class="ok" onclick="resolveR(${i},'אושר')">אשר</button><button class="no" onclick="resolveR(${i},'נדחה')">דחה</button></div></div>`).join('');}
+function renderReport(){const dt=new Date().toLocaleDateString('he-IL',{day:'numeric',month:'long'});const rd=document.getElementById('reportDate');if(rd)rd.textContent=dt;const el=document.getElementById('report');if(el)el.innerHTML='<div class="empty-state">אין מימושים ממתינים לאישור.</div>';}
 function resolveR(i,txt){const el=document.getElementById('rr'+i);el.style.opacity='.5';el.querySelector('.ra').innerHTML='<span class="pill '+(txt==='אושר'?'pill--on':'pill--exp')+'">'+txt+'</span>';}
 
 /* ═════ REAL DATA — load this owner's business from the live API by ?slug= ═════
@@ -413,6 +443,8 @@ async function loadBusiness(){
   BIZNAME=b.name; BIZINFO=b;
   document.querySelectorAll('.biz__name').forEach(el=>el.textContent=b.name);
   const cfb=document.getElementById('createForBiz'); if(cfb) cfb.textContent='· '+b.name;
+  const gb=document.getElementById('greetBiz'); if(gb) gb.textContent='שלום, '+b.name;
+  const ga=document.getElementById('greetAvatar'); if(ga) ga.textContent=(b.name||'·').trim().charAt(0);
   document.title='ShukWAY · '+b.name;
 
   if(b.primary_image_url){
@@ -449,7 +481,7 @@ async function loadBusiness(){
     }
   }catch(e){ console.warn('hours load failed:',e); }
 
-  renderStatus(); renderPreview();
+  renderStatus(); renderPreview(); renderCoupons();
 }
 
 /* ═════ CREATE COUPON → GO LIVE (capture to Monday board 5098280692 via our server) ═════ */
@@ -470,15 +502,35 @@ function collectCoupon(){
     settlement:'עמלה באחוזים', commission:'15%', created_from:'owner-dashboard'
   };
 }
+/* ───── signature pad — mandatory before publish ───── */
+let sigHas=false, sigCtx=null;
+function initSig(){
+  const cv=document.getElementById('sigPad'); if(!cv||cv._init) return; cv._init=true;
+  const ratio=window.devicePixelRatio||1;
+  const r=cv.getBoundingClientRect(); cv.width=Math.max(1,r.width)*ratio; cv.height=Math.max(1,r.height)*ratio;
+  sigCtx=cv.getContext('2d'); sigCtx.scale(ratio,ratio); sigCtx.lineWidth=2.5; sigCtx.lineCap='round'; sigCtx.strokeStyle='#15302D';
+  let drawing=false,last=null;
+  const pos=e=>{ const b=cv.getBoundingClientRect(); return {x:e.clientX-b.left,y:e.clientY-b.top}; };
+  cv.addEventListener('pointerdown',e=>{ drawing=true; last=pos(e); cv.setPointerCapture(e.pointerId); e.preventDefault(); });
+  cv.addEventListener('pointermove',e=>{ if(!drawing)return; const p=pos(e); sigCtx.beginPath(); sigCtx.moveTo(last.x,last.y); sigCtx.lineTo(p.x,p.y); sigCtx.stroke(); last=p; if(!sigHas){sigHas=true;setSigState(true);} e.preventDefault(); });
+  window.addEventListener('pointerup',()=>{ drawing=false; });
+}
+function setSigState(s){ const el=document.getElementById('sigState'); if(el){ el.classList.toggle('signed',s); el.textContent=s?'✓ נחתם':'נדרשת חתימה'; } }
+function clearSig(){ const cv=document.getElementById('sigPad'); if(cv&&sigCtx) sigCtx.clearRect(0,0,cv.width,cv.height); sigHas=false; setSigState(false); }
+function getSignature(){ const cv=document.getElementById('sigPad'); return (sigHas&&cv)?cv.toDataURL('image/png'):null; }
+
 async function submitCoupon(){
-  const c=collectCoupon();
+  const sig=getSignature();
+  if(!sig){ alert('נדרשת חתימת בעל העסק לפני פרסום הקופון'); go('create'); document.getElementById('sigPad')?.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  const c=collectCoupon(); c.signature=sig;
   let captured='queued';
   if(COUPON_INTAKE_URL){
     try{ const r=await fetch(COUPON_INTAKE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(c)}); captured=r.ok?'monday':'failed'; }
     catch(e){ captured='failed'; }
   }
-  if(captured!=='monday'){ const q=JSON.parse(localStorage.getItem('shukway_coupon_queue')||'[]'); q.push(c); localStorage.setItem('shukway_coupon_queue',JSON.stringify(q)); }
-  showGoLive(c,captured);
+  if(captured!=='monday'){ const q=JSON.parse(localStorage.getItem('shukway_coupon_queue')||'[]'); const{signature,...meta}=c; q.push({...meta,signed:true}); localStorage.setItem('shukway_coupon_queue',JSON.stringify(q)); }
+  showGoLive(c,captured); clearSig();
+  if(captured==='monday') renderCoupons();
 }
 function showGoLive(c,captured){
   const bizLink=c.slug?`https://shukway.com/business/${c.slug}`:'https://shukway.com';
@@ -509,8 +561,18 @@ function showGoLive(c,captured){
   document.body.appendChild(el);
 }
 
+/* ───── business selector (entry / switch) ───── */
+let ALLBIZ=[];
+async function loadAllBiz(){ let out=[],skip=0; for(;;){ const a=await fetch(`${API}/businesses?market_id=1&limit=100&skip=${skip}&fields=id,name,slug`).then(r=>r.json()); out=out.concat(a); if(a.length<100)break; skip+=100; } return out; }
+function renderBizList(q){ const el=document.getElementById('bizList'); if(!el)return; const list=ALLBIZ.filter(b=>!q||(b.name||'').includes(q)||(b.slug||'').includes(q)).slice(0,50); el.innerHTML=list.map(b=>`<button class="bizitem" onclick="pickBiz('${b.slug}')">${b.name}<small>${b.slug}</small></button>`).join('')||'<div class="empty-state">לא נמצא עסק בשם הזה</div>'; }
+async function openBizPicker(){ const ov=document.getElementById('bizOv'); if(!ov)return; ov.style.display='flex'; if(!ALLBIZ.length){ const bl=document.getElementById('bizList'); if(bl)bl.innerHTML='<div class="empty-state">טוען עסקים…</div>'; try{ ALLBIZ=await loadAllBiz(); }catch(e){} } renderBizList(''); const s=document.getElementById('bizSearch'); if(s)s.focus(); }
+function closeBizPicker(){ const ov=document.getElementById('bizOv'); if(ov)ov.style.display='none'; }
+function pickBiz(slug){ location.search='?slug='+encodeURIComponent(slug); }
+const _acct=document.querySelector('.acct'); if(_acct) _acct.addEventListener('click',openBizPicker);
+
 renderHours();renderStatus();renderCoupons();renderDeals();renderFields();renderPreview();renderReport();
-loadBusiness();
+initSig();
+if(new URLSearchParams(location.search).get('slug')){ loadBusiness(); } else { openBizPicker(); }
 setInterval(renderStatus,60000);
 </script>
 </body>
