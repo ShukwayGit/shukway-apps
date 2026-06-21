@@ -1,0 +1,13 @@
+{
+  "name": "shukway-pay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ShukWAY Cardcom Low Profile payment redirect endpoint (grow.shukway.com founding-merchant fee).",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
