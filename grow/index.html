@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ShukWAY · סוחר מייסד — 20 מקומות בלבד</title>
+<meta name="description" content="הצטרף ל-20 הסוחרים המייסדים הראשונים של ShukWAY בשוק מחנה יהודה. תשלום חד-פעמי 1,500 ₪, ללא תשלום חודשי.">
+<meta property="og:title" content="ShukWAY · סוחר מייסד">
+<meta property="og:description" content="20 מקומות בלבד בשוק מחנה יהודה. תג מייסד, מיקום מועדף, וגישה ראשונה למערכת הקופונים.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+/* Ploni — the brand typeface (canon: ShukWAY_Design_Guidelines), bundled in ./fonts/ */
+@font-face{font-family:'Ploni';src:url('fonts/ploni-regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-medium-aaa.woff') format('woff');font-weight:500;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-demibold-aaa.woff') format('woff');font-weight:600;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-bold-aaa.woff') format('woff');font-weight:700;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-ultrabold-aaa.woff') format('woff');font-weight:800;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-ultrabold-aaa.woff') format('woff');font-weight:900;font-display:swap}
+:root{
+  /* canon tokens — orange-led, teal secondary, warm cream (ShukWAY_Design_Guidelines) */
+  --orange:#E56E13; --orange-dark:#C75A08; --orange-soft:#FCEEDB;
+  --teal:#038A82; --teal-dark:#026B65; --teal-darker:#013E3A; --teal-tint:#EFF8F7;
+  --bg:#FBF8F3; --cream:#FAF5EC; --paper:#FFFEF9; --ink:#15302D; --ink2:#3A4D4B;
+  --muted:#6B6B6B; --line:#E8E0CD;
+  --shadow:0 12px 40px rgba(120,90,40,.16); --shadow-sm:0 2px 6px rgba(120,90,40,.08);
+  --shadow-orange:0 10px 28px rgba(229,110,19,.28);
+  --font:'Ploni','Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+.num{font-family:'Roboto',sans-serif;font-variant-numeric:tabular-nums}
+body{font-family:var(--font);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(circle at 100% -5%,var(--orange-soft),transparent 38%),
+  radial-gradient(circle at 0% 2%,var(--teal-tint),transparent 36%),var(--cream);}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+
+/* ===== hero ===== */
+.hero{background:linear-gradient(125deg,var(--teal-darker),var(--teal-dark));color:#fff;
+  padding:34px 0 46px;border-radius:0 0 30px 30px;box-shadow:var(--shadow);text-align:center;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 0%,rgba(229,110,19,.20),transparent 45%);pointer-events:none}
+.brand{font-size:26px;font-weight:900;letter-spacing:-.5px;position:relative}
+.brand span{color:#ffd9b0}
+.urg{display:inline-flex;align-items:center;gap:8px;margin-top:22px;background:var(--orange);
+  color:#fff;font-weight:800;font-size:14px;padding:9px 18px;border-radius:999px;box-shadow:var(--shadow-orange);position:relative}
+.urg .pulse{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 0 rgba(255,255,255,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}70%{box-shadow:0 0 0 9px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+.hero h1{font-size:clamp(34px,10vw,52px);font-weight:900;margin-top:18px;line-height:1.05;letter-spacing:-1px;position:relative}
+.hero h1 em{font-style:normal;color:#ffd9b0}
+.hero .sub{font-size:16.5px;opacity:.92;margin:14px auto 0;max-width:440px;position:relative}
+.cta-wa{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;
+  margin-top:26px;background:var(--orange);color:#fff;font-weight:800;font-size:17px;
+  padding:16px 34px;border-radius:16px;box-shadow:var(--shadow-orange);position:relative;transition:transform .12s ease,background .12s ease}
+.cta-wa:hover{background:var(--orange-dark);transform:translateY(-1px)}
+.cta-wa .wi{font-size:20px}
+
+/* ===== generic section ===== */
+section{padding:38px 0}
+.eyebrow{font-size:13px;font-weight:800;color:var(--orange);letter-spacing:.3px;text-align:center}
+.h2{font-size:clamp(23px,5.5vw,30px);font-weight:900;color:var(--teal-darker);text-align:center;margin-top:6px;line-height:1.2}
+.lead{font-size:16px;color:var(--ink2);text-align:center;max-width:520px;margin:12px auto 0}
+
+/* problem */
+.problem{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:30px 24px;box-shadow:var(--shadow-sm);text-align:center}
+.problem .big{font-size:clamp(20px,5vw,26px);font-weight:900;color:var(--ink);line-height:1.3}
+.problem .big b{color:var(--orange)}
+.problem p{font-size:15.5px;color:var(--ink2);margin-top:12px}
+
+/* stats */
+.metrics{display:flex;gap:12px;flex-wrap:wrap}
+.metric{flex:1;min-width:140px;background:var(--paper);border-radius:16px;padding:22px 14px;text-align:center;border:1px solid var(--line);box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+.metric::before{content:"";position:absolute;top:0;inset-inline:0;height:3px;background:linear-gradient(90deg,var(--orange),var(--teal))}
+.metric .v{font-size:38px;font-weight:900;color:var(--teal-dark);line-height:1}
+.metric .v.o{color:var(--orange)}
+.metric .l{font-size:13px;color:var(--muted);font-weight:600;margin-top:8px}
+
+/* benefits */
+.benefits{display:grid;gap:14px}
+.benefit{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow-sm);
+  display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:center}
+.benefit .bi{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;
+  background:var(--orange-soft);color:var(--orange-dark)}
+.benefit:nth-child(even) .bi{background:var(--teal-tint);color:var(--teal-dark)}
+.benefit h3{font-size:17px;font-weight:800;margin-bottom:3px}
+.benefit p{font-size:14px;color:var(--ink2)}
+.benefit .star{font-size:11px;font-weight:800;color:var(--orange);margin-inline-start:6px}
+
+/* price */
+.price-box{background:linear-gradient(135deg,var(--teal-darker),var(--teal-dark));color:#fff;border-radius:26px;
+  padding:38px 26px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.price-box::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 120%,rgba(229,110,19,.22),transparent 55%);pointer-events:none}
+.price-box .pill{display:inline-block;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;padding:7px 16px;font-size:13.5px;font-weight:700;position:relative}
+.price-box .amount{font-size:clamp(56px,16vw,84px);font-weight:900;line-height:1;margin:14px 0 2px;position:relative}
+.price-box .amount .cur{font-size:.5em;vertical-align:middle;color:#ffd9b0}
+.price-box .once{font-size:16px;font-weight:700;color:#ffd9b0;position:relative}
+.price-box .no-monthly{font-size:14.5px;opacity:.85;margin-top:6px;position:relative}
+.scarcity{margin-top:22px;background:var(--orange);color:#fff;border-radius:16px;padding:14px 18px;font-size:15px;font-weight:800;position:relative;box-shadow:var(--shadow-orange)}
+
+/* final cta — 3 ways */
+.ways{display:grid;gap:14px;margin-top:8px}
+.way{display:flex;align-items:center;gap:14px;text-decoration:none;background:var(--paper);border:1.5px solid var(--line);
+  border-radius:16px;padding:16px 18px;box-shadow:var(--shadow-sm);transition:transform .12s ease,border-color .12s ease}
+.way:hover{transform:translateY(-1px)}
+.way .ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex:0 0 auto}
+.way .tx{flex:1}
+.way .tx b{display:block;font-size:16px;font-weight:800}
+.way .tx small{font-size:13px;color:var(--muted)}
+.way .arr{color:var(--muted);font-weight:800}
+.way.wa{border-color:#bfe3df}.way.wa .ic{background:#e8f7f1;color:#1c7a52}
+.way.pay{border-color:#f3cdaa}.way.pay .ic{background:var(--orange-soft);color:var(--orange-dark)}
+.way.form .ic{background:var(--teal-tint);color:var(--teal-dark)}
+.way.primary{background:var(--orange);border-color:var(--orange)}
+.way.primary .tx b,.way.primary .arr{color:#fff}.way.primary .tx small{color:rgba(255,255,255,.85)}
+.way.primary .ic{background:rgba(255,255,255,.2);color:#fff}
+
+/* lead form */
+.leadform{margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:22px 20px;box-shadow:var(--shadow-sm)}
+.leadform h3{font-size:17px;font-weight:800;text-align:center;margin-bottom:4px}
+.leadform .hint{font-size:13px;color:var(--muted);text-align:center;margin-bottom:16px}
+.leadform label{display:block;font-size:13.5px;font-weight:700;margin:0 2px 6px}
+.leadform input{width:100%;font-family:var(--font);font-size:16px;padding:13px 14px;border:1.5px solid var(--line);
+  border-radius:12px;background:var(--cream);margin-bottom:14px;color:var(--ink)}
+.leadform input:focus{outline:none;border-color:var(--teal);background:#fff}
+.leadform button{width:100%;font-family:var(--font);font-weight:800;font-size:16px;color:#fff;background:var(--orange);
+  border:none;padding:15px;border-radius:14px;box-shadow:var(--shadow-orange);cursor:pointer;transition:background .12s ease}
+.leadform button:hover{background:var(--orange-dark)}
+
+/* footer */
+.foot{background:var(--teal-darker);color:#fff;border-radius:26px 26px 0 0;padding:30px 24px 40px;text-align:center;margin-top:30px}
+.foot .who{font-size:18px;font-weight:900}
+.foot .role{font-size:13.5px;color:#ffd9b0;margin-top:2px}
+.foot .links{display:flex;flex-direction:column;gap:8px;margin-top:16px;font-size:15px}
+.foot .links a{color:#fff;text-decoration:none;opacity:.92}
+.foot .links a:hover{text-decoration:underline}
+.foot .copy{font-size:12px;opacity:.6;margin-top:20px}
+</style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="wrap">
+      <div class="brand">שוק<span>WAY</span></div>
+      <div class="urg"><span class="pulse"></span>20 מקומות בלבד</div>
+      <h1>סוחר <em>מייסד</em></h1>
+      <p class="sub">הצטרף ל-20 הסוחרים הראשונים של ShukWAY בשוק מחנה יהודה.</p>
+      <a class="cta-wa" data-wa href="https://wa.me/972533202627" target="_blank" rel="noopener">
+        <span class="wi">💬</span> רוצה להצטרף — דברו איתי
+      </a>
+    </div>
+  </header>
+
+  <!-- ===== PROBLEM ===== -->
+  <section>
+    <div class="wrap">
+      <div class="problem">
+        <div class="big">אלפי מבקרים עוברים בשוק כל יום — <b>אבל הם לא מוצאים את הדוכן שלך.</b></div>
+        <p>ShukWAY שם אותך על המפה, בחיפוש ובניווט הפנים-שוקי — בדיוק ברגע שבו הלקוח מחפש איפה לקנות.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <section style="padding-top:6px">
+    <div class="wrap">
+      <div class="metrics">
+        <div class="metric"><div class="v o num">3,000+</div><div class="l">משתמשים פעילים</div></div>
+        <div class="metric"><div class="v num">527</div><div class="l">עסקים בשוק</div></div>
+        <div class="metric"><div class="v num">100%</div><div class="l">כיסוי מחנה יהודה</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BENEFITS ===== -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">מה מקבל סוחר מייסד</div>
+      <h2 class="h2">5 הטבות בלעדיות — רק ל-20 הראשונים</h2>
+      <div class="benefits" style="margin-top:22px">
+        <div class="benefit">
+          <div class="bi">🏅</div>
+          <div><h3>תג "סוחר מייסד"</h3><p>תג יוקרה שמופיע על כרטיס העסק שלך באפליקציה — נראות ובידול מהיום הראשון.</p></div>
+        </div>
+        <div class="benefit">
+          <div class="bi">📍</div>
+          <div><h3>מיקום מועדף</h3><p>ראשון במפה ובחיפוש בקטגוריה שלך — הלקוח רואה אותך לפני כולם.</p></div>
+        </div>
+        <div class="benefit">
+          <div class="bi">🖼️</div>
+          <div><h3>פרופיל מורחב</h3><p>תמונות, וידאו וסטוריז על כרטיס העסק — לספר את הסיפור של הדוכן שלך.</p></div>
+        </div>
+        <div class="benefit">
+          <div class="bi">🎟️</div>
+          <div><h3>גישה ראשונה למערכת הקופונים<span class="star">★ בתנאים מועדפים</span></h3><p>אתה נכנס ראשון למערכת הקופונים של ShukWAY — וכמייסד, במעמד ובתנאים המועדפים ביותר.</p></div>
+        </div>
+        <div class="benefit">
+          <div class="bi">📣</div>
+          <div><h3>פוסט ייעודי ברשתות</h3><p>חשיפה ייעודית לדוכן שלך ברשתות החברתיות של ShukWAY.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PRICE + URGENCY ===== -->
+  <section>
+    <div class="wrap">
+      <div class="price-box">
+        <span class="pill">מסלול סוחר מייסד</span>
+        <div class="amount"><span class="cur">₪</span><span class="num">1,500</span></div>
+        <div class="once">תשלום חד-פעמי</div>
+        <div class="no-monthly">ללא תשלום חודשי · ללא התחייבות מתמשכת</div>
+        <div class="scarcity">רק 20 מקומות בשוק כולו — כשהם נגמרים, נגמר.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA — 3 WAYS ===== -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">מוכן להיות מייסד?</div>
+      <h2 class="h2">שלוש דרכים להצטרף</h2>
+
+      <div class="ways" style="margin-top:22px">
+        <!-- 1. WhatsApp (primary) -->
+        <a class="way primary" data-wa href="https://wa.me/972533202627" target="_blank" rel="noopener">
+          <span class="ic">💬</span>
+          <span class="tx"><b>וואטסאפ — הכי מהיר</b><small>נדבר, נענה על שאלות, נשמור לך מקום</small></span>
+          <span class="arr">←</span>
+        </a>
+
+        <!-- 2. Cardcom immediate payment -->
+        <!-- TODO(דב): החלף את [CARDCOM_LINK_1419] ב-URL האמיתי של לינק התשלום #1419 בקארדקום (תשלום 1,500 ₪). -->
+        <a class="way pay" href="[CARDCOM_LINK_1419]" target="_blank" rel="noopener">
+          <span class="ic">💳</span>
+          <span class="tx"><b>תשלום מיידי — 1,500 ₪</b><small>סגירת מקום מאובטחת דרך קארדקום</small></span>
+          <span class="arr">←</span>
+        </a>
+
+        <!-- 3. Leave details -->
+        <a class="way form" href="#lead">
+          <span class="ic">✍️</span>
+          <span class="tx"><b>השאר פרטים ונחזור אליך</b><small>שם, טלפון ושם העסק — ואנחנו נתקשר</small></span>
+          <span class="arr">↓</span>
+        </a>
+      </div>
+
+      <!-- lead form — Monday WorkForm (leads land in board 5098940172). Public URL: https://wkf.ms/4ezObvB -->
+      <div id="lead" class="leadform">
+        <h3>השאירו פרטים — נחזור אליכם</h3>
+        <div class="hint">הטופס נשלח ישירות לצוות ShukWAY — ניצור קשר תוך יום עסקים אחד.</div>
+        <iframe src="https://wkf.ms/4ezObvB" title="טופס הצטרפות — סוחר מייסד" loading="lazy"
+          style="width:100%;min-height:700px;border:0;border-radius:12px;background:#fff"></iframe>
+        <div style="text-align:center;margin-top:10px;font-size:13px">
+          <a href="https://wkf.ms/4ezObvB" target="_blank" rel="noopener" style="color:var(--orange);font-weight:700">הטופס לא נטען? פתחו אותו בלשונית חדשה ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="foot">
+    <div class="who">ידידיה לפידות</div>
+    <div class="role">מנכ"ל ShukWAY</div>
+    <div class="links">
+      <a data-wa href="https://wa.me/972533202627" target="_blank" rel="noopener">💬 וואטסאפ · 053-3202627</a>
+      <a href="tel:0533202627">📞 053-3202627</a>
+      <a href="mailto:support@shukway.com">✉️ support@shukway.com</a>
+      <a href="https://shukway.com" target="_blank" rel="noopener">🌐 shukway.com ↗</a>
+    </div>
+    <div class="copy">ShukWAY · תוכנית סוחר מייסד · שוק מחנה יהודה</div>
+  </footer>
+
+  <script>
+    /* Prefilled WhatsApp message for every [data-wa] link — encoded safely at runtime. */
+    var WA_MSG = "היי, אני מעוניין בתוכנית סוחר מייסד של ShukWAY";
+    document.querySelectorAll('[data-wa]').forEach(function(a){
+      a.href = "https://wa.me/972533202627?text=" + encodeURIComponent(WA_MSG);
+    });
+  </script>
+</body>
+</html>
