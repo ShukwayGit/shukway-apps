@@ -19,11 +19,11 @@
   /* verified shuk-frontend tokens (Brief 1) */
   --teal:#038A82; --teal-light:#4ECDC4; --teal-dark:#026B65; --teal-darker:#013E3A; --teal-tint:#DCEFED;
   --orange:#E56E13; --orange-dark:#C75A08; --orange-soft:#FBE6D2;
-  --bg:#EFF8F7; --cream:#FAF9F5; --paper:#FFFFFF;
-  --ink:#15302D; --ink-2:#3A4D4B; --muted:#768987; --line:#E3EBE9;
-  --green:#1c7a2e; --green-soft:#e3f6e8; --red:#C0392B; --red-soft:#FBE3E3;
+  --bg:#EFF8F7; --cream:#FAF5EC; --paper:#FFFEF9;
+  --ink:#15302D; --ink-2:#3A4D4B; --muted:#6B6B6B; --line:#E8E0CD;
+  --green:#1c7a2e; --green-soft:#E8F2EF; --red:#C0392B; --red-soft:#FBE3E3;
   --radius-card:16px; --radius-btn:12px;
-  --shadow:0 8px 24px rgba(1,75,71,.10); --shadow-sm:0 2px 8px rgba(1,75,71,.06);
+  --shadow:0 8px 24px rgba(120,90,40,.12); --shadow-sm:0 2px 8px rgba(120,90,40,.07);
   --font:'Ploni','Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
   /* 8 category colors */
   --c-food:#E56E13; --c-produce:#2F9E44; --c-fashion:#5B5BD6; --c-judaica:#8A6D3B;
@@ -108,6 +108,22 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
 .stat{background:var(--bg);border-radius:12px;padding:14px 10px;text-align:center;}
 .stat .num{font-size:24px;font-weight:800;color:var(--teal-dark);line-height:1;} .stat .lbl{font-size:11.5px;font-weight:600;color:var(--muted);margin-top:6px;}
 .demo-tag{font-size:10.5px;font-weight:700;color:var(--orange-dark);background:var(--orange-soft);padding:3px 9px;border-radius:999px;}
+/* ── coupon go-live confirmation ── */
+.golive-ov{position:fixed;inset:0;background:rgba(21,48,45,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:18px;backdrop-filter:blur(2px)}
+.golive{background:var(--paper);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);max-width:420px;width:100%;padding:26px 24px;text-align:center;position:relative;max-height:92vh;overflow:auto}
+.golive__x{position:absolute;top:12px;left:14px;background:none;border:none;font-size:18px;color:var(--muted);cursor:pointer}
+.golive__burst{font-size:44px;line-height:1}
+.golive h2{font-size:21px;font-weight:800;margin:8px 0 16px;line-height:1.3}
+.golive__appcard{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:start;position:relative;overflow:hidden}
+.golive__appcard::before{content:"";position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--orange))}
+.gac__top{font-size:11px;font-weight:700;color:var(--muted)}
+.gac__biz{margin-top:6px}.gac__biz b{font-size:15px}.gac__biz small{display:block;color:var(--muted);font-size:12px}
+.gac__deal{margin-top:10px;background:var(--orange-soft);color:var(--orange-dark);border-radius:9px;padding:8px 10px;font-weight:700;font-size:13px}
+.golive__links{margin:16px 0;text-align:start}
+.golive__links .gll{font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:6px}
+.golive__links a{display:inline-block;margin-inline-end:8px;margin-bottom:6px;text-decoration:none;font-size:13px;font-weight:700;color:var(--teal);background:var(--teal-tint);padding:7px 11px;border-radius:9px}
+.golive__status{font-size:13px;font-weight:700;margin:6px 0}
+.golive__note{font-size:11.5px;color:var(--muted);margin:8px 0 16px}
 .contact{display:flex;flex-direction:column;gap:11px;}
 .crow{display:flex;align-items:center;gap:11px;font-size:14px;}
 .crow .ci{width:30px;height:30px;border-radius:9px;background:var(--bg);color:var(--teal);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
@@ -242,7 +258,7 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
 
     <!-- ════ CREATE COUPON ════ -->
     <section class="section" id="s-create">
-      <div class="page-h"><h1>יצירת קופון חדש</h1><p>בחר את סוג ההטבה ומלא את הפרטים</p></div>
+      <div class="page-h"><h1>יצירת קופון <span id="createForBiz" style="color:var(--teal)"></span></h1><p>בחר את סוג ההטבה ומלא את הפרטים — הקופון יעלה בשם העסק שלך</p></div>
       <div class="grid">
         <div class="col">
           <div class="card">
@@ -254,7 +270,7 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
               <div class="st"><b>סוד ההנחה</b><p>הסתר את גובה ההנחה מהצרכן עד רגע הסריקה בדוכן.</p></div>
               <div class="sw-toggle" id="secretSw" onclick="this.classList.toggle('off');renderPreview();"></div>
             </div>
-            <button class="btn-primary orange" onclick="alert('צור קופון — UI להדגמה, ללא שמירה אמיתית')">✓ צור קופון</button>
+            <button class="btn-primary orange" onclick="submitCoupon()">✓ צור קופון · העלה לאוויר</button>
           </div>
         </div>
         <div class="col">
@@ -366,7 +382,7 @@ function renderCoupons(){document.getElementById('clist').innerHTML=COUPONS.map(
 /* ───── create coupon ───── */
 let selDeal='pct';
 function renderDeals(){document.getElementById('deals').innerHTML=DEALS.map(d=>`<div class="deal ${d.k===selDeal?'sel':''}" onclick="selDeal='${d.k}';renderDeals();renderFields();renderPreview();"><span class="tag">${d.tag}</span><div class="di">${d.ico}</div><h4>${d.h}</h4><p>${d.p}</p></div>`).join('');}
-function renderFields(){const common=`<div class="field"><label>שם הקופון</label><input type="text" value="הנחת פתיחה" oninput="renderPreview()" id="cName"></div><div class="field"><label>תיאור קצר</label><input type="text" value="בהצגת אפליקציית ShukWAY" id="cDesc"></div>`;const map={pct:`<div class="frow"><div class="field"><label>גובה ההנחה (%)</label><input type="number" value="15" id="cVal" oninput="renderPreview()"></div><div class="field"><label>מינימום רכישה (₪)</label><input type="number" value="0"></div></div>`,tier:`<div class="frow"><div class="field"><label>קנה מעל (₪)</label><input type="number" value="50"></div><div class="field"><label>קבל הנחה (₪)</label><input type="number" value="10" id="cVal" oninput="renderPreview()"></div></div>`,item:`<div class="frow"><div class="field"><label>שם המוצר</label><input type="text" value="חלה"></div><div class="field"><label>גובה ההנחה (%)</label><input type="number" value="20" id="cVal" oninput="renderPreview()"></div></div>`,gift:`<div class="frow"><div class="field"><label>קנה מוצר</label><input type="text" value="עוגת שבת"></div><div class="field"><label>קבל במתנה</label><input type="text" value="לחמנייה"></div></div>`};const valid=`<div class="field"><label>תקף עד</label><input type="date" value="2026-06-30"></div>`;document.getElementById('dealFields').innerHTML=common+(map[selDeal]||map.pct)+valid;}
+function renderFields(){const common=`<div class="field"><label>שם הקופון</label><input type="text" value="הנחת פתיחה" oninput="renderPreview()" id="cName"></div><div class="field"><label>תיאור קצר</label><input type="text" value="בהצגת אפליקציית ShukWAY" id="cDesc"></div>`;const map={pct:`<div class="frow"><div class="field"><label>גובה ההנחה (%)</label><input type="number" value="15" id="cVal" oninput="renderPreview()"></div><div class="field"><label>מינימום רכישה (₪)</label><input type="number" value="0"></div></div>`,tier:`<div class="frow"><div class="field"><label>קנה מעל (₪)</label><input type="number" value="50"></div><div class="field"><label>קבל הנחה (₪)</label><input type="number" value="10" id="cVal" oninput="renderPreview()"></div></div>`,item:`<div class="frow"><div class="field"><label>שם המוצר</label><input type="text" value="חלה"></div><div class="field"><label>גובה ההנחה (%)</label><input type="number" value="20" id="cVal" oninput="renderPreview()"></div></div>`,gift:`<div class="frow"><div class="field"><label>קנה מוצר</label><input type="text" value="עוגת שבת"></div><div class="field"><label>קבל במתנה</label><input type="text" value="לחמנייה"></div></div>`};const valid=`<div class="field"><label>תקף עד</label><input type="date" value="2026-06-30" id="cValid"></div>`;document.getElementById('dealFields').innerHTML=common+(map[selDeal]||map.pct)+valid;}
 function renderPreview(){const name=(document.getElementById('cName')||{}).value||'הנחת פתיחה';const val=(document.getElementById('cVal')||{}).value;const d=DEALS.find(x=>x.k===selDeal);const secret=!document.getElementById('secretSw').classList.contains('off');let disc=selDeal==='gift'?'🎁':selDeal==='tier'?'₪'+(val||10):(val||15)+'%';document.getElementById('cpreview').innerHTML=`<div class="cpreview"><div class="pd ${secret?'hidden':''}">${secret?'🤫':disc}</div><div class="pt"><b>${name}</b><p>${secret?'ההנחה תיחשף בסריקה':d.h} · ${BIZNAME}</p></div></div>`;}
 
 /* ───── daily report ───── */
@@ -381,7 +397,12 @@ const IMG_CDN='https://d2jv4v5gyn2os8.cloudfront.net/';
 const imgUrl=(k,w)=>`https://wsrv.nl/?url=${encodeURIComponent(IMG_CDN+k)}&w=${w||400}&output=webp`;
 const SUPER={food_and_drinks:{he:'אוכל ושתייה',c:'food'},market_and_shopping:{he:'שוק וקניות',c:'produce'},fashion_and_footwear:{he:'אופנה והנעלה',c:'fashion'},gifts_and_judaica:{he:'מתנות ויודאיקה',c:'judaica'},home_and_craft:{he:'בית ומלאכה',c:'home'},health_and_beauty:{he:'בריאות וטיפוח',c:'health'},services_and_transport:{he:'שירותים ותחבורה',c:'services'},essential_services:{he:'שירותים חיוניים',c:'essential'}};
 let BIZNAME='מאפיית ברמן';   // used by the coupon preview; overwritten with real name
+let BIZINFO={};               // full live business object (slug/id/location/image) for coupon creation
 const CATSUPER={};            // category id -> super slug, from /categories/tree
+// Coupon intake endpoint — our server that creates the Monday item (board 5098280692)
+// with a server-side token. Empty until Dov provides the token + we stand up the server;
+// until then submitCoupon() queues locally and still shows the go-live confirmation.
+const COUPON_INTAKE_URL='';
 
 async function loadBusiness(){
   const slug=new URLSearchParams(location.search).get('slug')||'bureks-ramla';
@@ -389,8 +410,9 @@ async function loadBusiness(){
   try{ b=await fetch(`${API}/businesses/slug/1/${encodeURIComponent(slug)}`).then(r=>r.ok?r.json():Promise.reject(r.status)); }
   catch(e){ console.warn('business load failed:',e); return; }
 
-  BIZNAME=b.name;
+  BIZNAME=b.name; BIZINFO=b;
   document.querySelectorAll('.biz__name').forEach(el=>el.textContent=b.name);
+  const cfb=document.getElementById('createForBiz'); if(cfb) cfb.textContent='· '+b.name;
   document.title='ShukWAY · '+b.name;
 
   if(b.primary_image_url){
@@ -428,6 +450,63 @@ async function loadBusiness(){
   }catch(e){ console.warn('hours load failed:',e); }
 
   renderStatus(); renderPreview();
+}
+
+/* ═════ CREATE COUPON → GO LIVE (capture to Monday board 5098280692 via our server) ═════ */
+const DEAL2MONDAY={pct:'אחוז הנחה',tier:'סכום הנחה',item:'מחיר מיוחד',gift:'קנה-קבל'};
+function collectCoupon(){
+  const v=id=>(document.getElementById(id)||{}).value||'';
+  const name=v('cName')||'הנחת פתיחה';
+  const val=v('cVal'); const valid=v('cValid');
+  const secret=!document.getElementById('secretSw').classList.contains('off');
+  const d=DEALS.find(x=>x.k===selDeal)||DEALS[0];
+  const disc=selDeal==='gift'?'מתנה':selDeal==='tier'?'₪'+(val||10):(val||15)+'%';
+  return {
+    business:BIZINFO.name||BIZNAME, slug:BIZINFO.slug||'', business_id:BIZINFO.id||null,
+    location:BIZINFO.location_description||'', phone:BIZINFO.phone||'',
+    deal_type:DEAL2MONDAY[selDeal]||'אחוז הנחה', deal_key:selDeal,
+    coupon_name:name, terms:d.h+(val?(' · '+disc):''), discount:disc,
+    valid_to:valid, secret, qr_required:true,
+    settlement:'עמלה באחוזים', commission:'15%', created_from:'owner-dashboard'
+  };
+}
+async function submitCoupon(){
+  const c=collectCoupon();
+  let captured='queued';
+  if(COUPON_INTAKE_URL){
+    try{ const r=await fetch(COUPON_INTAKE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(c)}); captured=r.ok?'monday':'failed'; }
+    catch(e){ captured='failed'; }
+  }
+  if(captured!=='monday'){ const q=JSON.parse(localStorage.getItem('shukway_coupon_queue')||'[]'); q.push(c); localStorage.setItem('shukway_coupon_queue',JSON.stringify(q)); }
+  showGoLive(c,captured);
+}
+function showGoLive(c,captured){
+  const bizLink=c.slug?`https://shukway.com/business/${c.slug}`:'https://shukway.com';
+  const status=captured==='monday'
+    ? '<span style="color:var(--green)">✓ נקלט בלוח הקליטה ב-Monday</span>'
+    : '<span style="color:var(--orange-dark)">⏳ ממתין לחיבור Monday — נשמר בתור מקומי</span>';
+  const el=document.createElement('div'); el.className='golive-ov'; el.id='goliveOv';
+  el.addEventListener('click',e=>{if(e.target===el)el.remove();});
+  el.innerHTML=`
+    <div class="golive">
+      <button class="golive__x" onclick="document.getElementById('goliveOv').remove()">✕</button>
+      <div class="golive__burst">🎉</div>
+      <h2>הקופון עלה לאוויר<br>בשם <span style="color:var(--teal)">${c.business}</span></h2>
+      <div class="golive__appcard">
+        <div class="gac__top">כך זה מופיע באפליקציה</div>
+        <div class="gac__biz"><b>${c.business}</b><small>${c.location||'מחנה יהודה, ירושלים'}</small></div>
+        <div class="gac__deal">${c.secret?'🤫 סוד הנחה':'🎟️ '+c.discount} · ${c.coupon_name}</div>
+      </div>
+      <div class="golive__links">
+        <div class="gll">מקושר אוטומטית לכל רבדי האפליקציה:</div>
+        <a href="${bizLink}" target="_blank" rel="noopener">🔗 כרטיס העסק</a>
+        <a href="https://map.shukway.com" target="_blank" rel="noopener">🗺️ מיקום במפה</a>
+      </div>
+      <div class="golive__status">${status}</div>
+      <div class="golive__note">התצוגה בפועל באפליקציית הצרכן מתחברת דרך הסקריפט לשלומי (השלב הבא).</div>
+      <button class="btn-primary orange" onclick="document.getElementById('goliveOv').remove();go('coupons')">לקופונים שלי ←</button>
+    </div>`;
+  document.body.appendChild(el);
 }
 
 renderHours();renderStatus();renderCoupons();renderDeals();renderFields();renderPreview();renderReport();

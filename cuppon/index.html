@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ShukWAY · מסע הקופון</title>
+<meta name="description" content="מסע הקופון של ShukWAY — מקצה לקצה: מבעל העסק שיוצר את ההטבה ועד הצרכן שמממש אותה בדוכן.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* Ploni — the brand typeface (canon: ShukWAY_Design_Guidelines), bundled in ./fonts/ */
+@font-face{font-family:'Ploni';src:url('fonts/ploni-regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-medium-aaa.woff') format('woff');font-weight:500;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-demibold-aaa.woff') format('woff');font-weight:600;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-bold-aaa.woff') format('woff');font-weight:700;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-ultrabold-aaa.woff') format('woff');font-weight:800;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-ultrabold-aaa.woff') format('woff');font-weight:900;font-display:swap}
+:root{
+  /* canon tokens — warm cream, Ploni, warm shadows (ShukWAY_Design_Guidelines) */
+  --teal:#038A82; --teal-dark:#026E68; --teal-darker:#024B46; --teal-tint:#EFF8F7;
+  --orange:#E56E13; --orange-dark:#C25A0E; --orange-soft:#FCEEDB;
+  --bg:#F5EFE2; --cream:#FAF5EC; --paper:#FFFEF9; --ink:#1A1A1A; --ink2:#4A4A4A;
+  --muted:#6B6B6B; --line:#E8E0CD; --green:#1c7a2e; --green-soft:#E8F2EF;
+  --shadow:0 12px 40px rgba(120,90,40,.16); --shadow-sm:0 2px 6px rgba(120,90,40,.08);
+  --font:'Ploni','Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+.num{font-family:'Roboto',sans-serif;font-variant-numeric:tabular-nums}
+body{font-family:var(--font);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(circle at 12% -5%,var(--teal-tint),transparent 42%),
+  radial-gradient(circle at 100% 0%,rgba(229,110,19,.07),transparent 40%),var(--cream);}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+
+/* hero */
+.hero{background:linear-gradient(120deg,var(--teal-darker),var(--teal-dark));color:#fff;
+  padding:46px 0 54px;border-radius:0 0 30px 30px;box-shadow:var(--shadow)}
+.brand{font-size:30px;font-weight:900;letter-spacing:-.5px}
+.brand span{color:var(--orange-soft)}
+.hero h1{font-size:clamp(26px,6vw,42px);font-weight:900;margin-top:12px;line-height:1.15}
+.hero h1 em{font-style:normal;color:#ffd9b0}
+.hero p{font-size:16px;opacity:.9;margin-top:12px;max-width:620px}
+.lanes{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.lane-chip{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;padding:9px 16px;font-size:14px;font-weight:700}
+.lane-chip .d{width:11px;height:11px;border-radius:50%}
+.lane-chip.m .d{background:var(--teal-tint)} .lane-chip.c .d{background:#ffb877}
+
+/* journey */
+.journey{position:relative;margin:46px 0 20px}
+.journey::before{content:"";position:absolute;inset-block:18px 60px;inset-inline-start:31px;width:3px;
+  background:linear-gradient(var(--teal),var(--orange));border-radius:3px;opacity:.5}
+@media(max-width:700px){.journey::before{inset-inline-start:23px}}
+.step{position:relative;display:grid;grid-template-columns:64px 1fr;gap:18px;margin-bottom:34px;align-items:start}
+@media(max-width:700px){.step{grid-template-columns:48px 1fr;gap:14px}}
+.dot{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:26px;color:#fff;box-shadow:var(--shadow-sm);flex:0 0 auto;z-index:1;position:relative}
+@media(max-width:700px){.dot{width:48px;height:48px;font-size:20px}}
+.dot.m{background:var(--teal)} .dot.c{background:var(--orange)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-sm);
+  padding:20px 22px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+@media(max-width:760px){.card{grid-template-columns:1fr}}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 11px;border-radius:999px;margin-bottom:8px}
+.tag.m{background:var(--teal-tint);color:var(--teal-dark)} .tag.c{background:var(--orange-soft);color:var(--orange-dark)}
+.card h3{font-size:18px;font-weight:800;margin-bottom:5px}
+.card p{font-size:14.5px;color:var(--ink2)}
+.card .step-n{font-size:12px;font-weight:800;color:var(--muted);margin-bottom:2px}
+
+/* phone mock */
+.phone{width:178px;height:330px;background:#0f1f1d;border-radius:26px;padding:9px;box-shadow:0 10px 26px rgba(1,75,71,.22);flex:0 0 auto;justify-self:center}
+.phone .scr{width:100%;height:100%;background:var(--cream);border-radius:18px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.phone .nub{position:absolute;top:7px;left:50%;transform:translateX(-50%);width:46px;height:5px;background:#0f1f1d;border-radius:9px;z-index:3}
+.ph-top{background:var(--teal-darker);color:#fff;padding:18px 12px 10px;font-size:12.5px;font-weight:800}
+.ph-top small{display:block;font-weight:400;opacity:.8;font-size:10.5px}
+.ph-body{flex:1;padding:11px;display:flex;flex-direction:column;gap:8px;overflow:hidden}
+.ph-pill{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:9px 10px;font-size:11px;font-weight:600;box-shadow:var(--shadow-sm)}
+.ph-pill .big{font-size:18px;font-weight:900;color:var(--orange)}
+.ph-btn{background:var(--orange);color:#fff;text-align:center;border-radius:10px;padding:9px;font-size:12px;font-weight:800}
+.ph-btn.teal{background:var(--teal)}
+.secret{background:repeating-linear-gradient(45deg,#15302D,#15302D 7px,#1d3d39 7px,#1d3d39 14px);
+  color:#ffd9b0;text-align:center;border-radius:11px;padding:14px 8px;font-size:12px;font-weight:800}
+.qr{width:84px;height:84px;align-self:center;background:
+  conic-gradient(#000 25%,#fff 0 50%,#000 0 75%,#fff 0),
+  conic-gradient(#fff 25%,#000 0 50%,#fff 0 75%,#000 0);background-size:14px 14px,14px 14px;
+  background-position:0 0,7px 7px;border:5px solid #fff;border-radius:8px;box-shadow:0 0 0 1px var(--line)}
+.okmark{align-self:center;width:64px;height:64px;border-radius:50%;background:var(--green-soft);color:var(--green);
+  display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:900}
+.barrow{display:flex;align-items:flex-end;gap:5px;height:60px;padding-top:6px}
+.barrow i{flex:1;background:var(--teal);border-radius:4px 4px 0 0;opacity:.85}
+
+/* moats */
+.moats{background:linear-gradient(120deg,#fff,var(--teal-tint));border:1.5px solid #bfe3df;border-radius:22px;
+  padding:30px 26px;margin:30px 0}
+.moats h2{font-size:22px;color:var(--teal-darker);font-weight:900;margin-bottom:4px}
+.moats .sub{font-size:14px;color:var(--ink2);margin-bottom:18px}
+.mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:760px){.mgrid{grid-template-columns:1fr}}
+.moat{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow-sm)}
+.moat .mi{font-size:24px}.moat h4{font-size:15.5px;font-weight:800;margin:8px 0 5px}.moat p{font-size:13px;color:var(--ink2)}
+.metrics{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.metric{flex:1;min-width:120px;background:var(--paper);border-radius:13px;padding:16px 14px;text-align:center;border:1px solid var(--line);position:relative;overflow:hidden}
+.metric::before{content:"";position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,var(--teal),var(--orange))}
+.metric .v{font-size:26px;font-weight:900;color:var(--teal-dark);line-height:1}
+.metric .v.o{color:var(--orange)} .metric .l{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:5px}
+
+/* cta */
+.cta{text-align:center;padding:42px 0 60px}
+.cta h2{font-size:24px;font-weight:900;color:var(--teal-darker)}
+.cta p{font-size:15px;color:var(--ink2);margin:8px 0 20px}
+.btn{display:inline-block;text-decoration:none;font-weight:800;font-size:15px;color:#fff;background:var(--orange);
+  padding:14px 30px;border-radius:14px;box-shadow:var(--shadow-sm)}
+.foot{text-align:center;color:var(--muted);font-size:12px;padding-bottom:30px}
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="wrap">
+      <div class="brand">שוק<span>WAY</span></div>
+      <h1>מסע הקופון — <em>מקצה לקצה</em></h1>
+      <p>איך הטבה אחת עוברת את כל הדרך: מבעל העסק שיוצר אותה בדוכן, דרך הצרכן שמגלה אותה באפליקציה, ועד המימוש המאומת בקופה — והעסק שרואה את התוצאה.</p>
+      <div class="lanes">
+        <span class="lane-chip m"><span class="d"></span>צד העסק</span>
+        <span class="lane-chip c"><span class="d"></span>צד הצרכן</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="journey">
+
+      <!-- 1 -->
+      <div class="step">
+        <div class="dot m">🏪</div>
+        <div class="card">
+          <div>
+            <div class="step-n num">שלב 1 · צד העסק</div>
+            <span class="tag m">בעל העסק</span>
+            <h3>יוצר קופון בדקות</h3>
+            <p>בעל העסק בוחר סוג הטבה (אחוז / סכום / 1+1 / קנה-קבל), כותב את התנאים, ומחליט אם להפעיל את <b>"סוד ההנחה"</b> — כל זה מדשבורד פשוט, בלי מתכנת.</p>
+          </div>
+          <div class="phone"><div class="scr"><span class="nub"></span>
+            <div class="ph-top">יצירת קופון<small>מאפיית ברמן</small></div>
+            <div class="ph-body">
+              <div class="ph-pill">סוג הטבה<br><b>אחוז הנחה · 15%</b></div>
+              <div class="ph-pill">תוקף · 30.6.26</div>
+              <div class="ph-pill" style="display:flex;justify-content:space-between;align-items:center">🤫 סוד ההנחה<b style="color:var(--teal)">פעיל</b></div>
+              <div class="ph-btn">✓ צור קופון</div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="step">
+        <div class="dot m">📡</div>
+        <div class="card">
+          <div>
+            <div class="step-n num">שלב 2 · צד העסק</div>
+            <span class="tag m">המערכת</span>
+            <h3>הקופון עולה לאוויר — בשם העסק</h3>
+            <p>ברגע האישור, הקופון מופיע באפליקציית ShukWAY <b>תחת שם העסק והמיקום שלו בשוק</b> — מקושר אוטומטית לכרטיס העסק ולמפה.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="step">
+        <div class="dot c">🔍</div>
+        <div class="card">
+          <div>
+            <div class="step-n num">שלב 3 · צד הצרכן</div>
+            <span class="tag c">הצרכן</span>
+            <h3>מגלה את הקופון באפליקציה</h3>
+            <p>המבקר בשוק רואה את הדוכן על המפה, נכנס לכרטיס העסק — ומגלה שיש כאן הטבה פעילה. הניווט הפנים-שוקי מביא אותו ישר לדוכן.</p>
+          </div>
+          <div class="phone"><div class="scr"><span class="nub"></span>
+            <div class="ph-top">מאפיית ברמן<small>סמטת הבשמים · פתוח עכשיו</small></div>
+            <div class="ph-body">
+              <div class="ph-pill" style="background:var(--orange-soft);border-color:#f3cdaa">🎟️ הטבה פעילה כאן</div>
+              <div class="ph-pill">קטגוריה · אוכל ושתייה</div>
+              <div class="ph-btn teal">נווט לכאן</div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="step">
+        <div class="dot c">🤫</div>
+        <div class="card">
+          <div>
+            <div class="step-n num">שלב 4 · צד הצרכן</div>
+            <span class="tag c">הצרכן</span>
+            <h3>סוד ההנחה</h3>
+            <p>גובה ההנחה מוסתר עד רגע הסריקה בדוכן. זה יוצר סקרנות, מביא את הלקוח פיזית לעסק, ומונע "ציד הנחות" מרחוק — הטבה שנחשפת רק מי שבא.</p>
+          </div>
+          <div class="phone"><div class="scr"><span class="nub"></span>
+            <div class="ph-top">ההטבה שלך<small>מאפיית ברמן</small></div>
+            <div class="ph-body" style="justify-content:center">
+              <div class="secret">🤫<br>ההנחה תיחשף<br>בסריקה בדוכן</div>
+              <div class="ph-btn">הצג קוד למימוש</div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="step">
+        <div class="dot c">📷</div>
+        <div class="card">
+          <div>
+            <div class="step-n num">שלב 5 · צד הצרכן</div>
+            <span class="tag c">בדוכן</span>
+            <h3>QR — מימוש מאומת-מיקום</h3>
+            <p>הלקוח מציג QR בקופה. המימוש מאושר רק כשהוא <b>פיזית בתוך הדוכן</b> (אימות מיקום עד ~50 מ׳) — אי אפשר לממש מהבית.</p>
+          </div>
+          <div class="phone"><div class="scr"><span class="nub"></span>
+            <div class="ph-top">קוד מימוש<small>הצג למוכר</small></div>
+            <div class="ph-body" style="justify-content:center;gap:12px">
+              <div class="qr"></div>
+              <div class="ph-pill" style="text-align:center">📍 בתוך הדוכן · מאומת</div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="step">
+        <div class="dot c">🎉</div>
+        <div class="card">
+          <div>
+            <div class="step-n num">שלב 6 · צד הצרכן</div>
+            <span class="tag c">הצרכן</span>
+            <h3>ההנחה נחשפת — והמימוש מאושר</h3>
+            <p>הסוד נפתח: ההנחה מוצגת, הסכום ננעל, והלקוח משלם פחות. חוויה של רגע "וואו" בדיוק בנקודת הקנייה.</p>
+          </div>
+          <div class="phone"><div class="scr"><span class="nub"></span>
+            <div class="ph-top">מומש!<small>מאפיית ברמן</small></div>
+            <div class="ph-body" style="justify-content:center;gap:12px">
+              <div class="okmark">✓</div>
+              <div class="ph-pill" style="text-align:center">נחשף: <span class="big">15%</span><br>הנחה על הקנייה</div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="step">
+        <div class="dot m">📊</div>
+        <div class="card">
+          <div>
+            <div class="step-n num">שלב 7 · צד העסק</div>
+            <span class="tag m">בעל העסק</span>
+            <h3>רואה את המימוש בזמן אמת</h3>
+            <p>המימוש מופיע מיד בדשבורד של העסק — מי, מתי, כמה. הסכום ננעל והעמלה (15%) מחושבת אוטומטית. שקיפות מלאה, בלי ניירת.</p>
+          </div>
+          <div class="phone"><div class="scr"><span class="nub"></span>
+            <div class="ph-top">מימושים היום<small>מאפיית ברמן</small></div>
+            <div class="ph-body">
+              <div class="ph-pill" style="display:flex;justify-content:space-between"><span>13:05 · הנחת פתיחה</span><b>₪6.75</b></div>
+              <div class="ph-pill" style="display:flex;justify-content:space-between"><span>עמלת ShukWAY</span><b style="color:var(--orange)">15%</b></div>
+              <div class="barrow"><i style="height:40%"></i><i style="height:65%"></i><i style="height:50%"></i><i style="height:85%"></i><i style="height:100%"></i></div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- moats -->
+    <div class="moats">
+      <h2>למה המסע הזה שונה</h2>
+      <div class="sub">שלושה מנגנונים שהופכים קופון רגיל למנוע תנועה אמיתי לשוק.</div>
+      <div class="mgrid">
+        <div class="moat"><div class="mi">🤫</div><h4>סוד ההנחה</h4><p>ההטבה נחשפת רק בדוכן — מביאה את הלקוח פיזית, לא ציד הנחות מרחוק.</p></div>
+        <div class="moat"><div class="mi">📍</div><h4>מימוש מאומת-מיקום</h4><p>סריקה מאושרת רק בתוך הדוכן (~50מ׳). בלי הונאות, בלי מימוש מהבית.</p></div>
+        <div class="moat"><div class="mi">🔗</div><h4>מקושר לעסק ולמפה</h4><p>כל קופון תחת שם העסק ומיקומו — חלק מחוויית הניווט בשוק.</p></div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><div class="v o num">15%</div><div class="l">עמלת ShukWAY (מול 20-30% בוולט)</div></div>
+        <div class="metric"><div class="v num">~50מ׳</div><div class="l">רדיוס אימות מימוש</div></div>
+        <div class="metric"><div class="v num">2</div><div class="l">צדדים, מסע אחד מחובר</div></div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <h2>הטבה אחת. מסע אחד שלם.</h2>
+      <p>מהדוכן לאפליקציה ובחזרה — ShukWAY סוגר את הלולאה.</p>
+      <a class="btn" href="https://shukway.com" target="_blank" rel="noopener">לאתר ShukWAY ↗</a>
+    </div>
+  </div>
+
+  <div class="foot">ShukWAY · מסע הקופון · הדמיית מוצר (UI להמחשה)</div>
+</body>
+</html>

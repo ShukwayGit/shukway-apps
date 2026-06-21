@@ -1,0 +1,8 @@
+# WIP / temp working files — never deploy (underscore-prefixed convention)
+_*
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+*.bak
+node_modules/
