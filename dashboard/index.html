@@ -402,7 +402,7 @@ const CATSUPER={};            // category id -> super slug, from /categories/tre
 // Coupon intake endpoint — our server that creates the Monday item (board 5098280692)
 // with a server-side token. Empty until Dov provides the token + we stand up the server;
 // until then submitCoupon() queues locally and still shows the go-live confirmation.
-const COUPON_INTAKE_URL = location.hostname==='localhost' ? 'http://localhost:4300/api/coupon-intake' : '';
+const COUPON_INTAKE_URL = location.hostname==='localhost' ? 'http://localhost:4300/api/coupon-intake' : 'https://shukway-intake.onrender.com/api/coupon-intake';
 
 async function loadBusiness(){
   const slug=new URLSearchParams(location.search).get('slug')||'bureks-ramla';
