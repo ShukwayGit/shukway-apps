@@ -63,14 +63,14 @@ async function createMondayItem(c) {
 // upload the owner's signature (data URL) to the item's file column — non-fatal
 async function uploadSignature(itemId, dataUrl) {
   const m = /^data:(image\/\w+);base64,(.+)$/.exec(dataUrl || '');
-  if (!m) return false;
+  if (!m) return { ok: false, detail: 'bad-dataurl' };
   const buf = Buffer.from(m[2], 'base64');
   const fd = new FormData();
   fd.append('query', `mutation ($file: File!) { add_file_to_column (item_id: ${itemId}, column_id: "${SIG_COL}", file: $file) { id } }`);
-  fd.append('variables[file]', new Blob([buf], { type: m[1] }), 'signature.png');
-  const r = await fetch('https://api.monday.com/v2/file', { method: 'POST', headers: { Authorization: TOKEN }, body: fd });
-  const j = await r.json();
-  return !(j.errors);
+  fd.append('variables[file]', new Blob([new Uint8Array(buf)], { type: m[1] }), 'signature.png');
+  const r = await fetch('https://api.monday.com/v2/file', { method: 'POST', headers: { Authorization: TOKEN, 'API-Version': '2024-01' }, body: fd });
+  const j = await r.json().catch(() => ({ errors: 'non-json:' + r.status }));
+  return { ok: !!(j.data && j.data.add_file_to_column), detail: j.errors ? JSON.stringify(j.errors).slice(0, 300) : 'ok' };
 }
 
 async function readCoupons(business) {
@@ -117,8 +117,9 @@ http.createServer((req, res) => {
       if (!c.signature) return json(res, 422, { ok: false, error: 'signature required' });   // hard gate: no publish without owner signature
       try {
         const id = await createMondayItem(c);
-        let signed = false; try { signed = await uploadSignature(id, c.signature); } catch (e) { /* non-fatal */ }
-        json(res, 200, { ok: true, itemId: id, signed });
+        let sig = { ok: false, detail: 'skip' };
+        try { sig = await uploadSignature(id, c.signature); } catch (e) { sig = { ok: false, detail: String(e.message || e).slice(0, 200) }; }
+        json(res, 200, { ok: true, itemId: id, signed: sig.ok, sigError: sig.ok ? undefined : sig.detail });
       } catch (e) { json(res, 502, { ok: false, error: String(e.message || e) }); }
     });
     return;
