@@ -222,15 +222,92 @@ section{padding:38px 0}
     </div>
   </section>
 
-  <!-- ===== PRICE + URGENCY ===== -->
+  <!-- ===== PACKAGES / TIERS ===== -->
   <section>
     <div class="wrap">
-      <div class="price-box">
-        <span class="pill">מסלול סוחר מייסד</span>
-        <div class="amount"><span class="cur">₪</span><span class="num">1,500</span></div>
-        <div class="once">תשלום חד-פעמי</div>
-        <div class="no-monthly">ללא תשלום חודשי · ללא התחייבות מתמשכת</div>
-        <div class="scarcity">רק 20 מקומות בשוק כולו — כשהם נגמרים, נגמר.</div>
+      <div class="eyebrow">בחרו את המקום שלכם בשוק</div>
+      <h2 class="h2">שלוש דרכים להיות בפנים</h2>
+      <p class="lead">מתחילים קטן או נכנסים בגדול — אבל רק המייסדים משלמים פעם אחת ונשארים לתמיד.</p>
+
+      <style>
+        .tiers{display:grid;gap:18px;margin-top:28px}
+        @media(min-width:780px){.tiers{grid-template-columns:repeat(3,1fr);align-items:stretch}}
+        .tier{position:relative;background:var(--paper);border:1.5px solid var(--line);border-radius:20px;
+          padding:26px 22px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+        .tier .tname{font-size:20px;font-weight:900;color:var(--teal-darker)}
+        .tier .tsub{font-size:13.5px;color:var(--ink2);margin-top:4px;min-height:38px}
+        .tier .tprice{font-size:46px;font-weight:900;color:var(--teal-darker);line-height:1;margin-top:16px}
+        .tier .tprice .c{font-size:.5em;color:var(--orange);vertical-align:middle;margin-inline-start:3px}
+        .tier .tper{font-size:13.5px;font-weight:700;color:var(--muted);margin-top:5px}
+        .tier .tmath{font-size:12.5px;color:var(--muted);margin-top:7px}
+        .tier ul{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+        .tier li{font-size:13.5px;color:var(--ink2);display:flex;gap:9px;align-items:flex-start}
+        .tier li::before{content:"✓";color:var(--teal);font-weight:900;flex:0 0 auto}
+        .tier .tbtn{margin-top:22px;display:block;text-align:center;text-decoration:none;font-weight:800;font-size:15px;
+          padding:15px;border-radius:14px}
+        .tier.lite{justify-content:flex-start}
+        .tier.lite .tbtn{margin-top:auto;background:var(--teal);color:#fff;transition:background .12s ease}
+        .tier.lite .tbtn:hover{background:var(--teal-dark)}
+        /* founder — the hero */
+        .tier.founder{border:2.5px solid var(--orange);background:linear-gradient(165deg,#fff,var(--orange-soft));
+          box-shadow:var(--shadow-orange)}
+        @media(min-width:780px){.tier.founder{transform:scale(1.045)}}
+        .tier.founder .badge{position:absolute;top:-14px;right:18px;background:var(--orange);color:#fff;
+          font-size:12px;font-weight:800;padding:6px 15px;border-radius:999px;box-shadow:var(--shadow-orange)}
+        .tier.founder .tname,.tier.founder .tprice{color:var(--orange-dark)}
+        .tier.founder .tbtn{background:var(--orange);color:#fff;box-shadow:var(--shadow-orange);transition:background .12s ease}
+        .tier.founder .tbtn:hover{background:var(--orange-dark)}
+        .tier .tscarcity{font-size:12.5px;font-weight:800;color:var(--orange-dark);margin-top:12px}
+      </style>
+
+      <div class="tiers">
+        <!-- FOUNDER: חנות מייסד (high anchor, the one we want) -->
+        <div class="tier founder">
+          <span class="badge">⭐ הכי משתלם · 20 מקומות בלבד</span>
+          <div class="tname">חֲנוּת · סוחר מייסד</div>
+          <div class="tsub">הבעלים של מקום בשוק הדיגיטלי — לכל החיים.</div>
+          <div class="tprice"><span class="num">1,500</span><span class="c">₪</span></div>
+          <div class="tper">תשלום חד-פעמי</div>
+          <div class="tmath"><b>פעם אחת — ואז אף פעם לא שוב.</b></div>
+          <ul>
+            <li>תג "סוחר מייסד" בלעדי באפליקציה</li>
+            <li>מיקום ראשון במפה ובחיפוש</li>
+            <li>פרופיל מורחב — תמונות, וידאו, סטוריז</li>
+            <li>גישה ראשונה לקופונים — בתנאים מועדפים</li>
+            <li>פוסט ייעודי ברשתות + תעודת מייסד רשמית</li>
+          </ul>
+          <div class="tscarcity">רק 20 מקומות בשוק כולו — כשהם נגמרים, נגמר.</div>
+          <a class="tbtn" href="https://pay.shukway.com/pay">אני רוצה להיות מייסד →</a>
+        </div>
+
+        <!-- MID: דוכן -->
+        <div class="tier lite">
+          <div class="tname">דּוּכָן</div>
+          <div class="tsub">נוכחות רצינית בשוק — רבעון שלם.</div>
+          <div class="tprice"><span class="num">1,200</span><span class="c">₪</span></div>
+          <div class="tper">לרבעון · 3 חודשים</div>
+          <div class="tmath">≈ 400 ₪ לחודש</div>
+          <ul>
+            <li>פרופיל מקודם בשוק</li>
+            <li>מיקום מועדף בקטגוריה</li>
+            <li>חשיפה למבקרים באפליקציה</li>
+          </ul>
+          <a class="tbtn" href="https://pay.shukway.com/pay/quarter">בחירת דּוּכָן</a>
+        </div>
+
+        <!-- ENTRY: בסטה -->
+        <div class="tier lite">
+          <div class="tname">בַּסְטָה</div>
+          <div class="tsub">טועמים את ShukWAY — להתחלה.</div>
+          <div class="tprice"><span class="num">500</span><span class="c">₪</span></div>
+          <div class="tper">לחודש הראשון</div>
+          <div class="tmath">החבילה הקטנה להתנסות</div>
+          <ul>
+            <li>פרופיל מקודם בשוק</li>
+            <li>חשיפה למבקרים באפליקציה</li>
+          </ul>
+          <a class="tbtn" href="https://pay.shukway.com/pay/month">בחירת בַּסְטָה</a>
+        </div>
       </div>
     </div>
   </section>
@@ -238,26 +315,18 @@ section{padding:38px 0}
   <!-- ===== FINAL CTA — 3 WAYS ===== -->
   <section>
     <div class="wrap">
-      <div class="eyebrow">מוכן להיות מייסד?</div>
-      <h2 class="h2">שלוש דרכים להצטרף</h2>
+      <div class="eyebrow">עדיין מתלבטים?</div>
+      <h2 class="h2">דברו איתנו או השאירו פרטים</h2>
 
       <div class="ways" style="margin-top:22px">
-        <!-- 1. WhatsApp (primary) -->
+        <!-- WhatsApp -->
         <a class="way primary" data-wa href="https://wa.me/972533202627" target="_blank" rel="noopener">
           <span class="ic">💬</span>
           <span class="tx"><b>וואטסאפ — הכי מהיר</b><small>נדבר, נענה על שאלות, נשמור לך מקום</small></span>
           <span class="arr">←</span>
         </a>
 
-        <!-- 2. Cardcom payment — live: pay.shukway.com/pay creates a Cardcom Low Profile
-             page (terminal 191986) and redirects the customer to the hosted card form. -->
-        <a class="way pay" href="https://pay.shukway.com/pay">
-          <span class="ic">💳</span>
-          <span class="tx"><b>תשלום מיידי — 1,500 ₪</b><small>סליקה מאובטחת בכרטיס אשראי דרך קארדקום</small></span>
-          <span class="arr">←</span>
-        </a>
-
-        <!-- 3. Leave details -->
+        <!-- Leave details -->
         <a class="way form" href="#lead">
           <span class="ic">✍️</span>
           <span class="tx"><b>השאר פרטים ונחזור אליך</b><small>שם, טלפון ושם העסק — ואנחנו נתקשר</small></span>
