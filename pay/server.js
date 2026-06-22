@@ -29,19 +29,27 @@ const SUCCESS_URL  = process.env.SUCCESS_URL || 'https://grow.shukway.com/?paid=
 const FAILED_URL   = process.env.FAILED_URL || 'https://grow.shukway.com/?paid=0';
 const PORT         = process.env.PORT || 3000;
 
+// Fixed-amount payment plans — each path is its own WhatsApp-shareable link.
+// Amounts are server-side (not from the query) so they can't be tampered with.
+const PLANS = {
+  '/pay':         { amount: AMOUNT, product: PRODUCT },
+  '/pay/quarter': { amount: 1200,   product: 'חבילת פרסום — רבעון · ShukWAY' },
+  '/pay/month':   { amount: 500,    product: 'חבילת פרסום — חודש ראשון · ShukWAY' }
+};
+
 function redirect(res, url) { res.writeHead(302, { Location: url }); res.end(); }
 function withParam(url, k, v) { return url + (url.includes('?') ? '&' : '?') + k + '=' + encodeURIComponent(v); }
 
-async function createLowProfile() {
+async function createLowProfile(amount, product) {
   const payload = {
     TerminalNumber: Number(TERMINAL),
     ApiName: API_NAME,
     Operation: 'ChargeOnly',
-    Amount: AMOUNT,
+    Amount: amount,
     ISOCoinId: 1,            // 1 = ILS
     Language: 'he',
-    ReturnValue: 'grow-founder-' + Date.now(),
-    ProductName: PRODUCT,
+    ReturnValue: 'grow-' + amount + '-' + Date.now(),
+    ProductName: product,
     SuccessRedirectUrl: SUCCESS_URL,
     FailedRedirectUrl: FAILED_URL
   };
@@ -62,19 +70,21 @@ const server = http.createServer(async (req, res) => {
   // health / root
   if (pathname === '/' || pathname === '/health') {
     res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-    res.end(JSON.stringify({ ok: true, service: 'shukway-pay', configured: !!(TERMINAL && API_NAME), amount: AMOUNT }));
+    const plans = Object.keys(PLANS).reduce(function (m, p) { m[p] = PLANS[p].amount; return m; }, {});
+    res.end(JSON.stringify({ ok: true, service: 'shukway-pay', configured: !!(TERMINAL && API_NAME), plans: plans }));
     return;
   }
 
-  // the payment entrypoint the grow button links to
-  if (pathname === '/pay') {
+  // the payment entrypoints (one per plan) — each is a WhatsApp-shareable link
+  const plan = PLANS[pathname];
+  if (plan) {
     if (!TERMINAL || !API_NAME) {
       res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
       res.end('Payment endpoint not configured: set CARDCOM_TERMINAL and CARDCOM_APINAME env vars.');
       return;
     }
     try {
-      const data = await createLowProfile();
+      const data = await createLowProfile(plan.amount, plan.product);
       if (data && data.ResponseCode === 0 && data.Url) {
         redirect(res, data.Url);                       // -> Cardcom hosted card page
       } else {

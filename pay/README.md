@@ -37,4 +37,11 @@ credentials must stay server-side).
   unless you add refunds or invoice-only documents.
 - Render free Web Services cold-start (~30–50s after idle). For a payment
   button consider a paid instance or a Cloudflare Worker (instant, free).
-- Endpoints: `GET /health` (status JSON), `GET /pay` (create + redirect).
+- Endpoints / WhatsApp-shareable payment links (fixed amounts, set server-side
+  so they can't be tampered with via the query string):
+  | Path | Amount | Purpose |
+  |---|---|---|
+  | `GET /pay` | 1,500 ₪ | Founding Merchant (סוחר מייסד) |
+  | `GET /pay/quarter` | 1,200 ₪ | Ad package — quarter |
+  | `GET /pay/month` | 500 ₪ | Ad package — first month |
+- `GET /health` returns status JSON including the configured plans.
