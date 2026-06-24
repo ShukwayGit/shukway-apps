@@ -203,6 +203,8 @@ body.editing-hours .hrow .static{display:none;} body:not(.editing-hours) .hrow .
 </head>
 <body>
 
+  <div id="shukway-header"></div>
+
   <div class="topbar">
     <img src="logo.png" alt="ShukWAY">
     <div class="div"></div>
@@ -585,5 +587,7 @@ initSig();
 if(new URLSearchParams(location.search).get('slug')){ loadBusiness(); } else { openBizPicker(); }
 setInterval(renderStatus,60000);
 </script>
+
+  <script src="https://map.shukway.com/shared/shukway-header.js?v=1.0.0" data-mode="bar"></script>
 </body>
 </html>
