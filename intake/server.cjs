@@ -12,6 +12,7 @@ const SIG_COL = 'file1rbddwvz';       // "צירוף ההסכם החתום (PDF)
 
 const ALLOWED = [
   'https://dashboard.shukway.com',
+  'https://tablet.shukway.com',
   'http://localhost:4181', 'http://localhost:4183', 'http://localhost:5173',
 ];
 function cors(req, res) {
@@ -45,7 +46,7 @@ function toColumnValues(c) {
     boolean2dapd13a: { checked: c.qr_required ? 'true' : 'false' },
     single_selectqongqne: { label: c.settlement || 'עמלה באחוזים' },
     short_textuwriepz5: c.commission || '15%',
-    long_textx7k1i1l1: { text: `נוצר מ-${c.created_from || 'דשבורד'} · slug=${c.slug || ''}${c.secret ? ' · סוד הנחה' : ''}${c.signature ? ' · חתום' : ''}` },
+    long_textx7k1i1l1: { text: `נוצר מ-${c.created_from || 'דשבורד'}${c.note ? ' · ' + c.note : ''} · slug=${c.slug || ''}${c.secret ? ' · סוד הנחה' : ''}${c.signature ? ' · חתום' : ''}` },
   };
   if (c.phone) cv.phone5wo0vlvb = { phone: String(c.phone), countryShortName: 'IL' };
   if (c.valid_to) cv.date_rangebygokvj9 = { from: today, to: c.valid_to };

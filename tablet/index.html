@@ -696,15 +696,25 @@ canvas.sigpad{width:100%;height:150px;background:repeating-linear-gradient(0deg,
     const clr=document.querySelector('[data-clear="shuk"]'); if(clr) clr.addEventListener('click',()=>{ if(seal) seal.style.display='none'; });
   })();
   // ===== Delivery pipeline (offline-first: capture → queue → deliver → confirm) =====
-  const INTAKE_URL=''; // PLACEHOLDER — set to shukway-intake /submit once approved. empty = queue-only (no network attempt).
+  const INTAKE_URL='https://shukway-intake.onrender.com/api/coupon-intake'; // live intake → Monday board 5098280692
   const SUB_DB='shukway_submissions', SUB_STORE='queue';
   let _deliveryText='', _deliveryKind='', _lastSubId=null;
   function _idb(){ return new Promise((res,rej)=>{ const r=indexedDB.open(SUB_DB,1); r.onupgradeneeded=()=>{ r.result.createObjectStore(SUB_STORE,{keyPath:'id'}); }; r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
   function _idbPut(rec){ return _idb().then(db=>new Promise((res,rej)=>{ const tx=db.transaction(SUB_STORE,'readwrite'); tx.objectStore(SUB_STORE).put(rec); tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error); })); }
   function setDeliveryStatus(text,kind){ _deliveryText=text; _deliveryKind=kind||''; const el=document.getElementById('sw-delivery'); if(el){ el.textContent=text; el.dataset.kind=_deliveryKind; } }
   function _sig(s){ const c=document.querySelector('canvas[data-pad="'+s+'"]'); try{ return c?c.toDataURL('image/png'):null; }catch(e){ return null; } }
+  function _intakePayload(){
+    const d=collectData(), f=d.fields||{}, ch=d.choices||{};
+    return {
+      business:f.biz_name||'', signer:f.sig_biz_name||'', coupon_name:f.coupon_name||'',
+      deal_type:ch.benefit_type||'', terms:f.coupon_terms||'',
+      qr_required: ch.qr_required==='כן', settlement:ch.billing_method||'', commission:f.commission_rate||'',
+      signature:_sig('biz'), created_from:'טאבלט שטח · הסכם הצטרפות',
+      note:'הסכם הצטרפות'+(d.wants_advertising?' + פרסום ממומן':'')+(d.agreement_accepted?' · אישר קריאת ההסכם':'')
+    };
+  }
   async function enqueueSubmission(){
-    const rec={ id:'sub_'+Date.now(), ts:Date.now(), status:'pending', json:collectData(), sigShuk:_sig('shuk'), sigBiz:_sig('biz') };
+    const rec={ id:'sub_'+Date.now(), ts:Date.now(), status:'pending', payload:_intakePayload() };
     _lastSubId=rec.id;
     try{ await _idbPut(rec); }catch(e){}
     setDeliveryStatus('◷ נשמר במכשיר — ממתין לקליטה','pending');
@@ -712,10 +722,10 @@ canvas.sigpad{width:100%;height:150px;background:repeating-linear-gradient(0deg,
     try{ const reg=await navigator.serviceWorker.ready; if(reg && reg.sync) await reg.sync.register('shukway-submit'); }catch(e){}
   }
   async function _trySend(rec){
-    if(!INTAKE_URL || !navigator.onLine) return;
+    if(!INTAKE_URL || !navigator.onLine || !rec.payload) return;
     try{
-      const r=await fetch(INTAKE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)});
-      if(r.ok){ const j=await r.json().catch(()=>({})); rec.status='confirmed'; rec.confirmId=j.confirmId||j.id||''; try{await _idbPut(rec);}catch(e){} setDeliveryStatus('✓ נקלט'+(rec.confirmId?(' #'+rec.confirmId):''),'confirmed'); }
+      const r=await fetch(INTAKE_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec.payload)});
+      if(r.ok){ const j=await r.json().catch(()=>({})); if(j&&j.ok){ rec.status='confirmed'; rec.confirmId=j.itemId||''; try{await _idbPut(rec);}catch(e){} setDeliveryStatus('✓ נקלט'+(rec.confirmId?(' #'+rec.confirmId):''),'confirmed'); } }
     }catch(e){}
   }
   if('serviceWorker' in navigator && location.protocol!=='file:'){
