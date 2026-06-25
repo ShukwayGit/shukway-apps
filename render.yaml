@@ -23,3 +23,10 @@ services:
     rootDir: view
     buildCommand: "echo prebuilt - no build"
     staticPublishPath: .
+
+  - type: web
+    runtime: static
+    name: shukway-tablet
+    rootDir: tablet
+    buildCommand: "echo prebuilt - no build"
+    staticPublishPath: .
