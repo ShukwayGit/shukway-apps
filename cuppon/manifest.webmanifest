@@ -1,0 +1,16 @@
+{
+  "name": "ShukWAY · מימוש קופון",
+  "short_name": "מימוש קופון",
+  "description": "מימוש קופון ShukWAY בדוכן — מאומת, אופליין-מוכן",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "redeem.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FAF5EC",
+  "theme_color": "#024B46",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

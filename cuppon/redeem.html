@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<title>ShukWAY · מימוש קופון</title>
+<meta name="theme-color" content="#024B46">
+<meta name="description" content="מימוש קופון ShukWAY בדוכן">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>
+/* Ploni — brand typeface, bundled in ./fonts/ (offline-safe, no CDN) */
+@font-face{font-family:'Ploni';src:url('fonts/ploni-regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-medium-aaa.woff') format('woff');font-weight:500;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-demibold-aaa.woff') format('woff');font-weight:600;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-bold-aaa.woff') format('woff');font-weight:700;font-display:swap}
+@font-face{font-family:'Ploni';src:url('fonts/ploni-ultrabold-aaa.woff') format('woff');font-weight:800;font-display:swap}
+:root{
+  --teal:#038A82; --teal-dark:#026E68; --teal-darker:#024B46; --teal-tint:#EFF8F7;
+  --orange:#E56E13; --orange-dark:#C25A0E; --orange-soft:#FCEEDB;
+  --cream:#FAF5EC; --paper:#FFFEF9; --ink:#15302D; --ink2:#41433F; --muted:#6B6B6B;
+  --line:#E8E0CD; --green:#1C7A3E; --green-soft:#E7F3EC; --amber:#B45309; --amber-soft:#FBEFD8;
+  --red:#B42318; --red-soft:#FCEBE9;
+  --shadow:0 16px 44px rgba(120,90,40,.18); --shadow-sm:0 2px 10px rgba(120,90,40,.08);
+  --font:'Ploni','Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(circle at 50% -8%,var(--teal-tint),transparent 46%),var(--cream);
+  min-height:100dvh;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:9px;padding:14px 18px;color:#fff;
+  background:linear-gradient(120deg,var(--teal-darker),var(--teal-dark));box-shadow:var(--shadow-sm)}
+.bar .wm{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.bar .wm span{color:var(--orange-soft)}
+.bar .net{margin-inline-start:auto;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:999px;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;gap:6px}
+.bar .net .d{width:8px;height:8px;border-radius:50%;background:#7CFFB2}
+.bar .net.off .d{background:#FFC27A}
+main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 16px 28px;max-width:480px;width:100%;margin:0 auto}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.chead{padding:20px 22px 18px;color:#fff;background:linear-gradient(135deg,var(--orange),var(--orange-dark));position:relative}
+.chead .biz{font-size:21px;font-weight:800;letter-spacing:-.3px}
+.chead .loc{font-size:13px;opacity:.92;margin-top:2px}
+.chead .tag{position:absolute;top:18px;left:18px;font-size:11px;font-weight:800;background:rgba(255,255,255,.2);padding:4px 11px;border-radius:999px}
+.perf{height:0;border-top:2px dashed var(--orange-soft);margin:0 16px;position:relative}
+.perf::before,.perf::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--cream)}
+.perf::before{right:-26px} .perf::after{left:-26px}
+.cbody{padding:22px}
+.voucher{font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
+.title{font-size:22px;font-weight:800;color:var(--ink);margin-top:6px;line-height:1.25}
+.discount{font-size:40px;font-weight:900;color:var(--orange);line-height:1;margin-top:12px}
+.secret{display:flex;align-items:center;gap:13px;background:repeating-linear-gradient(45deg,#15302D,#15302D 8px,#1d3d39 8px,#1d3d39 16px);
+  color:#ffd9b0;border-radius:15px;padding:18px 16px;margin-top:14px;font-weight:800;font-size:14px}
+.secret .ic{font-size:26px}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;border:0;cursor:pointer;
+  font-family:var(--font);font-weight:800;font-size:17px;color:#fff;background:var(--orange);
+  padding:17px;border-radius:16px;box-shadow:0 10px 24px rgba(229,110,19,.28);transition:transform .1s,filter .15s;margin-top:18px}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.55;cursor:default;box-shadow:none}
+.btn.teal{background:var(--teal);box-shadow:0 10px 24px rgba(3,138,130,.24)}
+.hint{font-size:12.5px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6}
+
+/* states */
+.state{text-align:center;padding:30px 22px}
+.ring{width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:46px;font-weight:900;margin:0 auto 16px}
+.ring.ok{background:var(--green-soft);color:var(--green)}
+.ring.wait{background:var(--amber-soft);color:var(--amber)}
+.ring.bad{background:var(--red-soft);color:var(--red)}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:none;opacity:1}}
+.ring{animation:pop .4s cubic-bezier(.2,.9,.3,1.4)}
+.state h2{font-size:24px;font-weight:900;color:var(--ink)}
+.state p{font-size:14.5px;color:var(--ink2);margin-top:8px;line-height:1.6}
+.revealed{font-size:14px;color:var(--muted);margin-top:14px}
+.revealed b{font-size:30px;font-weight:900;color:var(--orange);display:block;margin-top:4px}
+.code{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:var(--teal-tint);border:1px solid #cde8e5;
+  border-radius:12px;padding:11px 18px;font-size:14px;font-weight:700;color:var(--teal-darker)}
+.code b{font-family:'Roboto',var(--mono);letter-spacing:1px;font-size:17px}
+.statusline{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;font-weight:700;padding:9px 15px;border-radius:999px}
+.statusline.ok{background:var(--green-soft);color:var(--green)}
+.statusline.wait{background:var(--amber-soft);color:var(--amber)}
+.spin{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--teal);border-radius:50%;margin:0 auto;animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+.foot{text-align:center;font-size:11px;color:var(--muted);padding:14px}
+.foot span{color:var(--orange)}
+</style>
+</head>
+<body>
+  <div class="bar">
+    <span class="wm">שוק<span>WAY</span></span>
+    <span class="net" id="net"><span class="d"></span><span id="netTxt">מחובר</span></span>
+  </div>
+  <main id="app">
+    <div class="state"><div class="spin"></div><p style="margin-top:16px">טוען קופון…</p></div>
+  </main>
+  <div class="foot">ShukWAY · מימוש מאומת בדוכן · <span>אופליין-מוכן</span></div>
+
+<script>
+"use strict";
+/* ============================================================================
+ * ShukWAY · Coupon Redemption PWA  (the real thing — not a demo)
+ * Architecture (locked by the architect council):
+ *   scan stall QR → business_id  →  record {business_id, coupon_id, scanned_at,
+ *   device_fingerprint}  →  IndexedDB queue  →  Service Worker Background Sync
+ *   →  POST shukway-intake.  Offline-first: works under the market roof with no
+ *   reception; the redemption is captured locally and syncs when signal returns.
+ *   Presence proof = the physical scan (replaces the rejected GPS geofence).
+ * ========================================================================== */
+
+var INTAKE_URL = 'https://shukway-intake.onrender.com/api/coupon-redeem'; // thin backend (intake) — endpoint to be added server-side
+var DB_NAME = 'shukway-redeem', STORE = 'queue';
+
+/* ---- URL params: QR encodes these so the page is self-sufficient offline ---- */
+var P = new URLSearchParams(location.search);
+var COUPON = {
+  business_id: P.get('b') || '',
+  coupon_id:   P.get('c') || '',
+  business:    P.get('n') || 'העסק',
+  location:    P.get('l') || '',
+  title:       P.get('t') || 'הטבה',
+  discount:    P.get('d') || '',          // omitted for secret coupons
+  secret:      P.get('s') === '1'
+};
+
+/* ---- device fingerprint: persisted install-id (stable, privacy-light) ------ */
+function deviceId(){
+  var k = 'sw_device_id', v = localStorage.getItem(k);
+  if(!v){ v = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random().toString(16).slice(2)); localStorage.setItem(k, v); }
+  return v;
+}
+var DEVICE = deviceId();
+
+/* ---- network indicator ----------------------------------------------------- */
+function paintNet(){
+  var n = document.getElementById('net'), t = document.getElementById('netTxt');
+  if(navigator.onLine){ n.classList.remove('off'); t.textContent = 'מחובר'; }
+  else { n.classList.add('off'); t.textContent = 'אין רשת'; }
+}
+addEventListener('online', function(){ paintNet(); flushQueue(); });
+addEventListener('offline', paintNet);
+
+/* ---- IndexedDB (the offline queue — heart of resilience) -------------------- */
+function idb(){
+  return new Promise(function(res, rej){
+    var r = indexedDB.open(DB_NAME, 1);
+    r.onupgradeneeded = function(){ if(!r.result.objectStoreNames.contains(STORE)) r.result.createObjectStore(STORE, {keyPath:'id'}); };
+    r.onsuccess = function(){ res(r.result); }; r.onerror = function(){ rej(r.error); };
+  });
+}
+function idbPut(rec){ return idb().then(function(db){ return new Promise(function(res,rej){ var tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(rec); tx.oncomplete=res; tx.onerror=function(){rej(tx.error);}; }); }); }
+function idbAll(){ return idb().then(function(db){ return new Promise(function(res,rej){ var tx=db.transaction(STORE,'readonly'),rq=tx.objectStore(STORE).getAll(); rq.onsuccess=function(){res(rq.result||[]);}; rq.onerror=function(){rej(rq.error);}; }); }); }
+function idbDel(id){ return idb().then(function(db){ return new Promise(function(res){ var tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).delete(id); tx.oncomplete=res; }); }); }
+
+/* ---- send one record to the backend; returns confirmId on success ---------- */
+function deliver(rec){
+  return fetch(INTAKE_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(rec)})
+    .then(function(r){ if(!r.ok) throw new Error('http '+r.status); return r.json().catch(function(){return {};}); });
+}
+
+/* ---- flush the whole queue (called on load/online + by the SW) ------------- */
+var flushing = false;
+function flushQueue(){
+  if(flushing || !navigator.onLine) return Promise.resolve();
+  flushing = true;
+  return idbAll().then(function(list){
+    return list.reduce(function(chain, rec){
+      return chain.then(function(){
+        if(rec.status === 'synced') return;
+        return deliver(rec).then(function(resp){
+          rec.status='synced'; rec.confirmId = (resp && resp.confirmId) || rec.shortCode;
+          return idbPut(rec).then(function(){ if(rec.coupon_id===COUPON.coupon_id) markConfirmed(rec); });
+        }).catch(function(){ /* stays pending — SW/online will retry */ });
+      });
+    }, Promise.resolve());
+  }).then(function(){ flushing=false; }, function(){ flushing=false; });
+}
+
+/* ---- dedup: has THIS device already redeemed THIS coupon? ------------------ */
+function alreadyRedeemed(){
+  if(!COUPON.coupon_id) return Promise.resolve(false);
+  return idbAll().then(function(list){
+    return list.some(function(r){ return r.coupon_id===COUPON.coupon_id && r.device_fingerprint===DEVICE; });
+  });
+}
+
+/* ============================ UI ============================ */
+var app = document.getElementById('app');
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+
+function renderInvalid(msg){
+  app.innerHTML = '<div class="card"><div class="state">'+
+    '<div class="ring bad">!</div><h2>קופון לא תקין</h2><p>'+esc(msg||'הקישור חסר פרטי קופון. בקשו מהמוכר לסרוק שוב את ה-QR בדוכן.')+'</p></div></div>';
+}
+
+function renderCoupon(){
+  var disc = COUPON.secret
+    ? '<div class="secret"><span class="ic">🤫</span><div>סוד ההנחה — ההטבה תיחשף ברגע המימוש בדוכן</div></div>'
+    : (COUPON.discount ? '<div class="discount">'+esc(COUPON.discount)+'</div>' : '');
+  app.innerHTML =
+    '<div class="card">'+
+      '<div class="chead"><span class="tag">קופון ShukWAY</span>'+
+        '<div class="biz">'+esc(COUPON.business)+'</div>'+
+        (COUPON.location ? '<div class="loc">'+esc(COUPON.location)+'</div>' : '')+
+      '</div><div class="perf"></div>'+
+      '<div class="cbody">'+
+        '<div class="voucher">ההטבה שלך</div>'+
+        '<div class="title">'+esc(COUPON.title)+'</div>'+
+        disc+
+        '<button class="btn" id="go">✓ ממש עכשיו בדוכן</button>'+
+        '<div class="hint">לחיצה על "ממש" מאשרת שאתם <b>פיזית בדוכן</b>. ההטבה תקפה למימוש יחיד.</div>'+
+      '</div>'+
+    '</div>';
+  document.getElementById('go').addEventListener('click', doRedeem, {once:true});
+}
+
+function renderAlready(){
+  app.innerHTML = '<div class="card"><div class="state">'+
+    '<div class="ring wait">✓</div><h2>כבר מומש</h2>'+
+    '<p>הקופון הזה כבר נוצל מהמכשיר הזה. כל הטבה ניתנת למימוש פעם אחת.</p></div></div>';
+}
+
+function markConfirmed(rec){
+  var s = document.getElementById('statusline');
+  if(s){ s.className='statusline ok'; s.innerHTML='<span>✓</span> נקלט במערכת'+(rec.confirmId?(' · '+esc(String(rec.confirmId))):''); }
+}
+
+function renderRedeemed(rec, online){
+  var reveal = (!COUPON.secret && COUPON.discount)
+      ? '<div class="revealed">ההנחה שלכם<b>'+esc(COUPON.discount)+'</b></div>'
+      : (COUPON.secret ? '<div class="revealed">הציגו את המסך למוכר — ההנחה תיושם בקופה</div>' : '');
+  app.innerHTML = '<div class="card"><div class="state">'+
+    '<div class="ring ok">✓</div>'+
+    '<h2>מומש!</h2>'+
+    '<p>'+esc(COUPON.business)+'</p>'+
+    reveal+
+    '<div class="code">קוד מימוש <b>'+esc(rec.shortCode)+'</b></div><br>'+
+    '<span class="statusline wait" id="statusline">'+
+      (online ? '<span>◷</span> נשלח למערכת…' : '<span>◷</span> נשמר · ייקלט כשתהיה רשת')+
+    '</span>'+
+    '<p class="hint" style="margin-top:18px">הציגו את הקוד למוכר לקבלת ההטבה.</p>'+
+  '</div></div>';
+}
+
+function doRedeem(){
+  var btn = document.getElementById('go'); if(btn){ btn.disabled=true; btn.textContent='רושם…'; }
+  var id = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random());
+  var rec = {
+    id: id,
+    business_id: COUPON.business_id,
+    coupon_id: COUPON.coupon_id,
+    scanned_at: new Date().toISOString(),     // UTC
+    device_fingerprint: DEVICE,
+    shortCode: id.replace(/[^a-z0-9]/gi,'').slice(-6).toUpperCase(),
+    status: 'pending',
+    source: 'cuppon-pwa'
+  };
+  // 1) write to the offline queue FIRST — before touching the network
+  idbPut(rec).then(function(){
+    renderRedeemed(rec, navigator.onLine);
+    // 2) ask the Service Worker to sync in the background (survives page close)
+    if('serviceWorker' in navigator && 'SyncManager' in window){
+      navigator.serviceWorker.ready.then(function(reg){ return reg.sync.register('redeem-sync'); }).catch(function(){ flushQueue(); });
+    } else {
+      flushQueue(); // fallback (iOS / no Background Sync): flush now, and on next load
+    }
+  }).catch(function(){
+    // even if IDB fails, try a direct send so the redemption isn't lost
+    deliver(rec).then(function(resp){ rec.confirmId=resp&&resp.confirmId; renderRedeemed(rec,true); })
+      .catch(function(){ renderRedeemed(rec,false); });
+  });
+}
+
+/* ============================ boot ============================ */
+function boot(){
+  paintNet();
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
+  flushQueue(); // push any redemptions left pending from a previous visit
+  if(!COUPON.business_id || !COUPON.coupon_id){ renderInvalid(); return; }
+  alreadyRedeemed().then(function(done){ done ? renderAlready() : renderCoupon(); });
+}
+boot();
+</script>
+</body>
+</html>
