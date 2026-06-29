@@ -442,7 +442,7 @@ function rAmount(){
       <div class="big"><span id="heroSave">0.00</span><span class="u">ש"ח</span></div>
     </div>
     <div class="pay-line">לתשלום: <b id="payNum">0.00</b> ש"ח</div>
-    <div class="keypad" id="keypad">
+    <div class="keypad" id="keypad" dir="ltr">
       ${[1,2,3,4,5,6,7,8,9].map(d=>`<button class="key" data-d="${d}">${d}</button>`).join('')}
       <button class="key del" data-del>${I.del}</button>
       <button class="key" data-d="0">0</button>
@@ -462,27 +462,27 @@ function rConfirm(){
       <div class="sum-row disc"><span>הנחה${BIZ.discount_type==='STORE_DISCOUNT'?' '+BIZ.discount+'%':''}</span><span class="v">− ${f2(s)} ₪</span></div>
       ${a>0?`<div class="sum-row big"><span>לתשלום</span><span class="v">${f2(pay)} ₪</span></div>`:''}
     </div>
-    <div class="locked" style="background:var(--teal-soft);color:var(--teal-deep)">${I.scan}<div>בשלב הבא תסרוק את ה-QR המודבק בדוכן</div></div>
+    <div class="locked" style="background:var(--teal-soft);color:var(--teal-deep)">${I.bolt}<div>בשלב הבא — אישור ומימוש ההטבה</div></div>
   </div>
-  <div class="foot"><button class="cta" onclick="go(1)">אשר והמשך לסריקה ${I.chevR}</button></div>`;
+  <div class="foot"><button class="cta" onclick="go(1)">אשר והמשך ${I.chevR}</button></div>`;
 }
 
 function rScan(){
   const a=state.amount||0,s=calcDiscount();
   const now=new Date();
   const scanAt=now.getDate()+'.'+(now.getMonth()+1)+' · '+String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+' UTC';
-  return hdr('סריקת הדוכן')+
-  `<div class="body scan-wrap">
-    <div class="amt-prompt" style="margin-bottom:2px">כוון את המצלמה ל-<b>QR הסטטי המודבק בדוכן</b></div>
-    <div class="viewfinder">
-      <div class="vf-frame">
-        <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-        <div class="vf-qr">${qrSVG()}</div><div class="scanline"></div>
-      </div>
-      <div class="vf-tag"><span class="dot"></span>סורק QR של ${BIZ.name}</div>
+  const pay=Math.max(0,a-s);
+  return hdr('אישור מימוש')+
+  `<div class="body">
+    <div class="reveal-head"><span class="rk">${I.coins}</span><div><h2>מימוש ההטבה</h2><p>${BIZ.name}${BIZ.booth?' · '+BIZ.booth:''}</p></div></div>
+    <div class="card">
+      ${a>0?`<div class="sum-row"><span>סך הקנייה</span><span class="v">${a} ₪</span></div>`:''}
+      <div class="sum-row disc"><span>ההנחה שלך</span><span class="v">− ${f2(s)} ₪</span></div>
+      ${a>0?`<div class="sum-row big"><span>לתשלום</span><span class="v">${f2(pay)} ₪</span></div>`:''}
     </div>
     <div class="payload">
-      <h4>${I.upload}משודר ברגע הסריקה → דשבורד הסוחר</h4>
+      <h4>${I.upload}משודר במימוש → דשבורד הסוחר</h4>
+      <div class="pl-row"><span class="k">coupon_id</span><span class="val">${DATA.coupon_id}</span></div>
       <div class="pl-row"><span class="k">business_id</span><span class="val">${DATA.business_id}</span></div>
       <div class="pl-row"><span class="k">scanned_at</span><span class="val">${scanAt}</span></div>
       <div class="pl-row"><span class="k">device_fingerprint</span><span class="val">…${DEVICE.slice(-8)}</span></div>
@@ -491,8 +491,8 @@ function rScan(){
     </div>
   </div>
   <div class="foot">
-    <div class="foot-note">${I.bolt}הסריקה היא רגע השידור — אין קוד ידני ואין אישור-סוחר פר-מימוש</div>
-    <button class="cta teal" id="scanBtn">${I.scan} סריקה הושלמה</button>
+    <div class="foot-note">${I.bolt}מימוש אוטומטי · נחתם device_fingerprint + scanned_at</div>
+    <button class="cta teal" id="scanBtn">${I.spark} ממש עכשיו</button>
   </div>
   <div class="transmit" id="transmit"><div class="tx-ring"></div><p>משדר מימוש…</p><small>auto-approve · נחתם device_fingerprint + scanned_at</small></div>`;
 }
