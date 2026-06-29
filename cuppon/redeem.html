@@ -1,287 +1,705 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
-<title>ShukWAY · מימוש קופון</title>
-<meta name="theme-color" content="#024B46">
-<meta name="description" content="מימוש קופון ShukWAY בדוכן">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Cuppon · ShukWAY</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon.svg">
+<meta name="theme-color" content="#038A82">
 <style>
-/* Ploni — brand typeface, bundled in ./fonts/ (offline-safe, no CDN) */
 @font-face{font-family:'Ploni';src:url('fonts/ploni-regular.woff2') format('woff2');font-weight:400;font-display:swap}
 @font-face{font-family:'Ploni';src:url('fonts/ploni-medium-aaa.woff') format('woff');font-weight:500;font-display:swap}
 @font-face{font-family:'Ploni';src:url('fonts/ploni-demibold-aaa.woff') format('woff');font-weight:600;font-display:swap}
 @font-face{font-family:'Ploni';src:url('fonts/ploni-bold-aaa.woff') format('woff');font-weight:700;font-display:swap}
 @font-face{font-family:'Ploni';src:url('fonts/ploni-ultrabold-aaa.woff') format('woff');font-weight:800;font-display:swap}
+</style>
+<style>
 :root{
-  --teal:#038A82; --teal-dark:#026E68; --teal-darker:#024B46; --teal-tint:#EFF8F7;
-  --orange:#E56E13; --orange-dark:#C25A0E; --orange-soft:#FCEEDB;
-  --cream:#FAF5EC; --paper:#FFFEF9; --ink:#15302D; --ink2:#41433F; --muted:#6B6B6B;
-  --line:#E8E0CD; --green:#1C7A3E; --green-soft:#E7F3EC; --amber:#B45309; --amber-soft:#FBEFD8;
-  --red:#B42318; --red-soft:#FCEBE9;
-  --shadow:0 16px 44px rgba(120,90,40,.18); --shadow-sm:0 2px 10px rgba(120,90,40,.08);
-  --font:'Ploni','Heebo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --teal:#038A82;--teal-deep:#0E5657;--teal-soft:#E6F1F0;
+  --orange:#E56E13;--orange-deep:#C75A08;--orange-soft:#FCEBD8;
+  --cream:#FBF8F3;--paper:#FFFFFF;
+  --ink:#15302D;--ink-2:#34433F;--muted:#6B7B77;--subtle:#9AA8A4;
+  --line:rgba(14,86,87,0.12);--line-2:rgba(14,86,87,0.20);
+  --green:#2E9E5B;--green-soft:#E4F4EA;
+  --amber:#D97706;--amber-soft:#FBEFDD;
+  --grey-card:#F4F5F4;
+  --r:10px;--r-lg:18px;--r-xl:26px;
+  --shadow-soft:0 2px 10px rgba(14,86,87,0.07);
+  --font:'Ploni','Ploni_ML_v2_AAA',system-ui,sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{font-family:var(--font);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;
-  background:radial-gradient(circle at 50% -8%,var(--teal-tint),transparent 46%),var(--cream);
-  min-height:100dvh;display:flex;flex-direction:column}
-.bar{display:flex;align-items:center;gap:9px;padding:14px 18px;color:#fff;
-  background:linear-gradient(120deg,var(--teal-darker),var(--teal-dark));box-shadow:var(--shadow-sm)}
-.bar .wm{font-size:18px;font-weight:800;letter-spacing:-.3px}
-.bar .wm span{color:var(--orange-soft)}
-.bar .net{margin-inline-start:auto;font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:999px;
-  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;gap:6px}
-.bar .net .d{width:8px;height:8px;border-radius:50%;background:#7CFFB2}
-.bar .net.off .d{background:#FFC27A}
-main{flex:1;display:flex;flex-direction:column;justify-content:center;padding:18px 16px 28px;max-width:480px;width:100%;margin:0 auto}
+html,body{height:100%;overflow:hidden}
 
-.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
-.chead{padding:20px 22px 18px;color:#fff;background:linear-gradient(135deg,var(--orange),var(--orange-dark));position:relative}
-.chead .biz{font-size:21px;font-weight:800;letter-spacing:-.3px}
-.chead .loc{font-size:13px;opacity:.92;margin-top:2px}
-.chead .tag{position:absolute;top:18px;left:18px;font-size:11px;font-weight:800;background:rgba(255,255,255,.2);padding:4px 11px;border-radius:999px}
-.perf{height:0;border-top:2px dashed var(--orange-soft);margin:0 16px;position:relative}
-.perf::before,.perf::after{content:"";position:absolute;top:-11px;width:20px;height:20px;border-radius:50%;background:var(--cream)}
-.perf::before{right:-26px} .perf::after{left:-26px}
-.cbody{padding:22px}
-.voucher{font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
-.title{font-size:22px;font-weight:800;color:var(--ink);margin-top:6px;line-height:1.25}
-.discount{font-size:40px;font-weight:900;color:var(--orange);line-height:1;margin-top:12px}
-.secret{display:flex;align-items:center;gap:13px;background:repeating-linear-gradient(45deg,#15302D,#15302D 8px,#1d3d39 8px,#1d3d39 16px);
-  color:#ffd9b0;border-radius:15px;padding:18px 16px;margin-top:14px;font-weight:800;font-size:14px}
-.secret .ic{font-size:26px}
+/* tabular-nums only on numeric atoms */
+.amt-display .num,.savings-hero .big,.pay-line b,.sum-row .v,.grey-card .big,.grey-card .save,
+.stat .n,.pride-hero .v,.redeem .amt,.pl-row .val,.pl-row .k,.term b,#timerPill{
+  font-kerning:none;font-feature-settings:"kern" 0,"calt" 0,"liga" 0;font-variant-numeric:tabular-nums;
+}
 
-.btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;border:0;cursor:pointer;
-  font-family:var(--font);font-weight:800;font-size:17px;color:#fff;background:var(--orange);
-  padding:17px;border-radius:16px;box-shadow:0 10px 24px rgba(229,110,19,.28);transition:transform .1s,filter .15s;margin-top:18px}
-.btn:active{transform:scale(.98)}
-.btn:disabled{opacity:.55;cursor:default;box-shadow:none}
-.btn.teal{background:var(--teal);box-shadow:0 10px 24px rgba(3,138,130,.24)}
-.hint{font-size:12.5px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6}
+body{
+  font-family:var(--font);background:var(--paper);color:var(--ink);
+  display:flex;flex-direction:column;
+  max-width:430px;margin:0 auto;
+  -webkit-font-smoothing:antialiased;
+}
 
-/* states */
-.state{text-align:center;padding:30px 22px}
-.ring{width:96px;height:96px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:46px;font-weight:900;margin:0 auto 16px}
-.ring.ok{background:var(--green-soft);color:var(--green)}
-.ring.wait{background:var(--amber-soft);color:var(--amber)}
-.ring.bad{background:var(--red-soft);color:var(--red)}
-@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:none;opacity:1}}
-.ring{animation:pop .4s cubic-bezier(.2,.9,.3,1.4)}
-.state h2{font-size:24px;font-weight:900;color:var(--ink)}
-.state p{font-size:14.5px;color:var(--ink2);margin-top:8px;line-height:1.6}
-.revealed{font-size:14px;color:var(--muted);margin-top:14px}
-.revealed b{font-size:30px;font-weight:900;color:var(--orange);display:block;margin-top:4px}
-.code{display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:var(--teal-tint);border:1px solid #cde8e5;
-  border-radius:12px;padding:11px 18px;font-size:14px;font-weight:700;color:var(--teal-darker)}
-.code b{font-family:'Roboto',var(--mono);letter-spacing:1px;font-size:17px}
-.statusline{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:13px;font-weight:700;padding:9px 15px;border-radius:999px}
-.statusline.ok{background:var(--green-soft);color:var(--green)}
-.statusline.wait{background:var(--amber-soft);color:var(--amber)}
-.spin{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--teal);border-radius:50%;margin:0 auto;animation:rot .8s linear infinite}
-@keyframes rot{to{transform:rotate(360deg)}}
-.foot{text-align:center;font-size:11px;color:var(--muted);padding:14px}
-.foot span{color:var(--orange)}
+.ah{
+  flex:0 0 auto;
+  display:grid;grid-template-columns:56px 1fr 56px;align-items:center;
+  padding:calc(env(safe-area-inset-top,12px) + 10px) 16px 14px;
+  border-bottom:1px solid var(--line);
+}
+.ah-title{font-size:18px;font-weight:700;text-align:center;color:var(--ink)}
+.ah-btn{width:40px;height:40px;border-radius:50%;border:none;background:#F1F3F2;display:grid;place-items:center;cursor:pointer;color:var(--ink-2);transition:.2s}
+.ah-btn:active{background:#E7EBEA}
+.ah-btn svg{width:20px;height:20px}
+
+#timerPill{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:13px;font-weight:700;padding:5px 11px;border-radius:999px;
+  background:var(--orange-soft);color:var(--orange-deep);
+  border:none;font-family:var(--font);
+}
+#timerPill.urgent{background:var(--amber-soft);color:var(--amber)}
+
+.body{
+  flex:1 1 auto;overflow-y:auto;
+  padding:18px 18px 26px;
+  display:flex;flex-direction:column;gap:16px;
+  scrollbar-width:none;
+}
+.body::-webkit-scrollbar{display:none}
+.body.center{justify-content:center;align-items:center}
+
+.foot{
+  flex:0 0 auto;
+  padding:12px 18px calc(18px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid var(--line);background:var(--paper);
+}
+.cta{
+  width:100%;border:none;border-radius:var(--r);padding:17px;
+  font-family:var(--font);font-size:17px;font-weight:700;color:#fff;
+  background:var(--orange);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  box-shadow:0 6px 16px rgba(229,110,19,0.30);transition:.15s;
+}
+.cta:active{background:var(--orange-deep)}
+.cta.teal{background:var(--teal);box-shadow:0 6px 16px rgba(3,138,130,0.28)}
+.cta.teal:active{background:var(--teal-deep)}
+.cta:disabled{background:#D8DCDB;color:#fff;box-shadow:none;cursor:not-allowed}
+.cta svg{width:19px;height:19px}
+.foot-note{display:flex;align-items:center;justify-content:center;gap:7px;font-size:12.5px;color:var(--muted);margin-bottom:11px;text-align:center}
+.foot-note svg{width:15px;height:15px;color:var(--teal);flex:0 0 auto}
+
+.coupon{position:relative;border-radius:var(--r-xl);padding:16px;overflow:hidden;border:2px dashed var(--c-accent,#E56E13);background:var(--c-pastel,#FCEBD8)}
+.coupon::after{content:"";position:absolute;inset:auto -30px -34px auto;width:120px;height:120px;border-radius:40px;background:rgba(255,255,255,.30);transform:rotate(18deg)}
+.coupon-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;position:relative;z-index:2}
+.coupon-id{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.coupon-biz{font-size:18px;font-weight:800;color:var(--ink)}
+.cap{display:inline-block;background:#fff;border-radius:999px;padding:5px 13px;font-size:12.5px;font-weight:600;color:var(--ink-2);box-shadow:var(--shadow-soft)}
+.biz-thumb{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:28px;background:#fff;box-shadow:var(--shadow-soft);flex:0 0 auto}
+.target-ico{width:46px;height:46px;border-radius:14px;background:var(--c-accent,#E56E13);display:grid;place-items:center;box-shadow:0 6px 14px rgba(0,0,0,.14);flex:0 0 auto}
+.target-ico svg{width:26px;height:26px}
+.coupon-headline{position:relative;z-index:2;margin-top:14px;background:#fff;border-radius:16px;padding:16px;box-shadow:var(--shadow-soft)}
+.coupon-headline .hl{display:flex;align-items:center;gap:9px;font-size:21px;font-weight:800;color:var(--c-accent,#E56E13)}
+.coupon-headline .hl svg{width:21px;height:21px;flex:0 0 auto}
+.coupon-headline .sub{margin-top:7px;font-size:14px;color:var(--muted);line-height:1.5}
+
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;box-shadow:var(--shadow-soft)}
+.card-title{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:14px}
+.term{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:15px;color:var(--ink-2);flex-direction:row-reverse;text-align:right}
+.term+.term{border-top:1px solid var(--line)}
+.term .tk{width:30px;height:30px;border-radius:9px;background:var(--teal-soft);display:grid;place-items:center;flex:0 0 auto}
+.term .tk svg{width:17px;height:17px;color:var(--teal)}
+.kicker{font-size:13px;font-weight:700;color:var(--muted)}
+
+.locked{display:flex;align-items:center;gap:11px;background:var(--orange-soft);border-radius:14px;padding:14px 16px;font-size:14px;font-weight:600;color:var(--orange-deep);flex-direction:row-reverse;text-align:right}
+.locked svg{width:20px;height:20px;flex:0 0 auto}
+
+.reveal-head{display:flex;align-items:center;gap:12px;flex-direction:row-reverse;text-align:right}
+.reveal-head .rk{width:44px;height:44px;border-radius:50%;background:var(--teal-soft);display:grid;place-items:center;flex:0 0 auto}
+.reveal-head .rk svg{width:23px;height:23px;color:var(--teal)}
+.reveal-head h2{font-size:19px;font-weight:800;color:var(--ink)}
+.reveal-head p{font-size:13.5px;color:var(--muted);margin-top:2px}
+.quiet-note{font-size:14px;color:var(--muted);line-height:1.6;background:var(--grey-card);border-radius:14px;padding:15px 16px;text-align:right}
+
+.amt-prompt{text-align:center;font-size:15px;color:var(--muted);line-height:1.5}
+.amt-prompt b{color:var(--ink);font-weight:700}
+.amt-display{text-align:center;padding:6px 0 2px}
+.amt-display .num{font-size:60px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-1px;direction:ltr;display:inline-flex;align-items:baseline;gap:8px}
+.amt-display .num .cur{font-size:30px;color:var(--subtle);font-weight:700}
+.amt-min{text-align:center;font-size:13px;color:var(--amber);margin-top:8px;min-height:18px;font-weight:600}
+.savings-hero{border:2px solid var(--green);background:var(--green-soft);border-radius:18px;padding:18px;text-align:center;width:100%;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .25s,transform .25s}
+.savings-hero.show{opacity:1;transform:none}
+.savings-hero .lbl{font-size:14px;color:var(--green);font-weight:700;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:7px}
+.savings-hero .lbl svg{width:18px;height:18px}
+.savings-hero .big{font-size:40px;font-weight:800;color:var(--green);line-height:1;direction:ltr;display:inline-flex;align-items:baseline;gap:7px}
+.savings-hero .big .u{font-size:19px;font-weight:700}
+.savings-hero.pop .big{animation:pop .42s cubic-bezier(.2,1.3,.5,1) both}
+.pay-line{text-align:center;font-size:15px;color:var(--muted);margin-top:2px}
+
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.key{border:1px solid var(--line);background:#fff;border-radius:14px;padding:15px 0;font-family:var(--font);font-size:24px;font-weight:700;color:var(--ink);cursor:pointer;transition:.12s}
+.key:active{transform:scale(.94);background:var(--orange-soft)}
+.key.del{color:var(--muted)}
+.key.del svg{width:24px;height:24px}
+
+.sum-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;font-size:15px;color:var(--ink-2)}
+.sum-row+.sum-row{border-top:1px solid var(--line)}
+.sum-row .v{font-weight:800;color:var(--ink);direction:ltr}
+.sum-row.big .v{font-size:20px}
+.sum-row.disc .v{color:var(--green)}
+
+.scan-wrap{flex:1;display:flex;flex-direction:column}
+.viewfinder{position:relative;border-radius:22px;overflow:hidden;background:radial-gradient(120% 90% at 50% 30%,#1b2b29 0%,#0c1413 100%);aspect-ratio:1/1;display:grid;place-items:center}
+.vf-frame{position:relative;width:62%;aspect-ratio:1/1;border-radius:18px}
+.vf-frame .corner{position:absolute;width:30px;height:30px;border:3px solid #fff}
+.vf-frame .c1{top:0;right:0;border-bottom:none;border-left:none;border-radius:0 8px 0 0}
+.vf-frame .c2{top:0;left:0;border-bottom:none;border-right:none;border-radius:8px 0 0 0}
+.vf-frame .c3{bottom:0;right:0;border-top:none;border-left:none;border-radius:0 0 8px 0}
+.vf-frame .c4{bottom:0;left:0;border-top:none;border-right:none;border-radius:0 0 0 8px}
+.vf-qr{width:78%;height:78%;background:#fff;border-radius:10px;padding:9%;opacity:.92}
+.vf-qr svg{width:100%;height:100%;display:block}
+.scanline{position:absolute;left:6%;right:6%;height:2px;background:linear-gradient(90deg,transparent,#37e0a0,transparent);box-shadow:0 0 12px #37e0a0;animation:scan 2.1s ease-in-out infinite}
+.vf-tag{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(12,20,19,.7);color:#cfe;font-size:12px;font-weight:600;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:6px}
+.vf-tag .dot{width:7px;height:7px;border-radius:50%;background:#37e0a0;box-shadow:0 0 8px #37e0a0;animation:blink 1s infinite}
+.payload{margin-top:16px;background:var(--grey-card);border-radius:14px;padding:14px 16px}
+.payload h4{font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.payload h4 svg{width:15px;height:15px;color:var(--teal)}
+.pl-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:5px 0;color:var(--ink-2)}
+.pl-row .k{color:var(--muted);font-size:11.5px;direction:ltr}
+.pl-row .val{font-weight:700;direction:ltr}
+.pl-row .val.g{color:var(--green)}
+
+.transmit{position:fixed;inset:0;background:rgba(251,248,243,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:50;opacity:0;pointer-events:none;transition:.25s}
+.transmit.show{opacity:1;pointer-events:auto}
+.tx-ring{width:74px;height:74px;border-radius:50%;border:4px solid var(--teal-soft);border-top-color:var(--teal);animation:spin .9s linear infinite}
+.transmit p{font-size:16px;font-weight:700;color:var(--teal-deep)}
+.transmit small{font-size:13px;color:var(--muted)}
+
+.success-mark{width:96px;height:96px;border-radius:50%;background:var(--green-soft);display:grid;place-items:center;margin:0 auto;animation:popIn .5s cubic-bezier(.2,1.3,.5,1) both}
+.success-mark .ring{width:74px;height:74px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.success-mark svg{width:40px;height:40px;color:#fff}
+.success-title{text-align:center;font-size:27px;font-weight:800;color:var(--ink)}
+.grey-card{background:var(--grey-card);border-radius:18px;padding:22px}
+.grey-card .lbl{text-align:center;font-size:14px;color:var(--muted);margin-bottom:6px}
+.grey-card .big{text-align:center;font-size:34px;font-weight:800;color:var(--ink);direction:ltr}
+.grey-card .div{height:1px;background:var(--line);margin:16px 0}
+.grey-card .save{text-align:center;font-size:18px;font-weight:800;color:var(--green);direction:ltr}
+
+.m-head{display:flex;align-items:center;gap:12px;flex-direction:row-reverse;text-align:right}
+.m-head .mk{width:46px;height:46px;border-radius:14px;background:var(--teal);display:grid;place-items:center;flex:0 0 auto}
+.m-head .mk svg{width:24px;height:24px;color:#fff}
+.m-head h2{font-size:18px;font-weight:800;color:var(--ink)}
+.m-head p{font-size:13px;color:var(--muted);margin-top:2px}
+.stat-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.stat{background:var(--teal-soft);border-radius:14px;padding:13px 10px;text-align:center}
+.stat .n{font-size:22px;font-weight:800;color:var(--teal-deep);direction:ltr}
+.stat .t{font-size:11.5px;color:var(--teal);margin-top:3px}
+.redeem{display:flex;align-items:center;gap:12px;padding:13px 0;flex-direction:row-reverse}
+.redeem+.redeem{border-top:1px solid var(--line)}
+.redeem .dev{flex:0 0 auto;width:38px;height:38px;border-radius:11px;background:var(--teal-soft);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--teal)}
+.redeem .info{flex:1;text-align:right}
+.redeem .info .v{font-size:14.5px;font-weight:700;color:var(--ink)}
+.redeem .info .m{font-size:12px;color:var(--muted);margin-top:1px}
+.redeem .amt{text-align:left;direction:ltr}
+.redeem .amt .a{font-size:15px;font-weight:800;color:var(--ink)}
+.redeem .amt .s{font-size:11.5px;color:var(--green);font-weight:700}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px}
+.badge.ok{background:var(--green-soft);color:var(--green)}
+.badge.flag{background:var(--amber-soft);color:var(--amber)}
+.badge svg{width:12px;height:12px}
+.row-flagged{background:var(--amber-soft);border-radius:12px;margin:0 -8px;padding:0 8px}
+.anom-card{border:1.5px solid var(--amber);background:var(--amber-soft);border-radius:18px;padding:18px}
+.anom-card .at{display:flex;align-items:center;gap:10px;flex-direction:row-reverse;text-align:right;font-size:16px;font-weight:800;color:var(--amber)}
+.anom-card .at svg{width:22px;height:22px;flex:0 0 auto}
+.anom-card p{font-size:13.5px;color:var(--ink-2);line-height:1.55;margin-top:9px;text-align:right}
+.pride-hero{background:linear-gradient(150deg,var(--teal) 0%,var(--teal-deep) 100%);border-radius:22px;padding:26px 22px;color:#fff;position:relative;overflow:hidden}
+.pride-hero::after{content:"";position:absolute;left:-30px;bottom:-40px;width:140px;height:140px;border-radius:50%;background:rgba(229,110,19,.30)}
+.pride-hero .k{font-size:13px;opacity:.85;font-weight:600;position:relative;z-index:2}
+.pride-hero .v{font-size:48px;font-weight:800;margin-top:4px;direction:ltr;position:relative;z-index:2}
+.pride-hero .c{font-size:14px;opacity:.9;margin-top:4px;position:relative;z-index:2;line-height:1.5}
+
+@keyframes pop{0%{transform:scale(.6)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes popIn{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes scan{0%,100%{top:8%}50%{top:88%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important}}
 </style>
 </head>
-<body>
-  <div class="bar">
-    <span class="wm">שוק<span>WAY</span></span>
-    <span class="net" id="net"><span class="d"></span><span id="netTxt">מחובר</span></span>
-  </div>
-  <main id="app">
-    <div class="state"><div class="spin"></div><p style="margin-top:16px">טוען קופון…</p></div>
-  </main>
-  <div class="foot">ShukWAY · מימוש מאומת בדוכן · <span>אופליין-מוכן</span></div>
-
+<body id="app">
 <script>
-"use strict";
-/* ============================================================================
- * ShukWAY · Coupon Redemption PWA  (the real thing — not a demo)
- * Architecture (locked by the architect council):
- *   scan stall QR → business_id  →  record {business_id, coupon_id, scanned_at,
- *   device_fingerprint}  →  IndexedDB queue  →  Service Worker Background Sync
- *   →  POST shukway-intake.  Offline-first: works under the market roof with no
- *   reception; the redemption is captured locally and syncs when signal returns.
- *   Presence proof = the physical scan (replaces the rejected GPS geofence).
- * ========================================================================== */
-
-var INTAKE_URL = 'https://shukway-intake.onrender.com/api/coupon-redeem'; // thin backend (intake) — endpoint to be added server-side
-var DB_NAME = 'shukway-redeem', STORE = 'queue';
-
-/* ---- URL params: QR encodes these so the page is self-sufficient offline ---- */
-var P = new URLSearchParams(location.search);
-var COUPON = {
-  business_id: P.get('b') || '',
-  coupon_id:   P.get('c') || '',
-  business:    P.get('n') || 'העסק',
-  location:    P.get('l') || '',
-  title:       P.get('t') || 'הטבה',
-  discount:    P.get('d') || '',          // omitted for secret coupons
-  secret:      P.get('s') === '1'
+const I={
+  chevR:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>',
+  target:'<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1.3" fill="#fff" stroke="none"/></svg>',
+  spark:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 5.4L19 9l-5.4 1.6L12 16l-1.6-5.4L5 9l5.4-1.6z"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="11" width="15" height="9.5" rx="2.2"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></svg>',
+  coins:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="9" cy="7" rx="6" ry="3"/><path d="M3 7v5c0 1.66 2.69 3 6 3"/><path d="M3 12v5c0 1.66 2.69 3 6 3"/><circle cx="16" cy="15" r="5"/></svg>',
+  store:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5L5.2 5h13.6L20 9.5"/><path d="M4 9.5a2.4 2.4 0 0 0 4 0 2.4 2.4 0 0 0 4 0 2.4 2.4 0 0 0 4 0 2.4 2.4 0 0 0 4 0"/><path d="M5 11v8h14v-8"/><path d="M9 19v-4h4v4"/></svg>',
+  cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="16" rx="2.4"/><line x1="4" y1="9.5" x2="20" y2="9.5"/><line x1="8" y1="3" x2="8" y2="6"/><line x1="16" y1="3" x2="16" y2="6"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+  checkc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="16 9.5 11 15 8 12"/></svg>',
+  del:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6H9.5L4 12l5.5 6H20a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1z"/><line x1="16" y1="10" x2="12" y2="14"/><line x1="12" y1="10" x2="16" y2="14"/></svg>',
+  upload:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="16 8 12 4 8 8"/><line x1="12" y1="4" x2="12" y2="15"/></svg>',
+  scan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="3" y1="12" x2="21" y2="12"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><polyline points="9 12 11 14 15 10"/></svg>',
+  alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.8L2 18a2 2 0 0 0 1.7 3h16.6A2 2 0 0 0 22 18L13.7 3.8a2 2 0 0 0-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17"/></svg>',
+  chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="4" y2="11"/><line x1="10" y1="20" x2="10" y2="4"/><line x1="16" y1="20" x2="16" y2="14"/><line x1="22" y1="20" x2="2" y2="20"/></svg>',
+  users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="8" r="3.2"/><path d="M22 20v-2a4 4 0 0 0-3-3.8"/><path d="M16 4.2A4 4 0 0 1 16 12"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 11 14 10 22 20 9 13 9 13 2"/></svg>'
 };
 
-/* ---- device fingerprint: persisted install-id (stable, privacy-light) ------ */
+function qrSVG(){
+  const n=21,rng=(s=>()=>{s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff})(987654321);
+  let r='<svg viewBox="0 0 21 21" shape-rendering="crispEdges">';
+  const f=(x,y)=>{r+=`<rect x="${x}" y="${y}" width="7" height="7" fill="#0c1413"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#0c1413"/>`;};
+  for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+    if((x<8&&y<8)||(x>n-9&&y<8)||(x<8&&y>n-9))continue;
+    if(rng()>0.55)r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#0c1413"/>`;
+  }
+  f(0,0);f(n-7,0);f(0,n-7);
+  return r+'</svg>';
+}
+
+const API_BASE='https://team.shukway.com';
+
+function redeemCoupon(body){
+  return fetch(`${API_BASE}/api/coupons/redeem`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      coupon_id:body.coupon_id,business_id:body.business_id,
+      scanned_at:body.scanned_at,device_fingerprint:body.device_fingerprint,
+      purchase_amount:body.purchase_amount,discount_given:body.discount_given
+    })
+  });
+}
+
 function deviceId(){
-  var k = 'sw_device_id', v = localStorage.getItem(k);
-  if(!v){ v = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random().toString(16).slice(2)); localStorage.setItem(k, v); }
+  const k='sw_device_id';
+  let v=localStorage.getItem(k);
+  if(!v){v=crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2);localStorage.setItem(k,v);}
   return v;
 }
-var DEVICE = deviceId();
+const DEVICE=deviceId();
 
-/* ---- network indicator ----------------------------------------------------- */
-function paintNet(){
-  var n = document.getElementById('net'), t = document.getElementById('netTxt');
-  if(navigator.onLine){ n.classList.remove('off'); t.textContent = 'מחובר'; }
-  else { n.classList.add('off'); t.textContent = 'אין רשת'; }
-}
-addEventListener('online', function(){ paintNet(); flushQueue(); });
-addEventListener('offline', paintNet);
-
-/* ---- IndexedDB (the offline queue — heart of resilience) -------------------- */
+const DB_NAME='cuppon-journey',DB_STORE='queue';
 function idb(){
-  return new Promise(function(res, rej){
-    var r = indexedDB.open(DB_NAME, 1);
-    r.onupgradeneeded = function(){ if(!r.result.objectStoreNames.contains(STORE)) r.result.createObjectStore(STORE, {keyPath:'id'}); };
-    r.onsuccess = function(){ res(r.result); }; r.onerror = function(){ rej(r.error); };
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB_NAME,1);
+    r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(DB_STORE))r.result.createObjectStore(DB_STORE,{keyPath:'id'});};
+    r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);
   });
 }
-function idbPut(rec){ return idb().then(function(db){ return new Promise(function(res,rej){ var tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put(rec); tx.oncomplete=res; tx.onerror=function(){rej(tx.error);}; }); }); }
-function idbAll(){ return idb().then(function(db){ return new Promise(function(res,rej){ var tx=db.transaction(STORE,'readonly'),rq=tx.objectStore(STORE).getAll(); rq.onsuccess=function(){res(rq.result||[]);}; rq.onerror=function(){rej(rq.error);}; }); }); }
-function idbDel(id){ return idb().then(function(db){ return new Promise(function(res){ var tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).delete(id); tx.oncomplete=res; }); }); }
-
-/* ---- send one record to the backend; returns confirmId on success ---------- */
-function deliver(rec){
-  return fetch(INTAKE_URL, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(rec)})
-    .then(function(r){ if(!r.ok) throw new Error('http '+r.status); return r.json().catch(function(){return {};}); });
+function idbPut(rec){
+  return idb().then(db=>new Promise((res,rej)=>{
+    const tx=db.transaction(DB_STORE,'readwrite');
+    tx.objectStore(DB_STORE).put(rec);tx.oncomplete=res;tx.onerror=()=>rej(tx.error);
+  }));
 }
 
-/* ---- flush the whole queue (called on load/online + by the SW) ------------- */
-var flushing = false;
-function flushQueue(){
-  if(flushing || !navigator.onLine) return Promise.resolve();
-  flushing = true;
-  return idbAll().then(function(list){
-    return list.reduce(function(chain, rec){
-      return chain.then(function(){
-        if(rec.status === 'synced') return;
-        return deliver(rec).then(function(resp){
-          rec.status='synced'; rec.confirmId = (resp && resp.confirmId) || rec.shortCode;
-          return idbPut(rec).then(function(){ if(rec.coupon_id===COUPON.coupon_id) markConfirmed(rec); });
-        }).catch(function(){ /* stays pending — SW/online will retry */ });
-      });
-    }, Promise.resolve());
-  }).then(function(){ flushing=false; }, function(){ flushing=false; });
+const P=new URLSearchParams(location.search);
+const DATA={
+  coupon_id:P.get('c')||'demo-coupon-001',
+  business_id:P.get('b')||'demo-biz',
+  biz:{
+    name:'טוען…',cat:'',emoji:'🏪',booth:'',
+    discount_type:'STORE_DISCOUNT',
+    discount:10,discount_amount:0,free_item_value:0,
+    product_name:'',buy_item:'',get_item:'',
+    min:0,valid:''
+  }
+};
+const BIZ=DATA.biz;
+
+let REDEMPTIONS=[
+  {dev:'8a1',label:'10% הנחה',at:'12:41',amount:87,save:8.70,flag:false},
+  {dev:'3b9',label:'10% הנחה',at:'12:18',amount:64,save:6.40,flag:false},
+  {dev:'5c2',label:'10% הנחה',at:'11:55',amount:120,save:12.00,flag:false},
+  {dev:'3b9',label:'10% הנחה',at:'11:30',amount:45,save:4.50,flag:true},
+  {dev:'1f0',label:'10% הנחה',at:'10:47',amount:53,save:5.30,flag:false},
+];
+
+const TIMER_SEC=600;
+let timerStart=null,timerTick=null;
+function startTimer(){
+  if(timerStart)return;
+  timerStart=Date.now();
+  timerTick=setInterval(()=>{
+    const el=document.getElementById('timerPill');if(!el)return;
+    const rem=Math.max(0,TIMER_SEC-Math.floor((Date.now()-timerStart)/1000));
+    const m=Math.floor(rem/60),s=rem%60;
+    el.textContent=m+':'+(s<10?'0':'')+s;
+    if(rem<60)el.classList.add('urgent');
+    if(rem===0)clearInterval(timerTick);
+  },1000);
+}
+function stopTimer(){if(timerTick)clearInterval(timerTick);timerTick=null;timerStart=null;}
+function timerHtml(){
+  const rem=timerStart?Math.max(0,TIMER_SEC-Math.floor((Date.now()-timerStart)/1000)):TIMER_SEC;
+  const m=Math.floor(rem/60),s=rem%60;
+  return `<span id="timerPill"${rem<60?' class="urgent"':''}>${m}:${(s<10?'0':'')+s}</span>`;
 }
 
-/* ---- dedup: has THIS device already redeemed THIS coupon? ------------------ */
-function alreadyRedeemed(){
-  if(!COUPON.coupon_id) return Promise.resolve(false);
-  return idbAll().then(function(list){
-    return list.some(function(r){ return r.coupon_id===COUPON.coupon_id && r.device_fingerprint===DEVICE; });
+const app=document.getElementById('app');
+const f2=n=>Number(n).toFixed(2);
+
+function hdr(title,timer=false){
+  return `<div class="ah"><div>${timer?timerHtml():''}</div><div class="ah-title">${title}</div><span></span></div>`;
+}
+
+function couponCard(){
+  let hl,sub;
+  if(BIZ.discount_type==='STORE_DISCOUNT'){
+    hl=`${BIZ.discount}% הנחה על כל החנות`;
+    sub=`קבל ${BIZ.discount}% הנחה על כל המוצרים בחנות`;
+  } else if(BIZ.discount_type==='PRODUCT_DISCOUNT'){
+    hl=`הנחה על ${BIZ.product_name||'מוצר'}`;
+    sub=`חיסכון של ${f2(BIZ.discount_amount)} ₪`;
+  } else {
+    hl=`קנה ${BIZ.buy_item||'...'} קבל ${BIZ.get_item||'...'} חינם`;
+    sub=`קנה ${BIZ.buy_item||'מוצר'} וקבל ${BIZ.get_item||'מוצר'} ללא תשלום`;
+  }
+  return `<div class="coupon" style="--c-accent:var(--orange);--c-pastel:var(--orange-soft)">
+    <div class="coupon-top">
+      <div class="target-ico">${I.target}</div>
+      <div class="coupon-id"><div class="coupon-biz">${BIZ.name}</div>${BIZ.cat?`<span class="cap">${BIZ.cat}</span>`:''}</div>
+      <div class="biz-thumb">${BIZ.emoji}</div>
+    </div>
+    <div class="coupon-headline">
+      <div class="hl">${I.spark}<span>${hl}</span></div>
+      <div class="sub">${sub}</div>
+    </div>
+  </div>`;
+}
+
+function termsCard(){
+  let rows='';
+  if(BIZ.discount_type==='STORE_DISCOUNT'&&BIZ.min)rows+=`<div class="term"><span class="tk">${I.coins}</span><div>מינימום קנייה <b>${BIZ.min} ₪</b></div></div>`;
+  if(BIZ.valid)rows+=`<div class="term"><span class="tk">${I.cal}</span><div>בתוקף עד <b>${BIZ.valid}</b></div></div>`;
+  if(BIZ.booth)rows+=`<div class="term"><span class="tk">${I.store}</span><div>בעסק: <b>${BIZ.name}, ${BIZ.booth}</b></div></div>`;
+  return rows?`<div class="card"><div class="card-title">תנאי המבצע</div>${rows}</div>`:'';
+}
+
+const state={idx:0,amount:0};
+
+function calcDiscount(){
+  const a=state.amount;
+  if(BIZ.discount_type==='STORE_DISCOUNT')return parseFloat((a*BIZ.discount/100).toFixed(2));
+  if(BIZ.discount_type==='PRODUCT_DISCOUNT')return BIZ.discount_amount||0;
+  return BIZ.free_item_value||0;
+}
+
+function rWallet(){
+  return hdr('הקופון שלי')+
+  `<div class="body">
+    <div class="kicker">שמור בארנק שלך</div>
+    ${couponCard()}${termsCard()}
+    <div class="locked">${I.lock}<div>סכום החיסכון המדויק ייחשף כשתשתמש בחנות</div></div>
+  </div>
+  <div class="foot">
+    <div class="foot-note">${I.shield}ללא הרשמה · ללא login — הקופון פתוח לשימוש מיידי</div>
+    <button class="cta" onclick="go(1)">פתח קופון אצל הסוחר ${I.chevR}</button>
+  </div>`;
+}
+
+function rReveal(){
+  startTimer();
+  return hdr('חשיפת תנאים',true)+
+  `<div class="body">
+    <div class="reveal-head"><span class="rk">${I.checkc}</span><div><h2>פתחת את הקופון</h2><p>התנאים המלאים נחשפו אצל ${BIZ.name}</p></div></div>
+    ${couponCard()}${termsCard()}
+    <div class="quiet-note">הסכום בשקלים עדיין לא נמדד — ההנחה מחושבת לפי הקנייה בפועל.</div>
+  </div>
+  <div class="foot">
+    <button class="cta" onclick="go(1)">המשך לסכום הקנייה ${I.chevR}</button>
+  </div>`;
+}
+
+function rAmount(){
+  if(BIZ.discount_type==='BUY_GET'){
+    return hdr('ההטבה שלך',true)+
+    `<div class="body center" style="gap:20px;text-align:center">
+      <div class="amt-prompt">הצג לסוחר את הקופון — הוא יוסיף את <b>${BIZ.get_item||'המוצר'}</b> בחינם</div>
+      <div class="savings-hero show" style="opacity:1;transform:none">
+        <div class="lbl">${I.spark} ההטבה שלך</div>
+        <div class="big" style="direction:rtl;font-size:20px">קנה ${BIZ.buy_item||'...'} · קבל ${BIZ.get_item||'...'} חינם</div>
+      </div>
+    </div>
+    <div class="foot"><button class="cta" onclick="state.amount=0;go(1)">אשר וסרוק ${I.chevR}</button></div>`;
+  }
+  return hdr('כמה הקנייה?',true)+
+  `<div class="body" style="gap:14px">
+    <div class="amt-prompt">הסוחר אמר את סכום הקנייה <b>(לפני הנחה)</b> — הקש אותו</div>
+    <div class="amt-display"><div class="num"><span class="cur">₪</span><span id="amtNum">0</span></div></div>
+    <div class="amt-min" id="amtMin"></div>
+    <div class="savings-hero" id="hero">
+      <div class="lbl">${I.spark} חסכת ברגע זה</div>
+      <div class="big"><span id="heroSave">0.00</span><span class="u">ש"ח</span></div>
+    </div>
+    <div class="pay-line">לתשלום: <b id="payNum">0.00</b> ש"ח</div>
+    <div class="keypad" id="keypad">
+      ${[1,2,3,4,5,6,7,8,9].map(d=>`<button class="key" data-d="${d}">${d}</button>`).join('')}
+      <button class="key del" data-del>${I.del}</button>
+      <button class="key" data-d="0">0</button>
+      <button class="key" data-d="00">00</button>
+    </div>
+  </div>
+  <div class="foot"><button class="cta" id="amtCta" onclick="go(1)" disabled>אישור הסכום ${I.chevR}</button></div>`;
+}
+
+function rConfirm(){
+  const a=state.amount||0,s=calcDiscount(),pay=Math.max(0,a-s);
+  return hdr('אישור מימוש',true)+
+  `<div class="body">
+    <div class="reveal-head"><span class="rk">${I.coins}</span><div><h2>סיכום המימוש</h2><p>${BIZ.name}${BIZ.booth?' · '+BIZ.booth:''}</p></div></div>
+    <div class="card">
+      ${a>0?`<div class="sum-row"><span>סך הקנייה</span><span class="v">${a} ₪</span></div>`:''}
+      <div class="sum-row disc"><span>הנחה${BIZ.discount_type==='STORE_DISCOUNT'?' '+BIZ.discount+'%':''}</span><span class="v">− ${f2(s)} ₪</span></div>
+      ${a>0?`<div class="sum-row big"><span>לתשלום</span><span class="v">${f2(pay)} ₪</span></div>`:''}
+    </div>
+    <div class="locked" style="background:var(--teal-soft);color:var(--teal-deep)">${I.scan}<div>בשלב הבא תסרוק את ה-QR המודבק בדוכן</div></div>
+  </div>
+  <div class="foot"><button class="cta" onclick="go(1)">אשר והמשך לסריקה ${I.chevR}</button></div>`;
+}
+
+function rScan(){
+  const a=state.amount||0,s=calcDiscount();
+  const now=new Date();
+  const scanAt=now.getDate()+'.'+(now.getMonth()+1)+' · '+String(now.getUTCHours()).padStart(2,'0')+':'+String(now.getUTCMinutes()).padStart(2,'0')+' UTC';
+  return hdr('סריקת הדוכן')+
+  `<div class="body scan-wrap">
+    <div class="amt-prompt" style="margin-bottom:2px">כוון את המצלמה ל-<b>QR הסטטי המודבק בדוכן</b></div>
+    <div class="viewfinder">
+      <div class="vf-frame">
+        <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+        <div class="vf-qr">${qrSVG()}</div><div class="scanline"></div>
+      </div>
+      <div class="vf-tag"><span class="dot"></span>סורק QR של ${BIZ.name}</div>
+    </div>
+    <div class="payload">
+      <h4>${I.upload}משודר ברגע הסריקה → דשבורד הסוחר</h4>
+      <div class="pl-row"><span class="k">business_id</span><span class="val">${DATA.business_id}</span></div>
+      <div class="pl-row"><span class="k">scanned_at</span><span class="val">${scanAt}</span></div>
+      <div class="pl-row"><span class="k">device_fingerprint</span><span class="val">…${DEVICE.slice(-8)}</span></div>
+      ${a>0?`<div class="pl-row"><span class="k">purchase_amount</span><span class="val">₪${a}</span></div>`:''}
+      <div class="pl-row"><span class="k">discount_given</span><span class="val g">₪${f2(s)}</span></div>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="foot-note">${I.bolt}הסריקה היא רגע השידור — אין קוד ידני ואין אישור-סוחר פר-מימוש</div>
+    <button class="cta teal" id="scanBtn">${I.scan} סריקה הושלמה</button>
+  </div>
+  <div class="transmit" id="transmit"><div class="tx-ring"></div><p>משדר מימוש…</p><small>auto-approve · נחתם device_fingerprint + scanned_at</small></div>`;
+}
+
+function rSuccess(){
+  stopTimer();
+  const a=state.amount||0,s=calcDiscount();
+  return `<div class="ah"><span></span><div class="ah-title"> </div><span></span></div>
+  <div class="body center" style="gap:24px;text-align:center">
+    <div class="success-mark"><div class="ring">${I.check}</div></div>
+    <div class="success-title">ההנחה מומשה!</div>
+    <div class="grey-card" style="width:100%">
+      ${a>0?`<div class="lbl">סך הקנייה</div><div class="big">${a} ₪</div><div class="div"></div>`:''}
+      <div class="lbl">חסכת בזכות Cuppon</div><div class="save">${f2(s)} ₪</div>
+    </div>
+    <div class="foot-note" style="margin:0">${I.shield}המימוש נחסם לשימוש חוזר — usage_limit עודכן</div>
+  </div>
+  <div class="foot"><button class="cta" onclick="state.amount=0;state.idx=0;render()">סיום</button></div>`;
+}
+
+function redeemRow(r){
+  return `<div class="redeem${r.flag?' row-flagged':''}">
+    <div class="amt"><div class="a">₪${r.amount}</div><div class="s">−₪${f2(r.save)}</div></div>
+    <div class="info"><div class="v">${r.label}</div><div class="m">${r.at} · ${r.flag?'<span class="badge flag">'+I.alert+'חריג</span>':'<span class="badge ok">'+I.check+'אושר אוטומטית</span>'}</div></div>
+    <div class="dev">${r.dev}</div>
+  </div>`;
+}
+
+function rDashboard(){
+  const total=REDEMPTIONS.reduce((a,r)=>a+r.amount,0);
+  const save=REDEMPTIONS.reduce((a,r)=>a+r.save,0);
+  return hdr('דשבורד מימושים')+
+  `<div class="body">
+    <div class="m-head"><span class="mk">${I.store}</span><div><h2>${BIZ.name}</h2><p>${BIZ.booth?BIZ.booth+' · ':''}היום</p></div></div>
+    <div class="stat-strip">
+      <div class="stat"><div class="n">${REDEMPTIONS.length}</div><div class="t">מימושים היום</div></div>
+      <div class="stat"><div class="n">₪${total}</div><div class="t">נפח מכירות</div></div>
+      <div class="stat"><div class="n">₪${Math.round(save)}</div><div class="t">הנחות שניתנו</div></div>
+    </div>
+    <div class="card"><div class="card-title">מימושים אחרונים</div>${REDEMPTIONS.map(redeemRow).join('')}</div>
+    <div class="quiet-note" style="display:flex;gap:10px;align-items:center;flex-direction:row-reverse"><span style="flex:0 0 auto;color:var(--teal)">${I.bolt}</span><span>auto-approve כברירת מחדל — אינך מאשר כל מימוש בנפרד.</span></div>
+  </div>`;
+}
+
+function rAnomaly(){
+  const flagged=REDEMPTIONS.filter(r=>r.flag);
+  return hdr('התראת חריג')+
+  `<div class="body">
+    <div class="anom-card">
+      <div class="at">${I.alert}אותו מכשיר חזר ${Math.max(flagged.length,2)} פעמים</div>
+      <p>זוהה דפוס חוזר של <b>device_fingerprint</b> במספר מימושים בטווח קצר. סומן לבדיקה — שאר המימושים נשארים auto-approved.</p>
+    </div>
+    <div class="card"><div class="card-title">המימושים שסומנו</div>${flagged.map(redeemRow).join('')}</div>
+    <div class="quiet-note" style="display:flex;gap:10px;align-items:center;flex-direction:row-reverse"><span style="flex:0 0 auto;color:var(--teal)">${I.shield}</span><span>רק חריגה מסומנת. שגרה לעולם לא נעצרת.</span></div>
+  </div>`;
+}
+
+function rPride(){
+  const vol=REDEMPTIONS.reduce((a,r)=>a+r.amount,0)*7+92;
+  return hdr('נתוני גאווה')+
+  `<div class="body">
+    <div class="m-head"><span class="mk">${I.chart}</span><div><h2>החודש ב-Cuppon</h2><p>${BIZ.name}</p></div></div>
+    <div class="pride-hero">
+      <div class="k">נפח מכירות שנשאב דרך Cuppon</div>
+      <div class="v">₪${vol.toLocaleString('en-US')}</div>
+      <div class="c">מקנייה אמיתית של לקוחות — המספר שמושך אותך פנימה.</div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat"><div class="n">37</div><div class="t">מימושים</div></div>
+      <div class="stat"><div class="n">12</div><div class="t">לקוחות חדשים</div></div>
+      <div class="stat"><div class="n">+18%</div><div class="t">מול חודש קודם</div></div>
+    </div>
+    <div class="card"><div class="card-title">למה זה עובד בשבילך</div>
+      <div class="term"><span class="tk">${I.users}</span><div>קונים מגיעים אליך מתוך האפליקציה — תנועה חדשה לדוכן</div></div>
+      <div class="term"><span class="tk">${I.coins}</span><div>כל מימוש = קנייה אמיתית. אתה רואה את הסכומים</div></div>
+      <div class="term"><span class="tk">${I.bolt}</span><div>אפס עבודה ידנית — הכל auto-approve ונכנס לבד</div></div>
+    </div>
+  </div>`;
+}
+
+const SCREENS=[rWallet,rReveal,rAmount,rConfirm,rScan,rSuccess,rDashboard,rAnomaly,rPride];
+
+function render(){
+  app.innerHTML=SCREENS[state.idx]();
+  if(SCREENS[state.idx]===rAmount)bindAmount();
+  if(SCREENS[state.idx]===rScan)bindScan();
+}
+
+function go(d){const n=state.idx+d;if(n<0||n>=SCREENS.length)return;state.idx=n;render();}
+
+function bindAmount(){
+  const numEl=document.getElementById('amtNum');
+  if(!numEl)return;
+  const heroEl=document.getElementById('hero'),heroSave=document.getElementById('heroSave');
+  const payEl=document.getElementById('payNum'),minEl=document.getElementById('amtMin'),cta=document.getElementById('amtCta');
+  function update(anim){
+    const a=state.amount,s=parseFloat((a*BIZ.discount/100).toFixed(2)),pay=a-s;
+    const valid=a>0&&(!BIZ.min||a>=BIZ.min);
+    numEl.textContent=a;
+    cta.disabled=!valid;
+    minEl.textContent=(a>0&&BIZ.min&&!valid)?'עוד '+(BIZ.min-a)+' ₪ למינימום ('+BIZ.min+' ₪)':'';
+    if(valid){
+      heroSave.textContent=f2(s);payEl.textContent=f2(pay);
+      heroEl.classList.add('show');
+      if(anim){heroEl.classList.remove('pop');void heroEl.offsetWidth;heroEl.classList.add('pop');}
+    } else {heroEl.classList.remove('show','pop');payEl.textContent='0.00';}
+  }
+  document.getElementById('keypad').querySelectorAll('[data-d]').forEach(k=>k.onclick=()=>{
+    let v=parseInt(String(state.amount===0?'':state.amount)+k.dataset.d,10)||0;
+    if(v>99999)return;state.amount=v;update(true);
   });
-}
-
-/* ============================ UI ============================ */
-var app = document.getElementById('app');
-function esc(s){ return String(s).replace(/[&<>"]/g, function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-
-function renderInvalid(msg){
-  app.innerHTML = '<div class="card"><div class="state">'+
-    '<div class="ring bad">!</div><h2>קופון לא תקין</h2><p>'+esc(msg||'הקישור חסר פרטי קופון. בקשו מהמוכר לסרוק שוב את ה-QR בדוכן.')+'</p></div></div>';
-}
-
-function renderCoupon(){
-  var disc = COUPON.secret
-    ? '<div class="secret"><span class="ic">🤫</span><div>סוד ההנחה — ההטבה תיחשף ברגע המימוש בדוכן</div></div>'
-    : (COUPON.discount ? '<div class="discount">'+esc(COUPON.discount)+'</div>' : '');
-  app.innerHTML =
-    '<div class="card">'+
-      '<div class="chead"><span class="tag">קופון ShukWAY</span>'+
-        '<div class="biz">'+esc(COUPON.business)+'</div>'+
-        (COUPON.location ? '<div class="loc">'+esc(COUPON.location)+'</div>' : '')+
-      '</div><div class="perf"></div>'+
-      '<div class="cbody">'+
-        '<div class="voucher">ההטבה שלך</div>'+
-        '<div class="title">'+esc(COUPON.title)+'</div>'+
-        disc+
-        '<button class="btn" id="go">✓ ממש עכשיו בדוכן</button>'+
-        '<div class="hint">לחיצה על "ממש" מאשרת שאתם <b>פיזית בדוכן</b>. ההטבה תקפה למימוש יחיד.</div>'+
-      '</div>'+
-    '</div>';
-  document.getElementById('go').addEventListener('click', doRedeem, {once:true});
-}
-
-function renderAlready(){
-  app.innerHTML = '<div class="card"><div class="state">'+
-    '<div class="ring wait">✓</div><h2>כבר מומש</h2>'+
-    '<p>הקופון הזה כבר נוצל מהמכשיר הזה. כל הטבה ניתנת למימוש פעם אחת.</p></div></div>';
-}
-
-function markConfirmed(rec){
-  var s = document.getElementById('statusline');
-  if(s){ s.className='statusline ok'; s.innerHTML='<span>✓</span> נקלט במערכת'+(rec.confirmId?(' · '+esc(String(rec.confirmId))):''); }
-}
-
-function renderRedeemed(rec, online){
-  var reveal = (!COUPON.secret && COUPON.discount)
-      ? '<div class="revealed">ההנחה שלכם<b>'+esc(COUPON.discount)+'</b></div>'
-      : (COUPON.secret ? '<div class="revealed">הציגו את המסך למוכר — ההנחה תיושם בקופה</div>' : '');
-  app.innerHTML = '<div class="card"><div class="state">'+
-    '<div class="ring ok">✓</div>'+
-    '<h2>מומש!</h2>'+
-    '<p>'+esc(COUPON.business)+'</p>'+
-    reveal+
-    '<div class="code">קוד מימוש <b>'+esc(rec.shortCode)+'</b></div><br>'+
-    '<span class="statusline wait" id="statusline">'+
-      (online ? '<span>◷</span> נשלח למערכת…' : '<span>◷</span> נשמר · ייקלט כשתהיה רשת')+
-    '</span>'+
-    '<p class="hint" style="margin-top:18px">הציגו את הקוד למוכר לקבלת ההטבה.</p>'+
-  '</div></div>';
-}
-
-function doRedeem(){
-  var btn = document.getElementById('go'); if(btn){ btn.disabled=true; btn.textContent='רושם…'; }
-  var id = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random());
-  var rec = {
-    id: id,
-    business_id: COUPON.business_id,
-    coupon_id: COUPON.coupon_id,
-    scanned_at: new Date().toISOString(),     // UTC
-    device_fingerprint: DEVICE,
-    shortCode: id.replace(/[^a-z0-9]/gi,'').slice(-6).toUpperCase(),
-    status: 'pending',
-    source: 'cuppon-pwa'
+  document.getElementById('keypad').querySelector('[data-del]').onclick=()=>{
+    const v=String(state.amount);state.amount=v.length<=1?0:parseInt(v.slice(0,-1),10)||0;update(true);
   };
-  // 1) write to the offline queue FIRST — before touching the network
-  idbPut(rec).then(function(){
-    renderRedeemed(rec, navigator.onLine);
-    // 2) ask the Service Worker to sync in the background (survives page close)
-    if('serviceWorker' in navigator && 'SyncManager' in window){
-      navigator.serviceWorker.ready.then(function(reg){ return reg.sync.register('redeem-sync'); }).catch(function(){ flushQueue(); });
-    } else {
-      flushQueue(); // fallback (iOS / no Background Sync): flush now, and on next load
-    }
-  }).catch(function(){
-    // even if IDB fails, try a direct send so the redemption isn't lost
-    deliver(rec).then(function(resp){ rec.confirmId=resp&&resp.confirmId; renderRedeemed(rec,true); })
-      .catch(function(){ renderRedeemed(rec,false); });
-  });
+  update(false);
 }
 
-/* ============================ boot ============================ */
-function boot(){
-  paintNet();
-  if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
-  flushQueue(); // push any redemptions left pending from a previous visit
-  if(!COUPON.business_id || !COUPON.coupon_id){ renderInvalid(); return; }
-  alreadyRedeemed().then(function(done){ done ? renderAlready() : renderCoupon(); });
+function bindScan(){
+  const btn=document.getElementById('scanBtn'),tx=document.getElementById('transmit');
+  if(!btn)return;
+  btn.onclick=()=>{
+    tx.classList.add('show');btn.disabled=true;
+    const a=state.amount||0,s=calcDiscount();
+    const rec={
+      id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),
+      coupon_id:DATA.coupon_id,business_id:DATA.business_id,
+      scanned_at:new Date().toISOString(),device_fingerprint:DEVICE,
+      purchase_amount:a,discount_given:s,sync_status:'local'
+    };
+    idbPut(rec)
+      .then(()=>{
+        if(navigator.onLine){
+          redeemCoupon(rec).then(r=>{if(r.ok){rec.sync_status='synced';return idbPut(rec);}}).catch(()=>{});
+        } else if('serviceWorker' in navigator&&'SyncManager' in window){
+          navigator.serviceWorker.ready.then(sw=>sw.sync.register('cuppon-sync')).catch(()=>{});
+        }
+        setTimeout(()=>{tx.classList.remove('show');go(1);},1500);
+      })
+      .catch(()=>{
+        if(navigator.onLine)redeemCoupon(rec).catch(()=>{});
+        setTimeout(()=>{tx.classList.remove('show');go(1);},1500);
+      });
+  };
 }
-boot();
+
+/* load coupon from API */
+(function loadCoupon(){
+  const cid=DATA.coupon_id;
+  if(cid==='demo-coupon-001'){
+    BIZ.name='תוצרת הארץ';BIZ.cat='פירות וירקות';BIZ.emoji='🥬';
+    BIZ.booth='דוכן 42';BIZ.discount=10;BIZ.min=30;BIZ.valid='30.5.2026';
+    render();return;
+  }
+  fetch(`${API_BASE}/api/coupons/public/${encodeURIComponent(cid)}`)
+    .then(r=>r.ok?r.json():null)
+    .then(data=>{
+      if(!data)return tryBizFallback();
+      const c=data.coupon||data;
+      if(c.business_name)BIZ.name=c.business_name;
+      if(c.category)BIZ.cat=c.category;
+      if(c.emoji)BIZ.emoji=c.emoji;
+      if(c.booth)BIZ.booth=c.booth;
+      const typeMap={'percent':'STORE_DISCOUNT','fixed':'PRODUCT_DISCOUNT'};
+      if(c.discount_type)BIZ.discount_type=typeMap[c.discount_type]||c.discount_type;
+      if(c.discount_type==='percent'&&c.discount_amount!=null)BIZ.discount=c.discount_amount;
+      if(c.discount_type==='fixed'&&c.discount_amount!=null)BIZ.discount_amount=c.discount_amount;
+      if(c.free_item_value!=null)BIZ.free_item_value=c.free_item_value;
+      if(c.product_name)BIZ.product_name=c.product_name;
+      if(c.buy_item)BIZ.buy_item=c.buy_item;
+      if(c.get_item)BIZ.get_item=c.get_item;
+      if(c.min_purchase!=null)BIZ.min=c.min_purchase;
+      if(c.valid_until)BIZ.valid=c.valid_until;
+      render();
+    })
+    .catch(()=>tryBizFallback());
+
+  function tryBizFallback(){
+    fetch(`${API_BASE}/api/public/businesses`)
+      .then(r=>r.ok?r.json():null)
+      .then(d=>{
+        if(!d)return;
+        const m=(d.businesses||[]).find(b=>b.slug===DATA.business_id||b.id===DATA.business_id);
+        if(m){if(m.nameHe)BIZ.name=m.nameHe;if(m.category)BIZ.cat=m.category;render();}
+      })
+      .catch(()=>{});
+  }
+})();
+
+/* load merchant redemptions */
+(function loadMerchant(){
+  fetch(`${API_BASE}/api/coupons/merchant/redemptions?business_id=${encodeURIComponent(DATA.business_id)}`)
+    .then(r=>r.ok?r.json():null)
+    .then(data=>{
+      if(!data||!data.redemptions)return;
+      REDEMPTIONS=data.redemptions.map(r=>({
+        dev:(r.device_fingerprint||'???').slice(-3),
+        label:r.coupon_id||'קופון',
+        at:r.scanned_at?new Date(r.scanned_at).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}):'—',
+        amount:r.purchase_amount||0,save:r.discount_given||0,flag:r.fraud_flag||false
+      }));
+    })
+    .catch(()=>{});
+})();
+
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
+
+render();
 </script>
 </body>
 </html>
